@@ -1,0 +1,205 @@
+:root {
+    --primary-100: #ff1717;
+    --primary-200: #ff616f;
+    --primary-300: #ffcfcf;
+    --accent-100: #FF5252;
+    --accent-200: #fff0e0;
+    --text-100: #FFFFFF;
+    --text-200: #e0e0e0;
+    --bg-100: #1A1A1A;
+    --bg-200: #292929;
+    --bg-300: #404040;
+}
+
+body {
+    background-color: var(--bg-100);
+    color: var(--text-100);
+}
+
+.container {
+    background-color: var(--bg-200);
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 60%;
+    margin: auto;
+
+}
+
+/* Small devices (phones) */
+@media (max-width: 767px) {
+    .container {
+        max-width: 95%;
+    }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        max-width: 80%;
+    }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 992px) {
+    .container {
+        max-width: 60%;
+    }
+}
+
+.card {
+    margin-bottom: 2rem;
+    margin-right: 1rem;
+
+    background-color: var(--bg-300);
+
+    align-items: center;
+    transition: transform .2s;
+
+}
+
+.card:hover {
+    transform: scale(1.07);
+}
+
+.card-title {
+    text-align: center;
+}
+
+h1,
+h2 {
+    color: var(--primary-100);
+    text-transform: uppercase;
+}
+
+h3,
+h4 {
+    color: var(--primary-200);
+    text-transform: uppercase;
+}
+
+
+
+p {
+    color: var(--text-200);
+}
+
+.img-thumbnail {
+    /* Animation */
+    transition: transform .2s;
+}
+
+.img-thumbnail:hover {
+    transform: scale(1.1);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.btn-primary {
+    background-color: var(--primary-100);
+    border-color: var(--primary-100);
+    padding: 10px 20px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-200);
+    border-color: var(--primary-200);
+}
+
+.btn-secondary {
+    background-color: var(--accent-100);
+    border-color: var(--accent-100);
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent-200);
+    border-color: var(--accent-200);
+}
+
+#my-name {
+    color: var(--primary-100);
+    font-size: x-large;
+    text-transform: uppercase;
+}
+
+#my-name:hover {
+    color: var(--primary-200);
+    text-decoration: none;
+
+
+}
+
+.container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* this will ensure that the aspect ratio of the image is maintained */
+    border-radius: 5%;
+    /* adjust this value to change the roundness of the corners */
+}
+
+.collapsible {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    background-color: var(--bg-200);
+
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex;
+    align-items: left;
+}
+
+.collapsible:active,
+.collapsible:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.active,
+.collapsible:hover {
+    background-color: var(--bg-300);
+}
+
+.content {
+    padding: 0 18px;
+    /* display: none; */
+    max-height: 0;
+
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    /* background-color: #f1f1f1; */
+}
+
+.arrow img {
+    height: 20px;
+    width: 20px;
+    top: 10px;
+    left: 10px;
+    right: 20px;
+    transition: transform .3s ease;
+    transform: rotate(90deg);
+    margin-top: 5px;
+    margin-right: 20px;
+
+}
+
+.collapsible.active .arrow img {
+    transform: rotate(180deg);
+
+}
+
+.navbar-icons {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-icons img {
+    width: 32px;
+    height: 32px;
+    margin: 10px;
+    background-size: 32px 32px;
+    width: 32px;
+    height: 32px;
+}

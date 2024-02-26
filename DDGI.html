@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Integration of NVIDIA's DDGI into Hazel Engine</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1"> <a id="my-name" href="index.html">Karim Sayed</a> </span>
+        <div class="navbar-icons">
+            <a href="mailto:karimsayedre@gmail.com" target="_blank">
+                <img src="icons/email.png" class="navbar-icons" alt="Email Address">
+            </a>
+            <a href="https://www.linkedin.com/in/karim-sayedre/" target="_blank">
+                <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
+            </a>
+            <a href="https://github.com/kareemsayed" target="_blank">
+                <img src="icons/github.png" class="navbar-icons" alt="Github Account">
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+
+        <h1>Journey of Integrating Nvidia's DDGI into Hazel Engine</h1>
+        <h2>Introduction</h2>
+        <p>As a graphics programmer, I've always been fascinated by the potential of dynamic global illumination (GI) to
+            bring a new level of realism to games. When Nvidia introduced their Dynamic Diffuse Global Illumination
+            (DDGI) technology, I saw an opportunity to enhance the Hazel Engine with this cutting-edge feature.</p>
+        <h2>Understanding DDGI</h2>
+        <p>Before diving into the integration process, I spent a considerable amount of time understanding the
+            principles behind DDGI. Nvidia's DDGI is a real-time ray-traced global illumination solution that
+            approximates indirect diffuse lighting. It leverages the power of modern GPUs to calculate lighting
+            conditions dynamically, which is a significant improvement over traditional static light baking methods.</p>
+        <h2>Integration Process</h2>
+        <p>The integration process began with setting up the necessary environment for DDGI within the Hazel Engine.
+            This involved configuring the engine to support the required Vulkan Ray Tracing features and Nvidia's RTX
+            technology.</p>
+        <p>Next, I integrated the DDGI shader provided by Nvidia into Hazel's rendering pipeline. This shader is
+            responsible for calculating the indirect diffuse lighting based on the scene's geometry and materials.</p>
+        <p>One of the challenges I faced during this process was ensuring that the DDGI calculations were correctly
+            incorporated into Hazel's existing lighting model. This required a deep understanding of both Hazel's
+            rendering pipeline and the workings of the DDGI shader.</p>
+        <h2>Results and Optimizations</h2>
+        <p>After successful integration, the results were immediately noticeable. Scenes rendered in Hazel now had a new
+            level of depth and realism thanks to the dynamic global illumination provided by DDGI.</p>
+        <p>However, the initial implementation was quite performance-intensive. To address this, I spent time profiling
+            and optimizing the DDGI integration. This involved fine-tuning the DDGI settings, optimizing the ray-tracing
+            pipeline, and implementing techniques such as spatial and temporal denoising to improve performance.</p>
+        <h2>Conclusion</h2>
+        <p>Integrating Nvidia's DDGI into the Hazel Engine was a challenging but rewarding experience. It not only
+            improved the visual quality of the engine but also provided me with a deeper understanding of modern
+            real-time rendering techniques. I'm excited to see what developers can create with this new feature in Hazel
+            Engine.</p>
+    </div>
+    <footer>
+        <div class="navbar-icons text-center">
+            <a href="mailto:karimsayedre@gmail.com" target="_blank">
+                <img src="icons/email.png" class="navbar-icons" alt="Email Address">
+            </a>
+            <a href="https://www.linkedin.com/in/karim-sayedre/" target="_blank">
+                <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
+            </a>
+            <a href="https://github.com/kareemsayed" target="_blank">
+                <img src="icons/github.png" class="navbar-icons" alt="Github Account">
+            </a>
+        </div>
+        <p class="text-center">© 2024 Karim Sayed. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

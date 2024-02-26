@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Path Tracing - Karim Sayed</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1"> <a id="my-name" href="index.html">Karim Sayed</a> </span>
+        <div class="navbar-icons">
+            <a href="mailto:karimsayedre@gmail.com" target="_blank">
+                <img src="icons/email.png" class="navbar-icons" alt="Email Address">
+            </a>
+            <a href="https://www.linkedin.com/in/karim-sayedre/" target="_blank">
+                <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
+            </a>
+            <a href="https://github.com/kareemsayed" target="_blank">
+                <img src="icons/github.png"  class="navbar-icons" alt="Github Account">
+            </a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Path Tracing</h1>
+        <p>Path tracing is a powerful rendering technique that simulates the way light travels and interacts with objects in a scene. It's capable of producing highly realistic images by accurately modeling complex lighting effects such as reflections, refractions, and shadows.</p>
+
+        <h2>Implementation</h2>
+        <p>In my implementation of path tracing in the Hazel engine, I followed these steps:</p>
+        <ol>
+            <li>**Ray Generation**: For each pixel in the image, I generated a ray starting from the camera and passing through the pixel.</li>
+            <li>**Ray Intersection**: I used a BVH (Bounding Volume Hierarchy) to efficiently find the closest object that each ray intersects.</li>
+            <li>**Shading**: For each intersection, I calculated the color of the pixel based on the material of the object and the lighting in the scene.</li>
+            <li>**Secondary Rays**: I generated secondary rays for reflections and refractions, and recursively repeated the process.</li>
+        </ol>
+
+        <h2>Images</h2>
+        <p>Here are some images that demonstrate the results of my path tracing implementation. Click on an image to view it in full size.</p>
+        <div class="row">
+            <div class="col-md-4">
+                <img src="images/Pathtracing/image_20240216113220.jpg" class="img-thumbnail" data-toggle="modal" data-target="#image1-modal">
+                <div class="modal fade" id="image1-modal" tabindex="-1" role="dialog" aria-labelledby="image1-modal-label" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="images/Pathtracing/image_20240216113220.jpg" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Add more images here -->
+        </div>
+    </div>
+    <footer>
+        <div class="navbar-icons text-center">
+            <a href="mailto:karimsayedre@gmail.com" target="_blank">
+                <img src="icons/email.png" class="navbar-icons" alt="Email Address">
+            </a>
+            <a href="https://www.linkedin.com/in/karim-sayedre/" target="_blank">
+                <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
+            </a>
+            <a href="https://github.com/kareemsayed" target="_blank">
+                <img src="icons/github.png" class="navbar-icons" alt="Github Account">
+            </a>
+        </div>
+        <p class="text-center">© 2024 Karim Sayed. All rights reserved.</p>
+    </footer>
+    <script>
+        // document.addEventListener('DOMContentLoaded', function() {
+            var images = document.querySelectorAll('.img-thumbnail');
+            images.forEach(function(img) {
+                img.addEventListener('click', function() {
+                    var targetModal = this.getAttribute('data-target');
+                    var modal = document.querySelector(targetModal);
+                    modal.style.display = "block";
+                });
+            });
+        // });
+
+    </script>
+</body>
+
+</html>
