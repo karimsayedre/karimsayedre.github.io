@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Path Tracing - Karim Sayed</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+</head>
+
+<body>
+    <script>
+        navbar();
+    </script>();
+
+    <div class="container">
+
+        <h1>Incorporating XeGTAO in Hazel Engine</h1>
+
+        <h2>Integration with Hazel</h2>
+        <p>The integration of Intel's XeGTAO into the Hazel engine marked a significant milestone in the project. At the
+            time of integration, Hazel did not have support for HLSL shaders. Recognizing the superiority and
+            flexibility of HLSL over other shader languages, I took the initiative to implement it. This was a
+            significant undertaking that required a deep understanding of both the Hazel engine and the Vulkan API. Now,
+            even though Hazel only supports Vulkan, the shaders are mostly written in HLSL. This has greatly improved
+            the flexibility and performance of the engine. Furthermore, the integration of XeGTAO was facilitated by the
+            prior implementation of Screen Space Reflections (SSR), as both require a Hierarchical Depth Buffer. Thus,
+            the path was paved for XeGTAO, making its integration much smoother and more efficient.</p>
+
+        <h2>Technical Details</h2>
+        <p>XeGTAO, also known as Ground Truth Ambient Occlusion, is a state-of-the-art screen space algorithm. It was
+            recommended to me by Yan, and its name alone was enough to pique my interest. What sets XeGTAO apart is its
+            basis on the Monte Carlo algorithm, which makes it particularly effective for denoising ambient occlusion, a
+            low-frequency signal. This feature is what makes XeGTAO one of the best in its class. You can learn more
+            about XeGTAO and its implementation from the <a href="https://github.com/GameTechDev/XeGTAO">official
+                repository</a>.</p>
+
+        <h2>Results and Impact</h2>
+        <p>The results of incorporating XeGTAO were nothing short of impressive. When compared to Nvidia's HBAO, which I
+            had incorporated in my early work with Hazel, XeGTAO outperformed it by a significant margin. The difference
+            was like night and day, with XeGTAO providing a level of realism and flexibility that was simply unmatched
+            by HBAO. For instance, scenes that were previously impossible to render properly due to the sheer number of
+            4k textures, such as the Intel Sponza scene, could now be loaded and rendered efficiently. This was a major
+            achievement, as it demonstrated the engine's ability to handle complex and detailed scenes.</p>
+
+        <h2>Future Work</h2>
+        <p>Looking ahead, there are several potential improvements and features to consider. One such feature would be
+            to allow users to select the formats upon loading a mesh. This would provide greater flexibility and
+            customization options for the users. Additionally, I am considering the integration of other features that
+            could further enhance the performance and capabilities of the Hazel engine. These could include additional
+            texture formats, improved mipmapping techniques, and more advanced compression algorithms. In particular,
+            Temporal Anti-Aliasing (TAA) works well with XeGTAO, and it's an area where performance can be improved
+            without sacrificing too much quality. I also plan to implement Ray Tracing Ambient Occlusion (RTAO), and
+            perhaps even a hybrid of both RTAO and XeGTAO. These enhancements will continue to push the boundaries of
+            what's possible with the Hazel engine.</p>
+
+        <h2>Conclusion</h2>
+        <p>In conclusion, the integration of XeGTAO into the Hazel engine has been a resounding success. It has not only
+            improved the realism and flexibility of the engine but has also paved the way for future enhancements. The
+            experience and knowledge gained from this project have been invaluable and will undoubtedly be beneficial in
+            my future endeavors. As I continue to explore and implement new features, I am excited about the potential
+            of the Hazel engine and look forward to seeing where this journey takes me.</p>
+
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my path tracing implementation.<br>
+            Note that these images are <b>not denoised</b> and they are taken after some amount of pixel accumulation.
+            <br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                var container = document.querySelector('.row');
+
+                let path = 'images/GTAO/';
+
+                // Create an array of image file names
+                var images = ['2.gif', '3.gif', '4.gif', '5.gif', '6.gif', '7.gif', '8.gif', '9.jpg'];
+                // Define the number of images per row
+                var imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+            </script>
+        </div>
+    </div>
+    <!-- Add more images here -->
+    <script>
+        footer();
+        addBehaviour();
+    </script>
+</body>
+
+</html>

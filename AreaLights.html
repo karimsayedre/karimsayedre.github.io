@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Path Tracing - Karim Sayed</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+</head>
+
+<body>
+    <script>
+        navbar();
+    </script>
+    <div class="container">
+
+        <h2>Integration with Tensor</h2>
+        <p>The journey to integrate Linearly Transformed Cosines (LTC) Area Lights into the Tensor engine, an
+            OpenGL-based proprietary engine, was both challenging and rewarding. The main challenge was shadows. After
+            implementing LTC Area Lights, I ended up using point light soft shadows, similar to Unreal Engine 5.
+            The other challenge was that It was also not easy to allow the use of textures because they have to be
+            mip-mapped correctly for such a use case.</p>
+
+        <h2>Technical Details</h2>
+        <p>LTC based lighting is analytical and fast. It allows lighting from different shapes like disks, planes, and
+            lines, which are the shapes we have as area lights. This is unique because there's no
+            technique that I know of that allows lighting from these shapes without ray tracing or fancy stuff like
+            Unreal Engine's Nanite. LTC Area Lights work by transforming a simple distribution (like a clamped cosine)
+            into a more
+            complex one that can represent a wide variety of shapes. This makes them particularly suitable for
+            real-time rendering where performance is critical.</p>
+
+        <h2>Results and Impact</h2>
+        <p>The results of this integration were physically based and realistic. Also, it's analytical and not
+            noisy. The use of LTC Area Lights significantly improved the realism and flexibility of the Tensor
+            engine.</p>
+
+        <h2>Future Work</h2>
+        <p>Looking ahead, there are several potential improvements and features to consider. One such feature would be
+            to re-implement that in Hazel, with ray tracing. It would be easy to implement better shadows than point
+            light shadows. Also, combining that with path tracing would reduce the noise that is inherent from path
+            tracing.</p>
+
+        <h2>Conclusion</h2>
+        <p>In conclusion, the integration of LTC Area Lights into the Tensor engine has been a resounding success. It
+            has not only improved the realism and flexibility of the engine but has also paved the way for future
+            enhancements. The experience and knowledge gained from this project have been invaluable and will
+            undoubtedly be beneficial in my future endeavors. As I continue to explore and implement new features, I am
+            excited about the potential of the Tensor engine and look forward to seeing where this journey takes me.</p>
+
+
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my path tracing implementation.<br>
+            Note that these images are <strong>not</strong> de-noised, and they are taken after some amount of pixel accumulation.
+            <br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                let container = document.querySelector('.row');
+
+                let path = 'images/Area Lights/';
+
+                // Create an array of image file names
+                let images = ['1.gif', '2.gif', '4.gif', '5.png', '6.png', '7.png', '8.png', '9.png'];
+                // Define the number of images per row
+                const imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+            </script>
+        </div>
+    </div>
+    <!-- Add more images here -->
+	<script>
+		footer();
+        addBehaviour();
+    </script>
+</body>
+
+</html>
