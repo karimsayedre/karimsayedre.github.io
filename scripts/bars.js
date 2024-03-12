@@ -12,7 +12,7 @@ function navbar() {
             <a href="https://www.linkedin.com/in/karimsayedre/" target="_blank">
                 <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
             </a>
-            <a href="https://github.com/kareemsayed" target="_blank">
+            <a href="https://github.com/karimsayedre" target="_blank">
                 <img src="icons/github.png" class="navbar-icons" alt="Github Account">
             </a>
         </div>
@@ -35,7 +35,7 @@ function footer() {
             <a href="https://www.linkedin.com/in/karimsayedre/" target="_blank">
                 <img src="icons/linkedin.png" class="navbar-icons" alt="LinkedIn Account">
             </a>
-            <a href="https://github.com/kareemsayed" target="_blank">
+            <a href="https://github.com/karimsayedre" target="_blank">
                 <img src="icons/github.png" class="navbar-icons" alt="Github Account">
             </a>
         </div>
