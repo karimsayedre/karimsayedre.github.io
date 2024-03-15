@@ -6,7 +6,7 @@ function renderImages(path, images, container, imagesPerRow) {
 
         // Create a div element for the column
         var col = document.createElement('div');
-        col.className = 'col-md-' + (12 / imagesPerRow);
+        col.className = 'col-md-6 col-sm-12 col-lg-'+ (12 / imagesPerRow);
 
         // Create an img element for the thumbnail
         var img = document.createElement('img');
@@ -17,7 +17,7 @@ function renderImages(path, images, container, imagesPerRow) {
 
         // Create a div element for the modal
         var modal = document.createElement('div');
-        modal.className = 'modal fade';
+        modal.className = 'modal faded';
         modal.id = modalId;
         modal.setAttribute('tabindex', '-1');
         modal.setAttribute('role', 'dialog');
@@ -40,13 +40,11 @@ function renderImages(path, images, container, imagesPerRow) {
         // Create an img element for the full size image
         var modalImg = document.createElement('img');
         modalImg.src = path + image;
-        // modalImg.className = 'modal-img';
-
+        
         // Create an i element for the previous icon
         var leftArrow = document.createElement('img');
         leftArrow.className = 'left-arrow';
         leftArrow.src = "icons/arrow.png";
-
 
         // Create an i element for the next icon
         var rightArrow = document.createElement('img');
@@ -89,10 +87,9 @@ function renderImages(path, images, container, imagesPerRow) {
         modalBody.appendChild(modalImg);
         modalBody.appendChild(rightDiv);
         
-
-
         modalDialog.appendChild(modalContent);
         modalContent.appendChild(modalBody);
+
         modal.appendChild(modalDialog);
         col.appendChild(img);
         col.appendChild(modal);
@@ -102,7 +99,6 @@ function renderImages(path, images, container, imagesPerRow) {
             // Create a div element for the row
             var row = document.createElement('div');
             row.className = 'row';
-            row.style = 'margin-bottom: 2rem';
             // Append the row to the container
             container.appendChild(row);
         }
@@ -111,5 +107,9 @@ function renderImages(path, images, container, imagesPerRow) {
         var lastRow = container.lastElementChild;
         // Append the column to the last row
         lastRow.appendChild(col);
+        
+        $('#'+ modalId).on('hidden.bs.modal', function () {
+          modalImg.src = path + images[index];
+        });
     });
 }

@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Path Tracing - Karim Sayed</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<head>
+    <title>LTC Area Lights</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <link rel="stylesheet" href="style/style.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
     <script src="scripts/images.js"></script>
     <script src="scripts/behaviour.js"></script>
     <script src="scripts/bars.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
+
 
 <body>
     <script>
@@ -23,38 +33,48 @@
     <div class="container">
 
         <h2>Integration with Tensor</h2>
-        <p>The journey to integrate Linearly Transformed Cosines (LTC) Area Lights into the Tensor engine, an
+        <p>
+            The journey to integrate Linearly Transformed Cosines (LTC) Area Lights into the Tensor engine, an
             OpenGL-based proprietary engine, was both challenging and rewarding. The main challenge was shadows. After
             implementing LTC Area Lights, I ended up using point light soft shadows, similar to Unreal Engine 5.
             The other challenge was that It was also not easy to allow the use of textures because they have to be
-            mip-mapped correctly for such a use case.</p>
+            mip-mapped correctly for such a use case.
+        </p>
 
         <h2>Technical Details</h2>
-        <p>LTC based lighting is analytical and fast. It allows lighting from different shapes like disks, planes, and
+        <p>
+            LTC based lighting is analytical and fast. It allows lighting from different shapes like disks, planes, and
             lines, which are the shapes we have as area lights. This is unique because there's no
             technique that I know of that allows lighting from these shapes without ray tracing or fancy stuff like
             Unreal Engine's Nanite. LTC Area Lights work by transforming a simple distribution (like a clamped cosine)
             into a more
             complex one that can represent a wide variety of shapes. This makes them particularly suitable for
-            real-time rendering where performance is critical.</p>
+            real-time rendering where performance is critical.
+        </p>
 
         <h2>Results and Impact</h2>
-        <p>The results of this integration were physically based and realistic. Also, it's analytical and not
+        <p>
+            The results of this integration were physically based and realistic. Also, it's analytical and not
             noisy. The use of LTC Area Lights significantly improved the realism and flexibility of the Tensor
-            engine.</p>
+            engine.
+        </p>
 
         <h2>Future Work</h2>
-        <p>Looking ahead, there are several potential improvements and features to consider. One such feature would be
+        <p>
+            Looking ahead, there are several potential improvements and features to consider. One such feature would be
             to re-implement that in Hazel, with ray tracing. It would be easy to implement better shadows than point
             light shadows. Also, combining that with path tracing would reduce the noise that is inherent from path
-            tracing.</p>
+            tracing.
+        </p>
 
         <h2>Conclusion</h2>
-        <p>In conclusion, the integration of LTC Area Lights into the Tensor engine has been a resounding success. It
+        <p>
+            In conclusion, the integration of LTC Area Lights into the Tensor engine has been a resounding success. It
             has not only improved the realism and flexibility of the engine but has also paved the way for future
             enhancements. The experience and knowledge gained from this project have been invaluable and will
             undoubtedly be beneficial in my future endeavors. As I continue to explore and implement new features, I am
-            excited about the potential of the Tensor engine and look forward to seeing where this journey takes me.</p>
+            excited about the potential of the Tensor engine and look forward to seeing where this journey takes me.
+        </p>
 
 
         <h2>Images</h2>
@@ -82,8 +102,8 @@
         </div>
     </div>
     <!-- Add more images here -->
-	<script>
-		footer();
+    <script>
+        footer();
         addBehaviour();
     </script>
 </body>

@@ -3,10 +3,25 @@
 
 <head>
 	<title>Karim Sayed - Rendering Engineer</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 	<link rel="stylesheet" href="style/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+		crossorigin="anonymous"></script>
+
+	<script src="scripts/images.js"></script>
+	<script src="scripts/behaviour.js"></script>
 	<script src="scripts/bars.js"></script>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+		rel="stylesheet">
 </head>
 
 <body>
@@ -17,11 +32,20 @@
 	<div class="container">
 		<!-- About me section -->
 		<div class="row">
-			<div class="col-md-9">
-				<h2>About me</h2>
-				<p>
+			<div class="row">
+				<div class="col">
+					<h2>About me</h2>
+
+				  <br />
+				  <img src="images/Karim.jpg" alt="Karim Sayed" class="img-fluid float-end col-sm-12 col-lg-3 col-md-6">
+				  <p>
 					I am a passionate 24 years old rendering engineer hailing from Egypt, with a deep-seated love for
-					<strong>realistic and physically based graphics</strong>. My journey in the field of computer
+					<strong>realistic and physically based graphics</strong>.
+				</p>
+				<p>
+					My love for realistic computer graphics led me to learn 3D modeling and sculpting before university.
+					However, my interest took a
+					turn towards programming when my journey in the field of computer
 					science began at Multimedia University in Malaysia, where I earned my bachelor's degree in computer
 					science in 2021. Since then,
 					I have been relentlessly exploring new techniques and technologies that push the boundaries of
@@ -34,21 +58,10 @@
 					but also grounded in realism, offering a truly immersive experience. Also, I love cornell boxes!
 					<br>
 					<br>
-					My journey began at Multimedia University in Malaysia, where I earned my Bachelor's degree in
-					Computer Science, specializing in Software Engineering. Since then, I've contributed to multiple
-					forks of the Hazel Engine, implementing a variety of features and improving its performance.
-					<br>
-					<br>
-
 					Currently, I'm exploring new frontiers in rendering technology with my private fork of the Hazel
 					Engine, integrating cutting-edge techniques like RTXGI and developing a path tracer based on Vulkan
 					hardware ray tracing. I'm always looking for opportunities to learn, grow, and make a meaningful
 					impact in the field of rendering engineering.
-
-
-					My love for realistic computer graphics led me to learn 3D modeling and sculpting before university.
-					However, my interest took a
-					turn towards programming when I was introduced to C++ during my university years.
 				</p>
 
 				<p>
@@ -56,19 +69,18 @@
 					<br>
 					You can also download my resume from <a href="KarimSayedResume.pdf" target="_blank">here</a>.
 				</p>
-				<!-- Contact details -->
-			</div>
-			<div class="col-md-3">
-				<div class="my-photo">
-					<img src="images/Karim.jpg" alt="Karim Sayed">
 				</div>
-			</div>
+  
+	
+  
+			  </div>
+
 		</div>
-		<h1>Experience</h1>
+		<h2>Experience</h2>
 		<p>
 			Alright, let's dive into my journey in the world of rendering engineering. It all started when I was working
 			on my final year project which was a rendering engine. Since then, it's been all
-			about pushing the boundaries of visual quality and performance. 
+			about pushing the boundaries of visual quality and performance.
 		</p>
 
 		<button class="collapsible btn btn-default">
@@ -77,7 +89,7 @@
 		</button>
 		<div class="content" id="intro">
 			<p>
-				As a final year project student, I built my own rendering engine called Beyond.
+				As a final year project student, I built my own rendering engine called <a href="https://github.com/karimsayedre/Beyond" target="_blank">Beyond</a>.
 				My primary acheivements were simple and they included:
 			<ul>
 				<li> Developed a derferred lighting renderer to enhance performance.</li>
@@ -85,7 +97,7 @@
 				<li> Implemented Point and spot lights with soft shadows.</li>
 			</ul>
 			My work on these features helped to enhance the engine's rendering capabilities.
- 			</p>
+			</p>
 		</div>
 
 		<button class="collapsible btn btn-default">
@@ -94,15 +106,18 @@
 		</button>
 		<div class="content" id="intro">
 			<p>
-				As a volunteer rendering engineer for the Hazel Engine, I contributed to the development of a powerful
-				3D
-				game engine. My primary responsibilities included:
+				As a volunteer rendering engineer for the <a href="https://hazelengine.com" target="_blank"> Hazel Engine </a>, I contributed to the development of a powerful
+				3D game engine. My primary responsibilities included:
 			<ul>
-				<li> Implementing advanced graphics techniques such as Ground Truth Ambient Occlusion (GTAO), Screen
+				<li>
+					Implementing advanced graphics techniques such as Ground Truth Ambient Occlusion (GTAO), Screen
 					Space
-					Reflections (SSR), and Horizon-Based Ambient Occlusion (HBAO).</li>
-				<li>Enhancing the engine's lighting techniques to improve the realism and visual appeal of the rendered
-					scenes.</li>
+					Reflections (SSR), and Horizon-Based Ambient Occlusion (HBAO).
+				</li>
+				<li>
+					Enhancing the engine's lighting techniques to improve the realism and visual appeal of the rendered
+					scenes.
+				</li>
 			</ul>
 			My work on these features helped to enhance the engine's rendering capabilities and improve the overall
 			visual
@@ -118,16 +133,22 @@
 
 			<p>
 				During my military service year, I worked on Tensor, a propriatary fork of the Hazel Engine maintained
-				by Tensor Foundries Inc. I was able to spend a week (holiday from military service) every 2 weeks spent
+				by <a href="https://sensorfoundries.com" target="_blank">Sensor Foundries Inc</a>. I was able to spend a week (holiday from military service) every 2 weeks spent
 				at my militray unit. Despite the constraints, I was able to make substantial
 				contributions to Tensor:
 			<ul>
-				<li>Implemented Linearly Transformed Cosines (LTC) Area Lights, a technique that enhances the realism of
-					lighting in 3D scenes.</li>
-				<li>Integrated Weighted Average Order Independent Transparency (OIT), an advanced rendering technique
-					that improves the visual quality of transparent objects.</li>
-				<li>Added Planar Reflections to the engine, a feature that significantly enhances the realism of
-					reflective surfaces.</li>
+				<li>
+					Implemented Linearly Transformed Cosines (LTC) Area Lights, a technique that enhances the realism of
+					lighting in 3D scenes.
+				</li>
+				<li>
+					Integrated Weighted Average Order Independent Transparency (OIT), an advanced rendering technique
+					that improves the visual quality of transparent objects.
+				</li>
+				<li>
+					Added Planar Reflections to the engine, a feature that significantly enhances the realism of
+					reflective surfaces.
+				</li>
 			</ul>
 			These features not only improved the visual quality and realism of the Tensor engine but also demonstrated
 			my ability to work effectively under challenging conditions.
@@ -137,7 +158,7 @@
 
 		<button class="collapsible  btn btn-default">
 			<div class="arrow"><img src="icons/arrow.png"></div>
-			<h4>Hazel Engine (Private fork) - Mid 2023 to Present</h4>
+			<h4>Hazel Engine (Private fork) - Late 2023 to Present</h4>
 		</button>
 		<div class="content">
 			<p>
@@ -145,10 +166,13 @@
 				by
 				working on a forked version of the Hazel Engine. In this independent project, I have:
 			<ul>
-				<li>Integrated RTXGI and Path Tracing to improve the engine's
+				<li>
+					Integrated RTXGI and Path Tracing to improve the engine's
 					real-time
-					lighting capabilities.</li>
-				<li>Utilized the Vulkan Ray Tracing pipeline to introduce advanced ray tracing features into the engine.
+					lighting capabilities.
+				</li>
+				<li>
+					Utilized the Vulkan Ray Tracing pipeline to introduce advanced ray tracing features into the engine.
 				</li>
 			</ul>
 			These enhancements have further expanded the capabilities of the Hazel Engine, demonstrating my ability to
@@ -161,22 +185,13 @@
 			<div class="col-md-12">
 				<br>
 				<h2>Rendering Techniques</h2>
-				<p>Hazel Engine is a simple yet powerful 3D game engine developed by Studio Cherno and volunteers. It's
-					currently available for use and has big plans for the future.
-					The engine is primarily an early-stage interactive application and rendering engine.
-					It's being developed with the aim of creating a powerful 3D engine, but also to serve as an
-					educational tool for teaching game engine design and architecture.
-
-					The Hazel Engine was started by Yan Chernikov in late 2018, and it's now officially developed by
-					Studio Cherno, a company started in 2021.</p>
-				<br>
 				<!-- Grid of photos for Hazel engine -->
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='DDGI.html';">
 							<!-- Thumbnail image -->
-								<img src="images/DDGI/7.jpg" class="card-img-top" alt="RTXGI">
+							<img src="images/DDGI/7.jpg" class="card-img-top" alt="RTXGI">
 							<div class="card-body">
 								<h5 class="card-title">RTXGI</h5>
 								<!-- <p>Integration of Nvidia's RTXGI SDK</p> -->
@@ -187,38 +202,37 @@
 						</div>
 					</div>
 					<!-- Path tracing feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
-							<div class="card" onclick="location.href='PathTracing.html';">
-								<!-- Thumbnail image -->
-								<img src="images/Pathtracing/10.jpg" class="card-img-top"
-									alt="Path Tracing">
-								<div class="card-body">
-									<h5 class="card-title">Path Tracing</h5>
-									<!-- <p>Integration of Path Tracing</p> -->
-									<div class="card-body text-center">
-										<a href="PathTracing.html" class="btn btn-primary">Learn More</a>
-									</div>
+						<div class="card" onclick="location.href='PathTracing.html';">
+							<!-- Thumbnail image -->
+							<img src="images/Pathtracing/10.jpg" class="card-img-top" alt="Path Tracing">
+							<div class="card-body">
+								<h5 class="card-title">Path Tracing</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="PathTracing.html" class="btn btn-primary">Learn More</a>
 								</div>
 							</div>
+						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='GTAO.html';">
-								<!-- Thumbnail image -->
-								<img src="images/GTAO/2.gif" class="card-img-top" alt="BCn Texture Compression">
-								<div class="card-body">
-									<h5 class="card-title">XeGTAO</h5>
-									<!-- <p>Integration of Path Tracing</p> -->
-									<div class="card-body text-center">
-										<a href="GTAO.html" class="btn btn-primary">Learn More</a>
-									</div>
+							<!-- Thumbnail image -->
+							<img src="images/GTAO/2.gif" class="card-img-top" alt="BCn Texture Compression">
+							<div class="card-body">
+								<h5 class="card-title">XeGTAO</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="GTAO.html" class="btn btn-primary">Learn More</a>
 								</div>
+							</div>
 						</div>
 					</div>
 
 					<!-- BCn texture compression feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='Compreession.html';">
 							<!-- Thumbnail image -->
@@ -235,7 +249,7 @@
 				</div>
 				<div class="row">
 					<!-- SSR feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='SSR.html';">
 							<!-- Thumbnail image -->
@@ -250,13 +264,12 @@
 						</div>
 					</div>
 					<!-- LTC Area Lights feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='AreaLights.html';">
 
 							<!-- Thumbnail image -->
-							<img src="images/Area Lights/1.gif" class="card-img-top"
-								alt="Area Lights">
+							<img src="images/Area Lights/1.gif" class="card-img-top" alt="Area Lights">
 							<div class="card-body">
 								<h5 class="card-title">LTC Area Lights</h5>
 								<div class="card-body text-center">
@@ -266,27 +279,26 @@
 						</div>
 					</div>
 					<!-- Weighted Blended OIT feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
-						<div class="card" onclick="location.href='Weighted Blended OIT.html';">
+						<div class="card" onclick="location.href='OIT.html';">
 
 							<!-- Thumbnail image -->
 							<img src="images/OIT/2.jpg" class="card-img-top" alt="OIT">
 							<div class="card-body">
 								<h5 class="card-title">Weighted Blended OIT</h5>
 								<div class="card-body text-center">
-									<a href="Weighted Blended OIT.html" class="btn btn-primary">Learn More</a>
+									<a href="OIT.html" class="btn btn-primary">Learn More</a>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- Planar Reflections feature -->
-					<div class="col-sm-3">
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
 						<!-- Card component -->
 						<div class="card" onclick="location.href='PlanarReflections.html';">
 							<!-- Thumbnail image -->
-							<img src="images/Planar Reflections/1.gif" class="card-img-top"
-								alt="Planar Reflections">
+							<img src="images/Planar Reflections/1.gif" class="card-img-top" alt="Planar Reflections">
 							<div class="card-body">
 								<h5 class="card-title">Planar Reflections</h5>
 								<div class="card-body text-center">
@@ -295,8 +307,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
 				</div>
 			</div>
 		</div>
@@ -312,7 +322,7 @@
 	for (i = 0; i < coll.length; i++) {
 		coll[i].addEventListener("click", function () {
 			this.classList.toggle("active");
-			var content = this.nextElementSibling;
+			let content = this.nextElementSibling;
 			if (content.style.maxHeight) {
 				content.style.maxHeight = null;
 			} else {

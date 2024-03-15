@@ -15,6 +15,9 @@
 body {
     background-color: var(--bg-100);
     color: var(--text-100);
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .container {
@@ -57,7 +60,7 @@ body {
 
 }
 
-.card-img-top{
+.card-img-top {
     min-height: 15rem;
 }
 
@@ -67,12 +70,17 @@ body {
 
 .card-title {
     text-align: center;
+    color: var(--accent-200);
 }
 
 h1,
 h2 {
     color: var(--primary-100);
     text-transform: uppercase;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
 
 h3,
@@ -91,6 +99,8 @@ p {
     /* Animation */
     transition: transform .2s;
     min-height: 15rem;
+    margin-bottom: 2rem;
+
 }
 
 .img-thumbnail:hover {
@@ -120,8 +130,14 @@ p {
 
 #my-name {
     color: var(--primary-100);
+    margin-left: 3rem;
     font-size: 2rem;
     text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-style: normal;
+
 }
 
 #my-name:hover {
@@ -204,6 +220,7 @@ p {
 .navbar-icons {
     display: flex;
     justify-content: center;
+    margin-right: 2rem;
 }
 
 .navbar-icons img {
@@ -247,6 +264,7 @@ p {
 
     top: 50%;
     bottom: 50%;
+    border-radius: 0% !important;
 
     left: 2rem !important;
 
@@ -260,6 +278,7 @@ p {
     user-select: none;
 
     position: relative;
+    border-radius: 0% !important;
 
     top: 50%;
     bottom: 50%;
@@ -289,4 +308,13 @@ p {
     max-width: 90vw;
     max-height: 85vh;
     border-radius: 5rem;
+}
+
+.faded {
+    opacity: 0.25;
+    transition: opacity .3s linear;
+}
+
+.faded.show {
+    opacity: 1;
 }
