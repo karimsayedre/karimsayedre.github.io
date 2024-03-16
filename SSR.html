@@ -31,80 +31,72 @@
     </script>
     <div class="container">
 
-
-        <h2>Integration with Hazel</h2>
+        <h2>Integration into Hazel Engine</h2>
         <p>The journey to integrate AMD's Stochastic Screen-Space Reflections (SSSR) into the Hazel engine was both
-            challenging and rewarding. Initially, Hazel did not support HLSL shaders, which are crucial for SSSR.
+            challenging and rewarding. Initially, Hazel did not support HLSL shaders, which are crucial for AMD's SSSR.
             Recognizing the potential of HLSL, I integrated it into Hazel, even though Hazel primarily supports Vulkan.
             This was a significant step that required a deep understanding of both the Hazel engine and the Vulkan API.
             The integration of SSSR was further facilitated by the prior implementation of Screen Space Reflections
             (SSR), as both require a Hierarchical Depth Buffer. Thus, the path was paved for SSSR, making its
             integration much smoother and more efficient.</p>
 
-        <h2>Technical Details</h2>
-        <p>SSSR, also known as Stochastic Screen-Space Reflections, is a state-of-the-art screen space algorithm. It was
-            recommended to me by Yan, and its name alone was enough to pique my interest. What sets SSSR apart is its
-            basis on the Monte Carlo algorithm, which makes it particularly effective for denoising ambient occlusion, a
-            low-frequency signal. To optimize the rendering process, I decided to remove the stochastic part of SSSR due
-            to its excessive noise and less-than-ideal results in the AMD demo. Instead, I opted for cone tracing, where
-            the color buffer is preconvoluted into mips. The mip to sample is decided based on the distance and
-            roughness of the surface being shaded, providing a more realistic and visually pleasing result. You can
-            learn more about SSSR and its implementation from the <a
-                href="https://gpuopen.com/fidelityfx-sssr/" target="_blank">official repository</a>.</p>
+        <h2>Technical Overview</h2>
+        <p>
+            SSSR, also known as Stochastic Screen-Space Reflections, is a state-of-the-art screen space algorithm. To
+            optimize the rendering process, I decided to remove the stochastic part of SSSR due
+            to its excessive noise and less-than-ideal results in the AMD demo. Instead, I opted for cone tracing which
+            was recommended by Cherno to allow for rough reflections. The color buffer is preconvoluted into mips, the
+            mip to sample is decided based on the distance and
+            roughness of the surface being shaded, utilizing the cone tracing algorithm, providing a more realistic and visually pleasing result. You can
+            learn more about SSSR and its implementation from the <a href="https://gpuopen.com/fidelityfx-sssr/"
+                target="_blank">official repository</a>.
+        </p>
 
         <h2>Results and Impact</h2>
-        <p>The integration of SSSR into the Hazel engine had a significant impact. It outperformed Nvidia's HBAO, which
-            I had incorporated in my early work with Hazel. Scenes that were previously impossible to render properly
-            due to the sheer number of 4k textures, such as the Intel Sponza scene, could now be loaded and rendered
-            efficiently. This was a major achievement, demonstrating the engine's ability to handle complex and detailed
-            scenes. The performance optimization from the Hierarchical Z-Buffer (HZB) was particularly impressive,
-            especially considering the limitations of the previous implementation.</p>
+        <p>The integration of SSSR into the Hazel engine had a significant impact. It outperformed other algorithms that I had implemeted before, including SSR without a Hierarchical Z-Buffer, which
+            I had incorporated in my early work in Beyond (my university final year project). The performance optimization from the Hierarchical Z-Buffer (HZB) was particularly impressive,
+            especially considering the limitations of the previous implementations. Also, compared to AMD's stochastic algorithm was again, too noisy and </p>
 
         <h2>Future Work</h2>
-        <p>Looking ahead, there are several potential improvements and features to consider. One such feature would be
-            to allow users to select the formats upon loading a mesh. This would provide greater flexibility and
-            customization options for the users. Additionally, I am considering the integration of other features that
-            could further enhance the performance and capabilities of the Hazel engine. These could include additional
-            texture formats, improved mipmapping techniques, and more advanced compression algorithms. In particular,
+        <p>
             Temporal Anti-Aliasing (TAA) works well with SSSR, and it's an area where performance can be improved
-            without sacrificing too much quality. I also plan to implement Ray Tracing Ambient Occlusion (RTAO), and
-            perhaps even a hybrid of both RTAO and SSSR. You can learn more about hybrid reflections from <a
+            without sacrificing too much quality. I also plan to implement ray traced reflections, and
+            perhaps even a hybrid of both ray traced reflections and SSSR. You can learn more about hybrid reflections from <a
                 href="https://gpuopen.com/fidelityfx-hybrid-reflections/" target="_blank">here</a>.</p>
 
         <h2>Conclusion</h2>
-        <p>In conclusion, the integration of SSSR into the Hazel engine has been a resounding success. It has not only
+        <p>
+            In conclusion, the integration of SSSR into the Hazel engine has been a resounding success. It has not only
             improved the realism and flexibility of the engine but has also paved the way for future enhancements. The
             experience and knowledge gained from this project have been invaluable and will undoubtedly be beneficial in
-            my future endeavors. As I continue to explore and implement new features, I am excited about the potential
-            of the Hazel engine and look forward to seeing where this journey takes me.</p>
+            my future endeavors. As I continue to explore and implement new features.
+        </p>
 
         <h2>Images</h2>
         <p>
-            Here are some images that demonstrate the results of my path tracing implementation.<br>
-            Note that these images are <b>not denoised</b> and they are taken after some amount of pixel accumulation.
-            <br>
+            Here are some images that demonstrate the results of my SSR implementation.<br>
             Click on an image to view it in bigger size.
         </p>
         <div class="row">
 
             <script>
                 // Get the container element where the images and modals will be appended
-                var container = document.querySelector('.row');
+                let container = document.querySelector('.row');
 
                 let path = 'images/SSR/';
 
                 // Create an array of image file names
-                var images = ['9.webp', '1.gif', '2.gif', '3.gif', '4.gif', '5.gif', '6.gif', '7.jpg', '8.jpg',];
+                let images = ['9.webp', '1.gif', '2.gif', '3.gif', '4.gif', '5.gif', '6.gif', '7.jpg', '8.jpg',];
                 // Define the number of images per row
-                var imagesPerRow = 4;
+                let imagesPerRow = 4;
 
                 renderImages(path, images, container, imagesPerRow);
             </script>
         </div>
     </div>
     <!-- Add more images here -->
-	<script>
-		footer();
+    <script>
+        footer();
         addBehaviour();
     </script>
 </body>

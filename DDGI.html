@@ -1,38 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>RTXGI</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
-        <link rel="stylesheet" href="style/style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-            crossorigin="anonymous"></script>
-    
-        <script src="scripts/images.js"></script>
-        <script src="scripts/behaviour.js"></script>
-        <script src="scripts/bars.js"></script>
-    
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
-    </head>
+
+<head>
+    <title>NVIDIA RTXGI-DDGI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
 
 <body>
     <script>
         navbar();
     </script>
     <div class="container">
-        <h2>Integration of Nvidia's RTXGI into Hazel Engine</h2>
+        <h2>Integration of NVIDIA's RTXGI-DDGI into Hazel Engine</h2>
         <p>
             As a graphics programmer, the allure of dynamic global illumination (GI) and its potential to bring
-            unparalleled realism to games has always captivated me. When Nvidia unveiled their Dynamic Diffuse Global
-            Illumination (DDGI) technology, I recognized an opportunity to augment the Hazel Engine with this
+            unparalleled realism to games has always captivated me. When NVIDIA unveiled their <a
+                href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI"> Dynamic Diffuse Global
+                Illumination (DDGI)</a> technology, I recognized an opportunity to augment the Hazel Engine with this
             state-of-the-art feature.
         </p>
 
@@ -40,24 +42,25 @@
         <p>
             Before embarking on the integration journey, I dedicated a significant amount of time to comprehend the
             underlying principles of DDGI, though, it's always gonna be a mix of wraping my head around concepts, (ahead
-            of the actual implementation), and a whole lot of gotcha's during the actual work. So, Nvidia's DDGI, a
-            real-time ray-traced global illumination solution,
-            approximates indirect diffuse lighting. It harnesses the power of contemporary GPUs to dynamically calculate
-            lighting conditions, by shooting a limited amout of ray's each frame, and accumulting them temporally, all
-            cached into irradiance probes. Thinking about this, the first thing that comes to mind is "How's that even
-            dynamic?", the thing is, GI can be consdered low frequncy, meaning it doesn't have be pixel to pixel kind of
-            detail like reflections. So instead, DDGI allows some accumulation over frames and allows the fine tuning
-            how fast the lighting can change in a volume. The
-            DDGI documentation provided by Nvidia was an invaluable resource during this learning process, offering a
-            comprehensive guide to understanding and integrating DDGI.
+            of the actual implementation), and a whole lot of gotcha's during the actual work. So, NVIDIA's DDGI, a
+            real-time ray-traced global illumination solution, approximates indirect diffuse lighting. It harnesses the
+            power of contemporary GPUs to dynamically calculate
+            lighting conditions, by shooting a limited amount of ray's each frame from probes to their surroundings, and
+            accumulting them temporally, all cached into these irradiance probes. Thinking about this, the first thing
+            that comes to mind is "How's that
+            even dynamic?", the thing is, GI can be consdered a low frequncy signal, meaning it doesn't have be pixel to
+            pixel kind of detail like specular reflections. So instead, DDGI allows some accumulation over frames and
+            allows the fine
+            tuning how fast the lighting can change in a volume. The DDGI documentation provided by NVIDIA was an
+            invaluable resource during this learning process, offering a comprehensive guide to understanding and
+            integrating DDGI.
         </p>
 
         <h2>The Integration Process</h2>
         <p>
-            The first step was to prepare the Hazel Engine for DDGI. This involved adjusting the engine to support Vulkan
-            Ray Tracing features and Nvidia's RTX technology. Then, I integrated the DDGI shader from Nvidia into
-            Hazel's rendering pipeline. This shader calculates the indirect diffuse lighting based on the scene's
-            geometry and materials. But it wasn't easy to get the DDGI calculations to work well with Hazel's existing
+            The first step was to prepare the Hazel Engine for DDGI. This involved adjusting the engine to support
+            Vulkan Ray Tracing features. Then, I integrated the DDGI shaders into
+            Hazel's rendering pipeline. It wasn't easy to get the DDGI calculations to work well with Hazel's existing
             lighting model. It required a deep understanding of both Hazel's rendering pipeline and the DDGI shader.
         </p>
 
@@ -72,21 +75,25 @@
 
         <h2>Future Work</h2>
         <p>
-            In the future, I plan to implement light baking for hardware without RTX capabilities. Light baking is a
+            In the future, I plan to implement light baking for hardware without accelerated ray tracing capabilities. Light baking is a
             technique where you pre-calculate the lighting in a scene and store it in textures, which can then be used
             during rendering. This can be a good alternative for hardware that doesn't support real-time ray tracing.
         </p>
 
         <h2>Conclusion</h2>
         <p>
-            Integrating Nvidia's DDGI into the Hazel Engine was a challenging but rewarding experience. It not only
-            improved the visual quality of the engine but also gave me a better understanding of modern real-time
+            Integrating NVIDIA's DDGI into the Hazel Engine was a challenging but rewarding experience. It, not only
+            improved the visual quality of the engine, but also gave me a better understanding of modern real-time
             rendering techniques, and it's so much faster than path tracing. One important lesson from this experience
             is the importance of planning ahead. As the saying goes,
             “Failing to plan is planning to fail.” This was particularly true in this case, where a good understanding
-            of the technique and a well-planned strategy were crucial for a successful implementation.
+            of the technique and a well-planned strategy were crucial for a successful and feasible integration.
         </p>
         <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my RTXGI implementation.<br>
+            Click on an image to view it in bigger size.
+        </p>
         <div class="row">
 
             <script>

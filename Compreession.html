@@ -23,20 +23,22 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
 </head>
+
 <body>
     <script>
         navbar();
     </script>
     <div class="container">
-        <h2>Integration with Hazel</h2>
+        <h2>Adding support to Hazel Engine</h2>
         <p>
             In the process of enhancing the Hazel engine, I expanded the support for a variety of texture formats in the
             Vulkan code. This was a significant undertaking that involved a deep understanding of both the Hazel engine
-            and the Vulkan API. I experimented with multiple technologies, including nvtt, but ultimately, I decided to
+            and the Vulkan API. I experimented with multiple technologies, including nvtt and KTX, but ultimately, I
+            decided to
             use Compressonator. This decision was based on several factors, including the performance, compatibility,
             and the robustness of the Compressonator.
         </p>
-        <h2>Technical Details</h2>
+        <h2>Technical Overview</h2>
         <p>
             The BCn texture compression method was employed in this project. This method is known for its ability to
             provide high-quality texture compression, which is crucial for rendering detailed and realistic graphics.
@@ -44,26 +46,28 @@
             significantly optimizes the rendering process. To facilitate this, I utilized the CLI version of
             Compressonator, which allowed for easier parallelization. This was a key factor in improving the efficiency
             of the texture loading process. Furthermore, the DDS textures, which store all the texture mips, are loaded
-            directly into the engine, eliminating the need for additional processing. This direct loading process
-            further enhances the performance of the engine.
+            directly into the engine, eliminating the need for additional processing on reloading.
         </p>
 
         <h2>Results and Impact</h2>
         <p>
             The impact of integrating BCn texture compression into the Hazel engine was quite significant. For instance,
-            the Intel Sponza scene, which contains hindreds of 4k textures, was previously unable to load on my 10G RTX
-            3080 without overflowing the dedicated memory. However, with the implementation of texture compression, I
-            was able to load the scene with acceptable memory usage. This
-            was a major achievement, as it demonstrated the engine's ability to handle complex and detailed scenes.
+            scenes that were previously impossible to render properly due to the sheer number of
+            4k textures, such as the new Intel Sponza scene, could now be loaded and rendered efficiently. This was a major
+            achievement, as it demonstrated the engine's ability to handle more complex and detailed scenes, as it
+            demonstrated the engine's ability to handle complex and detailed scenes.
             Additionally, the loading times were noticeably improved due to the reduced file sizes and the elimination
             of the need to recreate the mip. This not only makes the engine more efficient but also provides a smoother
             and more responsive user experience.
         </p>
+        
         <h2>Future Work</h2>
         <p>
             Looking ahead, there are several potential improvements and features to consider. One such feature would be
             to allow users to select the formats upon loading a mesh. This would provide greater flexibility and
-            customization options for the users.
+            customization options for the users. Additionally, I am considering the integration of other features that
+            could further enhance the performance and capabilities of the Hazel engine. These could include additional
+            texture formats and improved mipmapping techniques.
         </p>
 
         <h2>Conclusion</h2>

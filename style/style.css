@@ -15,7 +15,8 @@
 body {
     background-color: var(--bg-100);
     color: var(--text-100);
-    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-style: normal;
 }
@@ -87,12 +88,26 @@ h3,
 h4 {
     color: var(--primary-200);
     text-transform: uppercase;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-style: normal;
 }
 
+strong{
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
 
+p, li{
+    color: var(--text-100);
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-style: normal;
 
-p {
-    color: var(--text-200);
 }
 
 .img-thumbnail {
@@ -136,7 +151,7 @@ p {
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
     font-weight: 900;
-    font-style: normal;
+    font-style: italic;
 
 }
 

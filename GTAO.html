@@ -35,20 +35,20 @@
         <h2>Incorporating XeGTAO in Hazel Engine</h2>
         <p>
             The integration of Intel's XeGTAO into the Hazel engine marked a significant milestone in the project. At the
-            time of integration, Hazel did not have support for HLSL shaders. Recognizing the superiority and
-            flexibility of HLSL over other shader languages, I took the initiative to implement it. This was a
-            significant undertaking that required a deep understanding of both the Hazel engine and the Vulkan API. Now,
+            time of integration, Hazel did not have support for HLSL shaders. Recognizing the superiority <i>(in my opinion)</i> and
+            flexibility of HLSL over the engine's main, GLSL. At the time, Cherno had opened my eyes on such an idea. So I took the initiative to implement the support for it. This was a
+            significant undertaking that required a deep understanding of both the Hazel engine and the Vulkan API which I lacked at the time. Now,
             even though Hazel only supports Vulkan, the shaders are mostly written in HLSL. This has greatly improved
-            the flexibility and performance of the engine. Furthermore, the integration of XeGTAO was facilitated by the
+            the flexibility of the engine where it's much easier to integrate more stuff in it. Furthermore, the integration of XeGTAO was facilitated by the
             prior implementation of Screen Space Reflections (SSR), as both require a Hierarchical Depth Buffer. Thus,
             the path was paved for XeGTAO, making its integration much smoother and more efficient.
         </p>
 
-        <h2>Technical Details</h2>
+        <h2>Technical Overview</h2>
         <p>
             XeGTAO, also known as Ground Truth Ambient Occlusion, is a state-of-the-art screen space algorithm. It was
-            recommended to me by Yan, and its name alone was enough to pique my interest. What sets XeGTAO apart is its
-            basis on the Monte Carlo algorithm, which makes it particularly effective for denoising ambient occlusion, a
+            given to me by Cherno, and its name alone was enough to pique my interest. What sets XeGTAO apart is its
+            basis on the Monte Carlo algorithm, which makes it particularly effective when denoised properly since ambient occlusion is also a
             low-frequency signal. This feature is what makes XeGTAO one of the best in its class. You can learn more
             about XeGTAO and its implementation from the <a href="https://github.com/GameTechDev/XeGTAO">
                 official
@@ -58,21 +58,14 @@
 
         <h2>Results and Impact</h2>
         <p>
-            The results of incorporating XeGTAO were nothing short of impressive. When compared to Nvidia's HBAO, which I
-            had incorporated in my early work with Hazel, XeGTAO outperformed it by a significant margin. The difference
+            The results of incorporating XeGTAO were nothing short of impressive. When compared to <a href="https://github.com/nvpro-samples/gl_ssao" target="_blank"> NVIDIA's old HBAO</a>, which I
+            had incorporated in my early work with Hazel, XeGTAO outperformed it by a significant margin, with almost a little performance decrease. The difference
             was like night and day, with XeGTAO providing a level of realism and flexibility that was simply unmatched
-            by HBAO. For instance, scenes that were previously impossible to render properly due to the sheer number of
-            4k textures, such as the Intel Sponza scene, could now be loaded and rendered efficiently. This was a major
-            achievement, as it demonstrated the engine's ability to handle complex and detailed scenes.
+            by HBAO. 
         </p>
 
         <h2>Future Work</h2>
         <p>
-            Looking ahead, there are several potential improvements and features to consider. One such feature would be
-            to allow users to select the formats upon loading a mesh. This would provide greater flexibility and
-            customization options for the users. Additionally, I am considering the integration of other features that
-            could further enhance the performance and capabilities of the Hazel engine. These could include additional
-            texture formats, improved mipmapping techniques, and more advanced compression algorithms. In particular,
             Temporal Anti-Aliasing (TAA) works well with XeGTAO, and it's an area where performance can be improved
             without sacrificing too much quality. I also plan to implement Ray Tracing Ambient Occlusion (RTAO), and
             perhaps even a hybrid of both RTAO and XeGTAO. These enhancements will continue to push the boundaries of
@@ -90,9 +83,7 @@
 
         <h2>Images</h2>
         <p>
-            Here are some images that demonstrate the results of my path tracing implementation.<br>
-            Note that these images are <b>not denoised</b> and they are taken after some amount of pixel accumulation.
-            <br>
+            Here are some images that demonstrate the results of XeGTAO.<br>
             Click on an image to view it in bigger size.
         </p>
         <div class="row">

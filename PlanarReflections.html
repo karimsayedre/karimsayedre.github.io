@@ -23,6 +23,7 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
 </head>
+
 <body>
     <script>
         navbar();
@@ -30,44 +31,43 @@
     <div class="container">
 
         <h2>Integration with Tensor</h2>
-        <p>The journey to integrate Linearly Transformed Cosines (LTC) Area Lights into the Tensor engine, an
-            OpenGL-based proprietary engine, was both challenging and rewarding. The main challenge was shadows. After
-            implementing LTC Area Lights, I ended up using point light soft shadows, similar to Unreal Engine 5. 
-            The other challenge was that It was also not easy to allow the use of textures because they have to be mipmapped
-            correctly for such a use case.</p>
 
-        <h2>Technical Details</h2>
-        <p>LTC based lighting is analytical and fast. It allows lighting from different shapes like disks, planes, and
-            lines, which are the shapes we have as area lights[^3^][13][^4^][20]. This is unique because there's no
-            technique that I know of that allows lighting from these shapes without ray tracing or fancy stuff like
-            nanite. LTC Area Lights work by transforming a simple distribution (like a clamped cosine) into a more
-            complex one that can represent a wide variety of shapes[^3^][13]. This makes them particularly suitable for
-            real-time rendering where performance is critical[^3^][13].</p>
+        <p>Incorporating planar reflections into Tensor was a challenging task due to the limited resources available online.
+            The simplicity of planar reflections belies the complexity of their implementation. The primary challenge
+            was the manipulation of the reflection matrix to render everything within the plane. Additionally, the use
+            of clipping planes to limit the rendering to the size of the reflection planes posed another hurdle. A
+            less significant aspect of the implementation was the convolution of the reflected color buffer and its sampling
+            at varying levels of detail, contingent on the roughness of the reflecting surface.</p>
+
+        <h2>Technical Overview</h2>
+        <p>Planar reflections are a powerful tool in rendering, providing more accurate reflections than alternative
+            methods such as Screen Space Reflections (SSR). However, they come with a higher rendering cost due to the
+            need to render the level again from the direction of the reflection. Despite this, the results are often
+            more consistent and accurate, especially at the sides and edges of the reflecting surface.</p>
 
         <h2>Results and Impact</h2>
-        <p>The results of this integration were physically based and realistic. Also, it's analytical and not
-            noisy[^5^][21]. The use of LTC Area Lights significantly improved the realism and flexibility of the Tensor
-            engine.</p>
+        <p>The integration of planar reflections significantly enhanced the visual realism of the Tensor project. By
+            accurately reflecting off-screen objects, planar reflections eliminated the 'leaking' commonly associated
+            with Screen Space Reflections (SSR). This resulted in more consistent and visually pleasing reflections,
+            particularly at the sides and edges of the reflecting surface.</p>
 
         <h2>Future Work</h2>
-        <p>Looking ahead, there are several potential improvements and features to consider. One such feature would be
-            to re-implement that in Hazel, with ray tracing. It would be easy to implement better shadows than point
-            light shadows. Also, combining that with path tracing would reduce the noise that is inherent from path
-            tracing[^5^][21].</p>
+        <p>Despite the successful implementation of planar reflections, there is room for improvement. One issue is that
+            the color buffer lacks edge detection, leading to a naive blurring effect. Future work could focus on
+            incorporating edge detection into the color buffer to enhance the visual quality of the reflections.</p>
 
         <h2>Conclusion</h2>
-        <p>In conclusion, the integration of LTC Area Lights into the Tensor engine has been a resounding success. It
-            has not only improved the realism and flexibility of the engine but has also paved the way for future
-            enhancements. The experience and knowledge gained from this project have been invaluable and will
-            undoubtedly be beneficial in my future endeavors. As I continue to explore and implement new features, I am
-            excited about the potential of the Tensor engine and look forward to seeing where this journey takes me.</p>
+        <p>The integration of planar reflections into the Tensor project was a challenging yet rewarding endeavor.
+            Despite the complexities and the high rendering cost, the resulting visual improvements significantly
+            enhanced the project's realism. The experience underscored the potential of planar reflections in rendering
+            and highlighted areas for future improvement, particularly in the implementation of edge detection in the
+            color buffer. As we continue to push the boundaries of rendering technology, planar reflections will
+            undoubtedly play a crucial role in shaping the future of realistic and immersive virtual environments.</p>
 
 
         <h2>Images</h2>
         <p>
-            Here are some images that demonstrate the results of my path tracing implementation.<br>
-            Note that these images are <b>not denoised</b> and they are taken after some amount of pixel accumulation.
-            <br>
+            Here are some images that demonstrate the results of my planar reflections implementation.<br>
             Click on an image to view it in bigger size.
         </p>
         <div class="row">
@@ -87,8 +87,8 @@
             </script>
         </div>
     </div>
-	<script>
-		footer();
+    <script>
+        footer();
         addBehaviour();
     </script>
 </body>
