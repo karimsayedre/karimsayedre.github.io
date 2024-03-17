@@ -103,6 +103,8 @@
 				<li> Developed a derferred lighting renderer to enhance performance.</li>
 				<li> Implemeted Screen-Space Ambient Occlusion (SSAO).</li>
 				<li> Implemented Point and spot lights with soft shadows.</li>
+				<li> Utilized OpenGL's tessellation shaders to allow for more detailed geometry with displacement maps.</li>
+				<li> Implemented Screen-Space Reflections.</li>
 			</ul>
 			My work on these features helped to enhance the engine's rendering capabilities.
 			</p>
@@ -140,28 +142,31 @@
 
 		<button class="collapsible btn btn-default">
 			<div class="arrow"><img src="icons/arrow.png"></div>
-			<h4>Tensor (Independent Contractor) - During Military Service</h4>
+			<h4>Tensor (Independent Contractor) - During Military Service - Present</h4>
 		</button>
 		<div class="content">
 
 			<p>
-				During my military service year, I worked on Tensor, a propriatary fork of the Hazel Engine maintained
+				During my mandatory military service year, I worked on Tensor, a propriatary fork of the Hazel Engine maintained
 				by <a href="https://sensorfoundries.com" target="_blank">Sensor Foundries Inc</a>. I was able to spend a
 				week (holiday from military service) every 2 weeks spent
 				at my militray unit. Despite the constraints, I was able to make substantial
 				contributions to Tensor:
 			<ul>
 				<li>
-					Implemented Linearly Transformed Cosines (LTC) Area Lights, a technique that enhances the realism of
-					lighting in 3D scenes.
+					Transitioned numerous features from Hazel to the OpenGL-based Tensor.
 				</li>
 				<li>
-					Integrated Weighted Average Order Independent Transparency (OIT), an advanced rendering technique
-					that improves the visual quality of transparent objects.
+					Introduced Planar Reflections for enhanced reflection quality and performance.
 				</li>
 				<li>
-					Added Planar Reflections to the engine, a feature that significantly enhances the realism of
-					reflective surfaces.
+					Integrated Linearly Transformed Cosines (LTC) area lights for improved lighting effects.
+				</li>
+				<li>
+					Introduced Weighted Blended Order-Independent Transparency (WBOIT) to enhance transparency rendering.
+				</li>
+				<li>
+					Utilized Atlas-Based Shadow Maps for efficient shadow mapping.
 				</li>
 			</ul>
 			These features not only improved the visual quality and realism of the Tensor engine but also demonstrated
@@ -176,15 +181,21 @@
 		</button>
 		<div class="content">
 			<p>
-				After completing my military service, I continued to apply and expand my skills in graphics programming
+				After completing my military service, I continued to apply and expand my skills in graphics programming focusing on real-time ray tracing
 				by
 				working on a forked version of the Hazel Engine. In this independent project, I have:
-			<ul>
+			<ul>				
 				<li>
-					Integrated RTXGI and Path Tracing to improve the engine'sreal-time lighting capabilities.
+					Developed a ray tracer utilizing the Vulkan ray tracing pipeline.
 				</li>
 				<li>
-					Utilized the Vulkan Ray Tracing pipeline to introduce advanced ray tracing features into the engine.
+					Integrated NVIDIA RTX Global Illumination (RTXGI) for dynamic and fast global illumination.
+				</li>
+				<li>
+					Implemented a physically based path tracer for realistic graphics.
+				</li>
+				<li>
+					Introduced Block Compression (BCn) formats with caching for efficient memory utilization.
 				</li>
 			</ul>
 			These enhancements have further expanded the capabilities of the Hazel Engine, demonstrating my ability to
