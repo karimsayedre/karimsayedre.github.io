@@ -439,8 +439,14 @@
 		footer();
 	</script>
 	<div style="text-align: center;">
-		<img class="text-center"
-			src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fkarimsayedre.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visits&edge_flat=false" />
+		<div>Visitor Count: <span id="visits">Loading...</span></div>
+		<script>
+			fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/index.html')
+				.then(response => response.json())
+				.then(data => {
+					document.getElementById('visits').innerText = data.value;
+				});
+		</script>
 	</div>
 </body>
 <script>
