@@ -150,11 +150,11 @@
                 </p>
 
                 <p>
-                    As a graphics programmer, I’m constantly pushing the limits of what the GPU can do. But I realized
+                    As a graphics programmer, I'm constantly pushing the limits of what the GPU can do. But I realized
                     that knowing just high-level shading languages or APIs like Vulkan or DirectX wasn't enough—I needed
                     to understand the machine itself. CUDA gave me the lowest-level, most explicit way to explore how
                     GPUs schedule threads, manage memory, and hit (or miss) performance targets. And with the help of
-                    <strong>Nsight Compute</strong>, I wasn’t just reading theory—I was hands-on, exploring real
+                    <strong>Nsight Compute</strong>, I wasn't just reading theory—I was hands-on, exploring real
                     bottlenecks, discovering how latency hiding works, learning about warp scheduling, cache behavior,
                     and so much more. It introduced me to performance concepts I hadn't encountered before, and grounded
                     them in actual numbers and experimentation.
@@ -335,29 +335,47 @@
                         occupancy, it's a red flag. Check the register usage per thread.</li>
                     <li><strong>Nsight Compute: </strong> it actually tells you! </li>
                 </ul>
-                <!-- Pro Tip Item - Alternative style -->
-                <div class="gotcha-card pro-tip">
-                    <div class="gotcha-marker pro-tip-marker"></div>
-                    <div class="gotcha-content">
-                        <h3>Pro Tips</h3>
-                        <h4>Always compile with <code>-Xptxas=-v</code></h4>
-                        <p>This will show information about each compiled function-how many register? how many bytes
-                            spilled
-                            to memory, how big is the stack frame?
-                        </p>
-                        <h4>Use Nsight Compute's built-in occupancy calculator!</h4>
-                        <p>This is <strong> really</strong> useful, you give information about your kernel, it tells you
-                            what's actually limiting your occupancy, neat!</p>
+
+
+                <div class="image-container section-header" data-preview="true">
+                    <h3>Pro Tip</h3>
+
+                    <img src="images/RTIOW/Screenshot 2025-06-13 193124.png" class="preview-image"
+                        alt="CUDA Scheduler Performance">
+
+                    <div class="gotcha-card">
+                        <div class="gotcha-marker  pro-tip-marker"></div>
+
+                        <div class="image-comments">
+                            <h4>Performance Analysis</h4>
+                            <!-- Your existing image with preview functionality -->
+
+                            <h4>Always compile with <code>-Xptxas=-v</code></h4>
+                            <p>This will show information about each compiled function-how many register? how many bytes
+                                spilled
+                                to memory, how big is the stack frame?
+                            </p>
+                            <h4>Use Nsight Compute's built-in occupancy calculator!</h4>
+                            <p>This is <strong> really</strong> useful, you give information about your kernel, it tells
+                                you
+                                what's actually limiting your occupancy, neat!</p>
+                        </div>
                     </div>
                 </div>
 
-                <p>In my case, recursion was the big offender — each level of recursion held ray state, intersection
+
+
+                <p>In my case, recursion was the big offender — each level of recursion held ray state,
+                    intersection
                     info,
-                    and more. Once I removed recursion and moved to an explicit stack in registers, I gained control. I
+                    and more. Once I removed recursion and moved to an explicit stack in registers, I gained
+                    control. I
                     could reuse memory, limit stack depth, and avoid unnecessary spills.</p>
 
-                <p>If you want your GPU code to fly, managing register pressure is a must. You're always balancing
-                    performance against code clarity and flexibility — and in CUDA, it's better to stay lean.</p>
+                <p>If you want your GPU code to fly, managing register pressure is a must. You're always
+                    balancing
+                    performance against code clarity and flexibility — and in CUDA, it's better to stay lean.
+                </p>
             </section>
 
             <section class="section-header">
@@ -1061,6 +1079,29 @@ struct alignas(32) AABB
     __align__(16) Vec3 Min;
     __align__(16) Vec3 Max;
 };</code></pre>
+
+
+                <div class="image-container section-header" data-preview="true">
+                    <h3>Result</h3>
+
+                    <img src="images/RTIOW/Screenshot 2025-06-13 192712.png" class="preview-image"
+                        alt="CUDA Scheduler Performance">
+
+                    <div class="gotcha-card">
+                        <div class="gotcha-marker  pro-tip-marker"></div>
+
+                        <div class="image-comments">
+                            <p>
+                                This screenshot shows the CUDA memory performance before and after the alignment
+                                fix.
+                                Notice how the number of global memory requests dropped significantly, leading to
+                                better
+                                cache utilization and reduced memory traffic. The only difference is that Vec3 is
+                                aligned to 16 bytes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
                 <p>
                     Alternatively, switch to <code>glm::vec4</code> if the extra float isn't a concern. The key is
@@ -1944,47 +1985,69 @@ else [[likely]]
                             when execution efficiency per warp is already low.</li>
                     </ul>
                     <p>
-                        In short, the key insight is that <strong>occupancy alone isn’t enough</strong>—<strong>warp
+                        In short, the key insight is that <strong>occupancy alone isn't enough</strong>—<strong>warp
                             efficiency matters more</strong>.
-                        To unlock better performance, you’d likely gain more by restructuring code to <em>minimize
+                        To unlock better performance, you'd likely gain more by restructuring code to <em>minimize
                             divergence</em>
                         (e.g., avoiding divergent branches inside warps) than by merely tuning block sizes or register
                         counts.
                     </p>
 
-                    <img src="images/RTIOW/Screenshot 2025-06-12 104519.png">
-                    <p>
-                        See the low <strong>Issued Warp Per Scheduler</strong>? This means that even though there are
-                        warps ready and active,
-                        very few instructions are being issued each cycle—indicating poor utilization of the scheduler’s
-                        throughput.
-                    </p>
-                    <p>
-                        One likely reason is that a traditional megakernel path tracer often contains complex, deeply
-                        branched logic—such as handling BVH traversal, Russian Roulette, and more—all inside a single
-                        big kernel.
-                        This causes significant
-                        <em>warp divergence</em> as different threads take different paths through the code.
-                    </p>
+
+                    <!-- Your existing image with preview functionality -->
+                    <div class="image-container" data-preview="true">
+
+                        <img src="images/RTIOW/Screenshot 2025-06-12 104519.png" class="preview-image"
+                            alt="CUDA Scheduler Performance">
+
+                        <div class="gotcha-card">
+                            <div class="gotcha-marker  pro-tip-marker"></div>
+
+                            <div class="image-comments">
+                                <h4>Performance Analysis</h4>
+                                <p>
+                                    See the low <strong>Issued Warp Per Scheduler</strong>? This means that even though
+                                    there are warps ready and active, very few instructions are being issued each
+                                    cycle—indicating poor utilization of the scheduler's throughput.
+                                </p>
+                                <p>
+                                    One likely reason is that a traditional megakernel path tracer often contains
+                                    complex,
+                                    deeply
+                                    branched logic—such as handling BVH traversal, Russian Roulette, and more—all inside
+                                    a
+                                    single
+                                    big kernel.
+                                    This causes significant
+                                    <em>warp divergence</em> as different threads take different paths through the code.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     <p>
                         <strong>Wavefront Path Tracing</strong> can help here by decomposing the work into separate,
                         simpler stages (e.g., ray generation,
                         intersection, shading). Each stage is executed by a specialized kernel operating
                         on batches of work units that are more uniform.
-                        This means threads within a warp are more likely to follow the same execution path, dramatically
+                        This means threads within a warp are more likely to follow the same execution path,
+                        dramatically
                         improving warp efficiency and instruction issue rate.
                     </p>
                     <p>
                         By separating divergent logic into more uniform waves, wavefront architecture increases the
                         likelihood that <strong>multiple instructions can be issued per cycle</strong>,
-                        improving the <em>Issued Warp Per Scheduler</em> metric and ultimately leading to higher overall
+                        improving the <em>Issued Warp Per Scheduler</em> metric and ultimately leading to higher
+                        overall
                         throughput.
                     </p>
 
 
                     <p class="perf-note">
-                        ✱ Verdict: <em>Don't chase maximum occupancy blindly. In divergent workloads like path tracing,
-                            higher register count and fewer threads may outperform higher occupancy configurations.</em>
+                        ✱ Verdict: <em>Don't chase maximum occupancy blindly. In divergent workloads like path
+                            tracing,
+                            higher register count and fewer threads may outperform higher occupancy
+                            configurations.</em>
                     </p>
                 </section>
 
@@ -2116,6 +2179,105 @@ else [[likely]]
             </section>
 
             <section class="section-header">
+                <h2>Results And Benchmarks</h2>
+
+                <p>
+                    To verify the performance of my CUDA ray tracer across different systems and resolutions, I ran a
+                    standardized benchmark
+                    using a fixed camera view and identical rendering settings across devices:
+                </p>
+
+                <ul>
+                    <li>Resolutions: 1280x720, 1920x1080, 2560x1440, and 3840x2160</li>
+                    <li>Samples per pixel: 30</li>
+                    <li>Max ray depth: 50</li>
+                    <li>Benchmarking duration: Single frame (no accumulation over time)</li>
+                    <li>Measurement method on GPU: <code>cudaEventRecord</code> around the entire rendering kernel</li>
+                    <li>Measurement method on CPU: <code>std::steady_clock::now()</code> around the entire rendering
+                        code</li>
+                </ul>
+
+                <p>
+                    You can also <a href="Reports/Latest.ncu-rep" download>download the Nsight Compute report
+                        (.ncu-rep)</a>
+                    from my RTX 3080 run if you’d like to explore the kernel analysis yourself.
+                </p>
+
+                <p>
+                    Below are the measured frame times in milliseconds. Lower is better:
+                </p>
+
+                <table class="perf-table">
+                    <thead>
+                        <tr>
+                            <th>GPU / CPU</th>
+                            <th>1280x720</th>
+                            <th>1920x1080</th>
+                            <th>2560x1440</th>
+                            <th>3840x2160</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RTX 3080</td>
+                            <td>9.12 ms</td>
+                            <td>19.5 ms</td>
+                            <td>35 ms</td>
+                            <td>76 ms</td>
+                        </tr>
+                        <tr>
+                            <td>i5-13600KF</td>
+                            <td>450 ms</td>
+                            <td>980 ms</td>
+                            <td>1770 ms</td>
+                            <td>3845 ms</td>
+                        </tr>
+                        <tr>
+                            <td>RTX 3050 Laptop</td>
+                            <td>27 ms</td>
+                            <td>53 ms</td>
+                            <td>115 ms</td>
+                            <td>256 ms</td>
+                        </tr>
+                        <tr>
+                            <td>i5-13450HX</td>
+                            <td>1000 ms</td>
+                            <td>2250 ms</td>
+                            <td>4565 ms</td>
+                            <td>10350 ms</td>
+                        </tr>
+                        <tr>
+                            <td>RTX 4050 Laptop</td>
+                            <td>20 ms</td>
+                            <td>40 ms</td>
+                            <td>75 ms</td>
+                            <td>165 ms</td>
+                        </tr>
+                        <tr>
+                            <td>i7-13700H</td>
+                            <td>725 ms</td>
+                            <td>1450 ms</td>
+                            <td>2675 ms</td>
+                            <td>8284 ms</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>
+                    As expected, GPU acceleration dominates here—especially on higher-end GPUs like the RTX 3080, where
+                    even 4K renders finish
+                    in under 80ms. The gap between CUDA and CPU-only performance is dramatic, often exceeding 50x at
+                    higher resolutions.
+                </p>
+
+                <p>
+                    Laptops with mid-range GPUs like the RTX 3050 and 4050 also deliver playable performance in 1080p,
+                    while CPUs struggle even at lower resolutions.
+                </p>
+
+            </section>
+
+            <section class="section-header">
                 <h2 class="section-title">Future Work</h2>
 
                 <p>
@@ -2126,10 +2288,12 @@ else [[likely]]
 
                 <h3 class="subsection-title">🌊 Wavefront Path Tracing</h3>
                 <p>
-                    Traditional <em>megakernels</em>—like the one I'm currently using—tend to suffer from high register
+                    Traditional <em>megakernels</em>—like the one I'm currently using—tend to suffer from high
+                    register
                     pressure, warp divergence, and other GPU ailments. Wavefront path tracing offers a remedy by
                     breaking
-                    the pipeline into separate, parallel stages (generate rays, intersect, shade, etc.), which allows
+                    the pipeline into separate, parallel stages (generate rays, intersect, shade, etc.), which
+                    allows
                     better
                     control over occupancy and divergence.
                 </p>
@@ -2153,7 +2317,8 @@ else [[likely]]
 
                 <h3 class="subsection-title">📐 Triangle Support via TinyBVH?</h3>
                 <p>
-                    While my current path tracer only supports spheres (like it's still 2004), the next logical step is
+                    While my current path tracer only supports spheres (like it's still 2004), the next logical step
+                    is
                     supporting triangle geometry. I'm exploring <a href="https://github.com/jbikker/tinybvh"
                         target="_blank">tinybvh</a>
                     for fast triangle BVH construction and traversal.
@@ -2178,7 +2343,8 @@ else [[likely]]
                     role in
                     graphics programming, CUDA/GPU engineering, or real-time rendering. So if you're a hiring
                     manager, <strong>let's
-                        talk</strong>. Check my resume, or just shoot me a message. I'll even throw in a free bug fix.
+                        talk</strong>. Check my resume, or just shoot me a message. I'll even throw in a free bug
+                    fix.
                 </p>
             </section>
 
@@ -2189,14 +2355,16 @@ else [[likely]]
                         <a href="https://raytracing.github.io/" target="_blank"><em>Ray Tracing in One Weekend</em>
                             by Peter Shirley</a>
                         <br>
-                        A classic introductory book series that helped shape the structure of my path tracer. Available
+                        A classic introductory book series that helped shape the structure of my path tracer.
+                        Available
                         freely at:
                     </li>
                     <li>
                         <a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html"
                             target="_blank">NVIDIA CUDA Programming Guide</a>
                         <br>
-                        The definitive guide for CUDA architecture, performance tips, and memory behavior. Especially
+                        The definitive guide for CUDA architecture, performance tips, and memory behavior.
+                        Especially
                         useful
                         for understanding occupancy, warp scheduling, and function inlining.
                     </li>
@@ -2230,7 +2398,8 @@ else [[likely]]
                             NVIDIA Ampere GA102 GPU Architecture Whitepaper (PDF)
                         </a>
                         <br>
-                        A valuable source when it comes to architecture-specific optimizations. It says FP16(non-Tensor)
+                        A valuable source when it comes to architecture-specific optimizations. It says
+                        FP16(non-Tensor)
                         runs at full speed as FP32 on the Ampere architecture.
                     </li>
 
@@ -2263,9 +2432,154 @@ else [[likely]]
                         by
                         Disqus.</a></noscript>
             </section>
+        </article>
+    </div>
+
+    <div class="image-preview-modal" id="imagePreviewModal">
+        <div class="image-preview-content">
+            <button class="image-preview-close" id="imagePreviewClose" aria-label="Close preview">x</button>
+            <img class="preview-modal-image" id="previewModalImage" alt="">
+            <div class="gotcha-card" id="previewComments">
+                <div class="gotcha-marker pro-tip-marker"></div>
+
+                <div class="image-comments">
+                </div>
+            </div>
+        </div>
     </div>
 
 
+
+
+
+    <script>
+        // JavaScript for image preview functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('imagePreviewModal');
+            const modalImage = document.getElementById('previewModalImage');
+            const modalCommentsContainer = document.querySelector('#previewComments .image-comments');
+            const modalContent = document.querySelector('.image-preview-content');
+            const closeBtn = document.getElementById('imagePreviewClose');
+
+            // Add click listeners to all preview containers
+            document.querySelectorAll('.image-container[data-preview="true"]').forEach(container => {
+                container.addEventListener('click', function () {
+                    const img = this.querySelector('.preview-image');
+                    modalImage.src = img.src;
+                    modalImage.alt = img.alt;
+
+                    // Wait for image to load then fit content
+                    modalImage.onload = function () {
+                        fitModalContent();
+                    };
+
+                    // If image is already cached and loaded
+                    if (modalImage.complete) {
+                        fitModalContent();
+                    }
+
+                    // Copy comments from the container's gotcha-card
+                    const commentsElement = this.querySelector('.image-comments');
+                    if (commentsElement) {
+                        modalCommentsContainer.innerHTML = commentsElement.innerHTML;
+                    } else {
+                        modalCommentsContainer.innerHTML = '';
+                    }
+
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                });
+            });
+
+            // Close modal function
+            function closeModal() {
+                modal.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+
+            // Close button click
+            closeBtn.addEventListener('click', closeModal);
+
+            // Click outside image to close
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // ESC key to close
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Function to fit modal content
+        function fitModalContent() {
+            const modal = document.getElementById('imagePreviewModal');
+            const content = modal.querySelector('.image-preview-content');
+            const image = document.getElementById('previewModalImage');
+            const comments = document.getElementById('previewComments');
+
+            // Get viewport dimensions
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            // Calculate available space (accounting for padding, gaps, and close button)
+            const availableHeight = viewportHeight * 0.80; // 95vh
+            const availableWidth = viewportWidth * 0.90;   // 90vw
+
+            // Get comments height (it's fixed content)
+            const commentsHeight = comments.offsetHeight;
+            const contentPadding = 60; // Approximate padding and gap space
+
+            // Calculate maximum image height
+            const maxImageHeight = availableHeight - commentsHeight - contentPadding;
+
+            // Get image natural dimensions
+            const naturalWidth = image.naturalWidth;
+            const naturalHeight = image.naturalHeight;
+            const aspectRatio = naturalWidth / naturalHeight;
+
+            // Calculate optimal image dimensions
+            let newWidth = Math.min(availableWidth, naturalWidth);
+            let newHeight = newWidth / aspectRatio;
+
+            // If height is too large, constrain by height instead
+            if (newHeight > maxImageHeight) {
+                newHeight = maxImageHeight;
+                newWidth = newHeight * aspectRatio;
+            }
+
+            // Apply the calculated dimensions
+            image.style.width = newWidth + 'px';
+            image.style.height = newHeight + 'px';
+
+            // Update CSS custom property for comments width matching
+            content.style.setProperty('--image-width', newWidth + 'px');
+
+            // Make sure comments don't exceed image width
+            comments.style.maxWidth = newWidth + 'px';
+        }
+
+        // Wait for image to load then fit content
+        modalImage.onload = function () {
+            fitModalContent();
+        };
+
+        // If image is already cached and loaded
+        if (modalImage.complete) {
+            fitModalContent();
+        }
+        // Refit content on window resize
+        window.addEventListener('resize', () => {
+            const modal = document.getElementById('imagePreviewModal');
+            if (modal.classList.contains('show')) {
+                fitModalContent();
+            }
+        });
+    </script>
     <script>
         footer();
         addBehaviour();
@@ -2331,6 +2645,8 @@ else [[likely]]
             });
         }
     </script>
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {

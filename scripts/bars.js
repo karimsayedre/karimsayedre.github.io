@@ -72,7 +72,6 @@ function navbar() {
                 <a href="#" class="copy-btn" data-text="karimsayedib">
                     <img src="icons/discord.png" class="navbar-icon" alt="Discord">
                 </a>
-                <!-- Change existing toast div to: -->
                 <div class="toast copy-toast" style="min-width: 150px;">
                     Copied Discord account to clipboard!
                 </div>
@@ -128,7 +127,6 @@ function footer() {
                 <a href="#" class="copy-btn" data-text="karimsayedib">
                     <img src="icons/discord.png" class="navbar-icon" alt="Discord">
                 </a>
-                <!-- Change existing toast div to: -->
                 <div class="toast copy-toast">
                     Copied Discord account to clipboard!
                 </div>
