@@ -103,18 +103,29 @@
                             <td class="spec-value">Vulkan</td>
                             <td class="spec-value">RTX acceleration</td>
                             <td class="spec-value">Procedural sphere tracing + triangle modes</td>
-                            <td class="spec-value fps-highlight">~33ms</td>
+                            <td class="spec-value fps-highlight">~33 ms</td>
                             <td class="spec-value fps-highlight">~30 FPS</td>
-                            <td class="spec-value">Cornell Box, Lucy, etc. - complex scenes</td>
+                            <td class="spec-value">
+                                <ul>
+                                    <li>No acceleration structure compaction</li>
+                                    <li>Using procedural AABBs per sphere</li>
+                                    <li>Using ray tracing pipeline (no inline ray tracing)</li>
+
+                                </ul>
+                            </td>
                         </tr>
                         <tr>
                             <td class="spec-value">Mine</td>
                             <td class="spec-value">CUDA</td>
                             <td class="spec-value">No hardware RT cores</td>
                             <td class="spec-value">Procedural spheres only</td>
-                            <td class="spec-value fps-highlight">~8ms</td>
+                            <td class="spec-value fps-highlight">~8 ms</td>
                             <td class="spec-value fps-highlight">105 FPS</td>
-                            <td class="spec-value">same resolution and settings</td>
+                            <td class="spec-value">
+                                <ul>
+                                    <li>Same resolution and settings</li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -907,9 +918,9 @@ struct BVHSoA {
                     <tbody>
                         <tr>
                             <td>Frame Time</td>
-                            <td>140ms</td>
-                            <td>65ms</td>
-                            <td class="improvement">-75ms (-53.6%)</td>
+                            <td>140 ms</td>
+                            <td>65 ms</td>
+                            <td class="improvement">-75 ms (-53.6%)</td>
                         </tr>
                         <tr>
                             <td>L1 Cache hit rates</td>
@@ -1236,9 +1247,9 @@ ld.global.f32    %r2, [%addr+8];    // loads z</code></pre>
                                     </tr>
                                     <tr>
                                         <td>Frame Time</td>
-                                        <td>~10ms</td>
-                                        <td>~8ms</td>
-                                        <td class="improvement">~ -2ms ~(-20%)</td>
+                                        <td>~10 ms</td>
+                                        <td>~8 ms</td>
+                                        <td class="improvement">~ -2 ms ~(-20%)</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1497,7 +1508,8 @@ __global__ void InternalRender();</code></pre>
                     done per
                     frame. Switching from the generic <code>std::fma</code> and <code>std::max</code> to the intrinsic
                     float versions
-                    led to a frame time drop from <strong>12ms</strong> to <strong>9ms</strong>, and reduced instruction
+                    led to a frame time drop from <strong>12 ms</strong> to <strong>9 ms</strong>, and reduced
+                    instruction
                     count.
                 </p>
 
@@ -1550,8 +1562,8 @@ bool hit = (tEnter <= tExit);</code></pre>
                         </tr>
                         <tr>
                             <td>Performance (in hot path)</td>
-                            <td><strong>9ms</strong> total frame time</td>
-                            <td><strong>12ms</strong> total frame time</td>
+                            <td><strong>9 ms</strong> total frame time</td>
+                            <td><strong>12 ms</strong> total frame time</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1592,7 +1604,7 @@ bool hit = (tEnter <= tExit);</code></pre>
                     intrinsics is
                     not a micro-optimization—it's a major win in performance-critical kernels. In our case, it shaved
                     off
-                    <strong>3ms per frame</strong> and greatly simplified the PTX output.
+                    <strong>3 ms per frame</strong> and greatly simplified the PTX output.
                 </p>
             </section>
 
