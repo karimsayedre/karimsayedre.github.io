@@ -12,16 +12,10 @@
         {
             "name": "Launch Edge",
             "request": "launch",
-            "file": "${workspaceFolder}/index.html",
+            "file": "${workspaceFolder}/RTIOW.html",
             "type": "msedge",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}",
-            "userDataDir": "${workspaceFolder}/.vscode/edge-debug-profile",
-            "runtimeExecutable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-            "runtimeArgs": [
-                "--disable-web-security",
-                "--disable-features=VizDisplayCompositor"
-            ]
-        },
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        }
     ]
 }

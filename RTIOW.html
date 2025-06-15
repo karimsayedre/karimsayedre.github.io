@@ -344,18 +344,15 @@
                         alt="CUDA Scheduler Performance">
 
                     <div class="gotcha-card">
-                        <div class="gotcha-marker  pro-tip-marker"></div>
+                        <div class="gotcha-marker pro-tip-marker"></div>
 
                         <div class="image-comments">
-                            <h4>Performance Analysis</h4>
-                            <!-- Your existing image with preview functionality -->
-
                             <h4>Always compile with <code>-Xptxas=-v</code></h4>
                             <p>This will show information about each compiled function-how many register? how many bytes
                                 spilled
                                 to memory, how big is the stack frame?
                             </p>
-                            <h4>Use Nsight Compute's built-in occupancy calculator!</h4>
+                            <h5>Use Nsight Compute's built-in occupancy calculator!</h5>
                             <p>This is <strong> really</strong> useful, you give information about your kernel, it tells
                                 you
                                 what's actually limiting your occupancy, neat!</p>
@@ -544,7 +541,7 @@
 }
 </code></pre>
 
-                <h3>Frame Time Performance</h3>
+                <h3>Comparison</h3>
                 <table class="perf-table">
                     <thead>
                         <tr>
@@ -563,10 +560,33 @@
                         </tr>
                         <tr>
                             <td>Stack Memory/Thread</td>
-                            <td>More</td>
-                            <td>significantly less</td>
-                            <td class="improvement">No need to dynamically set the stack size since it's much less and
-                                is more predictable by the compiler.</td>
+                            <td>High (recursive, unbounded)</td>
+                            <td>Low (fixed-size array)</td>
+                            <td class="improvement">Predictable, no dynamic stack size needed</td>
+                        </tr>
+                        <tr>
+                            <td>Register Pressure</td>
+                            <td>High (per recursion level)</td>
+                            <td>Lower (single loop, reused variables)</td>
+                            <td class="improvement">Fewer spills, higher occupancy</td>
+                        </tr>
+                        <tr>
+                            <td>Control Flow</td>
+                            <td>Deep recursion, many branches</td>
+                            <td>Flat loop, fewer branches</td>
+                            <td class="improvement">Less warp divergence</td>
+                        </tr>
+                        <tr>
+                            <td>Debuggability</td>
+                            <td>Hard (stack overflows, deep call stacks)</td>
+                            <td>Easy (explicit stack, easier to trace)</td>
+                            <td class="improvement">Simpler to debug and profile</td>
+                        </tr>
+                        <tr>
+                            <td>Occupancy</td>
+                            <td>Lower (due to stack/register usage)</td>
+                            <td>Higher (more threads per SM)</td>
+                            <td class="improvement">Better GPU utilization</td>
                         </tr>
                     </tbody>
                 </table>
@@ -648,6 +668,24 @@
                             <td>200ms</td>
                             <td class="improvement">-100ms (-33.3%)</td>
                         </tr>
+                        <tr>
+                            <td>Bounding Box Computations</td>
+                            <td>Per ray traversal</td>
+                            <td>Once at BVH build</td>
+                            <td class="improvement">Eliminated redundant calculations</td>
+                        </tr>
+                        <tr>
+                            <td>Global Memory Accesses</td>
+                            <td>Higher</td>
+                            <td>Lower</td>
+                            <td class="improvement">Fewer loads per ray</td>
+                        </tr>
+                        <tr>
+                            <td>Code Simplicity</td>
+                            <td>More complex (repeated logic)</td>
+                            <td>Simpler (cached value)</td>
+                            <td class="improvement">Cleaner, easier to maintain</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -659,6 +697,29 @@
                     Little changes like this can mean a lot when you're tracing millions of rays per frame. Always ask
                     yourself: "Can I compute this once and store it?" If yes — do it.
                 </p>
+
+                <div class="gotcha-card pro-tip">
+                    <div class="gotcha-marker pro-tip-marker"></div>
+                    <div class="gotcha-content">
+                        <h4>Gotcha: Moving Spheres and Dynamic AABBs</h4>
+                        <p>
+                            The above optimization—caching bounding boxes—works perfectly for static geometry. However,
+                            if your scene contains <strong>moving spheres</strong> (as in the <em>Ray Tracing in One
+                                Weekend</em> book), their AABBs depend on time and <strong>cannot be cached</strong> at
+                            BVH build time. In that case, you must recompute the bounding box for each ray's time value.
+                            The example here uses static spheres intentionally to enable this optimization.
+                        </p>
+
+                        <p>
+                            <strong>For dynamic AABB: </strong> Maybe you can use linear interpolation (lerp) to blend
+                            between two bounding boxes if you
+                            want to
+                            visualize or animate the transition between them. For example, to interpolate between two
+                            AABBs (axis-aligned bounding boxes) `boxA` and `boxB` at time `t` (where `t` is in [0,1]):
+
+                        </p>
+                    </div>
+                </div>
             </section>
 
             <section class="section-header">
@@ -688,7 +749,19 @@ if (fmaxf(cur_attenuation.x, fmaxf(cur_attenuation.y, cur_attenuation.z)) &lt; 0
                             <td>Frame Time</td>
                             <td>200ms</td>
                             <td>160ms</td>
-                            <td class="improvement">-40ms (-20%)</td>
+                            <td class="improvement">Less time per frame</td>
+                        </tr>
+                        <tr>
+                            <td>Average Ray Depth</td>
+                            <td>more</td>
+                            <td>less</td>
+                            <td class="improvement">Less depth per ray</td>
+                        </tr>
+                        <tr>
+                            <td>Noise</td>
+                            <td>Low</td>
+                            <td>Slightly higher</td>
+                            <td class="improvement">More noise (acceptable)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -703,8 +776,7 @@ if (fmaxf(cur_attenuation.x, fmaxf(cur_attenuation.y, cur_attenuation.z)) &lt; 0
                     This avoids wasting time on rays that contribute very little, while still preserving the statistical
                     integrity of the image.
                 </p>
-                <pre><code class="language-cpp">
-// Russian Roulette
+                <pre><code class="language-cpp">// Russian Roulette
 float surviveProbablity = fmaxf(cur_attenuation.x, fmaxf(cur_attenuation.y, cur_attenuation.z));
 if (i > 3) {
     if (curand_uniform(&state) > surviveProbablity)
@@ -728,6 +800,24 @@ if (i > 3) {
                             <td>160ms</td>
                             <td>140ms</td>
                             <td class="improvement">-20ms (-12.5%)</td>
+                        </tr>
+                        <tr>
+                            <td>Ray Bounces</td>
+                            <td>More</td>
+                            <td>Less</td>
+                            <td class="improvement">Fewer unnecessary rays traced</td>
+                        </tr>
+                        <tr>
+                            <td>Noise</td>
+                            <td>Less</td>
+                            <td>More</td>
+                            <td class="improvement">Slightly increased noise due to early termination</td>
+                        </tr>
+                        <tr>
+                            <td>GPU Work</td>
+                            <td>More</td>
+                            <td>Less</td>
+                            <td class="improvement">Reduced computation per frame</td>
                         </tr>
                     </tbody>
                 </table>
@@ -769,9 +859,15 @@ if (i > 3) {
 class Sphere : public Hittable {
     Vec4 CenterAndRadius;
     uint32_t MaterialIndex;
-    ...
+    // ...
 };
-class BVHNode : public Hittable { ... };
+
+class BVHNode : public Hittable { 
+    AABB Bounds;
+    uint32_t Left;
+    uint32_t Right;
+    // ...
+ };
 </code></pre>
 
 
@@ -810,24 +906,58 @@ struct BVHSoA {
                     </thead>
                     <tbody>
                         <tr>
+                            <td>Frame Time</td>
+                            <td>140ms</td>
+                            <td>65ms</td>
+                            <td class="improvement">-75ms (-53.6%)</td>
+                        </tr>
+                        <tr>
                             <td>L1 Cache hit rates</td>
                             <td>81%</td>
                             <td>99%</td>
                             <td class="improvement">+18%</td>
                         </tr>
-
                         <tr>
                             <td>L2 Cache hit rates</td>
                             <td>82%</td>
                             <td>100%</td>
                             <td class="improvement">+17%</td>
                         </tr>
-
                         <tr>
-                            <td>Frame Time</td>
-                            <td>140ms</td>
-                            <td>65ms</td>
-                            <td class="improvement">-75ms (-53.6%)</td>
+                            <td>Register Pressure</td>
+                            <td>High</td>
+                            <td>Low</td>
+                            <td class="improvement">Reduced</td>
+                        </tr>
+                        <tr>
+                            <td>Warp Divergence</td>
+                            <td>High</td>
+                            <td>Lower</td>
+                            <td class="improvement">Improved coherence</td>
+                        </tr>
+                        <tr>
+                            <td>Inheritance Overhead</td>
+                            <td>Virtual function calls per hit</td>
+                            <td>No virtual calls</td>
+                            <td class="improvement">Eliminated indirection</td>
+                        </tr>
+                        <tr>
+                            <td>VTable Access</td>
+                            <td>Pointer chasing for vtable</td>
+                            <td>Direct function calls / flat data</td>
+                            <td class="improvement">No vtable lookups</td>
+                        </tr>
+                        <tr>
+                            <td>Branching from RTTI</td>
+                            <td>Dynamic type checks</td>
+                            <td>Static index/flag checks</td>
+                            <td class="improvement">Predictable, branchless</td>
+                        </tr>
+                        <tr>
+                            <td>Data Locality</td>
+                            <td>Scattered (heap allocations)</td>
+                            <td>Contiguous (flat arrays)</td>
+                            <td class="improvement">Improved spatial locality</td>
                         </tr>
                     </tbody>
                 </table>
@@ -929,6 +1059,7 @@ float tx1 = fmaf(invDir.x, max_bound.x, origMulInv.x);
                         <div class="gotcha-card pro-tip">
                             <div class="gotcha-marker pro-tip-marker"></div>
                             <div class="gotcha-content">
+                                <h4>Gotcha: FMA throughput</h4>
                                 <p>FMA performance here is a non-issue, I'm not just flexing—I'm showing off my CUDA
                                     prowess 😎.
                                     But hey, got to demonstrate I know my hardware! 🚀</p>
@@ -988,98 +1119,82 @@ for (int axis = 0; axis < 3; ++axis) {
                     aligned data can still bottleneck performance due to cacheline splits and inefficient memory
                     instructions.
                 </p>
+
                 <p>
-                    Take <code>AABB</code> for example: it's composed of two <code>Vec3</code> members (<code>min</code>
-                    and <code>max</code> bounds). In our case, <code>Vec3</code> was defined as:
+                    Consider an <code>AABB</code> represented by two <code>glm::vec3</code>s.
                 </p>
+
+                <pre><code class="language-cpp">struct AABB 
+ {
+    glm::vec3 Min; // size: 12 bytes
+    glm::vec3 Max; // size: 12 bytes
+};</code></pre>
+
+                <p>
+                    Memory accesses to these unaligned <code>glm::vec3</code>s actually lead to inefficient load
+                    instructions at the PTX level.
+                    In PTX, there's no such thing as a 12-byte <code>LDG.E.96</code>. Instead, the compiler
+                    emits SASS equivalent to this PTX code:
+                </p>
+
+                <pre><code>ld.global.v2.f32 %r1, [%addr];      // loads x and y
+ld.global.f32    %r2, [%addr+8];    // loads z</code></pre>
+
+                <p>
+                    This means two separate memory instructions per <code>Vec3</code>.
+                </p>
+
+                <p>
+                    On the other hand, if the data is aligned to 16 bytes,
+                    the compiler emits a single <code>ld.global.v4.f32</code> instruction:
+                </p>
+
+                <pre><code>ld.global.v4.f32 %r1, [%addr];</code></pre>
+
+                <p>
+                    However, to guarantee 16-byte alignment for your Vec3 type in CUDA, you should explicitly declare
+                    the alignment using <code>alignas(16)</code> or <code>__align__(16)</code>. For example:
+
+                <pre><code class="language-cpp">struct alignas(16) Vec3 {
+    float x, y, z;
+    float pad; // Padding to ensure 16 bytes
+};</code></pre>
+
+                <p>
+                    Alternatively, you can use GLM's built-in alignment features. By manually aligning your data:
+                </p>
+                <pre><code class="language-cpp">struct AABB
+{
+    __align__(16) glm::vec3 Min;
+    __align__(16) glm::vec3 Max;
+};</code></pre>
+                <p>
+                    This ensures each Vec3 is 16 bytes and properly aligned for efficient memory access on CUDA devices.
+                    <strong>OR</strong> you can (and probably should) just create a general purpose <code>Vec3</code>
+                    like this:
                 <pre><code class="language-cpp">using Vec3 = glm::vec&lt;3, float, glm::aligned_mediump&gt;;</code></pre>
-                <p>
-                    While <code>glm::aligned_mediump</code> suggests alignment, it <strong>does not</strong> enforce
-                    16-byte alignment in CUDA. That's because GLM's
-                    CUDA support is currently <strong>experimental</strong>, and its alignment attributes do not
-                    translate reliably to device code.
-                    This explains why <code>glm::aligned_vec3</code> or any of GLM's alignment variants may not behave
-                    as expected when compiled with NVCC. Also, yes I tried <code>glm::vec4</code> and I noticed no
-                    differences, it may have even increased register pressure, then I tried this which basically made no
-                    difference in my case:
-                <pre><code class="language-cpp">struct alignas(16) Vec3
-{
-    glm::vec<3, float, glm::aligned_mediump> V;
-    float                                    Padding;
-};</code></pre>
-                </p>
-                <p>
-                    I experimented with writing my own math types to enforce alignment, and even tested alternatives
-                    like using
-                    <code>__half</code> to reduce memory bandwidth. However, these experiments yielded no measurable
-                    performance gain.
-                    On older NVIDIA architectures (e.g. Turing), half-precision could offer up to 2x the FLOPs compared
-                    to full-precision,
-                    but on <strong>Ampere and beyond</strong> (which is what I'm running on), FP16 and FP32 CUDA core
-                    throughput
-                    is equivalent. So, using <code>__half</code> didn't help—and added complexity instead.
+                This way, GLM will handle the alignment for you, ensuring that each Vec3 is padded to 16 bytes
+                and aligned correctly.
                 </p>
 
-                <p>
-                    That one alignment mismatch, however, had a serious performance impact. CUDA ended up emitting
-                    <strong>twice as many</strong> global
-                    memory load instructions (<code>LDG</code>) for accessing misaligned <code>AABB</code> data, which
-                    translated into significantly higher
-                    memory pressure:
-                </p>
-                <p>
-                    Despite the name, <code>aligned_mediump</code> does <strong>not</strong> guarantee 16-byte alignment
-                    on CUDA. A <code>Vec3</code> still only occupies 12 bytes,
-                    and unless you explicitly pad or align your structs, an <code>AABB</code> ends up 24 bytes
-                    wide—leading to misaligned memory accesses and cacheline overlaps
-                    when read in bulk.
-                </p>
-                <p>
-                    This had a massive impact on performance. Before aligning our hot data structures (like BVH bounds),
-                    CUDA would emit
-                    <strong>twice as many</strong> <code>LDG</code> (load global) instructions (4 compared to 2 per
-                    AABB). Global memory accesses
-                    exploded:
-                </p>
+                <div class="gotcha-card pro-tip">
+                    <div class="gotcha-marker pro-tip-marker"></div>
+                    <div class="gotcha-content">
+                        <h4>Gotcha: GLM inconsistency with CUDA alignment</h4>
+                        <p>
+                            While <code>glm::aligned_mediump</code> suggests alignment, on release
+                            <code>GLM 1.0.1</code> it
+                            actually
+                            <strong>does not</strong> enforce
+                            16-byte alignment in CUDA. That's probably because GLM's
+                            CUDA support is currently <strong>experimental</strong>, and its alignment attributes do not
+                            translate reliably to device code. This bug has actually been fixed in the master branch of
+                            GLM,
+                            but it's not yet in a release.
+                        </p>
 
-                <h3>Global Memory Performance</h3>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Global Memory Requests</td>
-                            <td>~490M requests</td>
-                            <td>~260M requests</td>
-                            <td class="improvement">-230M (-47%)</td>
-                        </tr>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>10ms</td>
-                            <td>8ms</td>
-                            <td class="improvement">-2ms (-20%)</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-                <p>
-                    The fix? Use manual padding or explicit alignment declarations:
-                </p>
-                <pre><code class="language-cpp">using Vec3 = glm::vec&lt;3, float, glm::aligned_mediump&gt;;
-
-struct alignas(32) AABB
-{
-    __align__(16) Vec3 Min;
-    __align__(16) Vec3 Max;
-};</code></pre>
-
+                    </div>
+                </div>
 
                 <div class="image-container section-header" data-preview="true">
                     <h3>Result</h3>
@@ -1088,135 +1203,94 @@ struct alignas(32) AABB
                         alt="CUDA Scheduler Performance">
 
                     <div class="gotcha-card">
-                        <div class="gotcha-marker  pro-tip-marker"></div>
+                        <div class="gotcha-marker pro-tip-marker"></div>
 
                         <div class="image-comments">
                             <p>
                                 This screenshot shows the CUDA memory performance before and after the alignment
                                 fix.
-                                Notice how the number of global memory requests dropped significantly, leading to
+                                Notice how the number of global memory requests dropped significantly, leading
+                                to
                                 better
-                                cache utilization and reduced memory traffic. The only difference is that Vec3 is
+                                cache utilization and reduced memory traffic. The only difference is that Vec3
+                                is
                                 aligned to 16 bytes.
                             </p>
+
+                            <h3>Global Memory Performance</h3>
+                            <table class="perf-table">
+                                <thead>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Before</th>
+                                        <th>After</th>
+                                        <th>Improvement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Global Memory Requests</td>
+                                        <td>~459.68M requests</td>
+                                        <td>~233.62M requests</td>
+                                        <td class="improvement">-226.06M (-50.08%)</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Frame Time</td>
+                                        <td>~10ms</td>
+                                        <td>~8ms</td>
+                                        <td class="improvement">~ -2ms ~(-20%)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>
 
                 <p>
-                    Alternatively, switch to <code>glm::vec4</code> if the extra float isn't a concern. The key is
+                    Alternatively, switch to <code>glm::vec4</code> if the extra float isn't a concern. The key
+                    is
                     making sure each element of your
-                    SoA data layout is 16-byte aligned, especially if you access it frequently inside inner loops.
+                    data layout is 16-byte aligned, especially if you access it frequently inside inner
+                    loops.
                 </p>
                 <p>
-                    CUDA's memory subsystem heavily favors aligned and coalesced reads. Without alignment, even perfect
-                    SoA layouts can suffer from
-                    doubled memory traffic. With alignment, you get fewer loads and fewer cacheline splits.
+                    CUDA's memory subsystem heavily favors aligned and coalesced reads. Without alignment, even
+                    perfect data layouts can suffer from doubled memory traffic. With alignment, you get fewer loads and
+                    fewer cacheline splits.
                 </p>
+
+                <div class="gotcha-card pro-tip">
+                    <div class="gotcha-marker pro-tip-marker"></div>
+                    <div class="gotcha-content">
+                        <h4>Gotcha: Float16 and Half Precision</h4>
+                        <p>
+                            I also experimented with writing my own math types to enforce alignment, and even
+                            tested
+                            alternatives
+                            like using
+                            <code>__half</code> to reduce memory bandwidth. However, these experiments yielded
+                            no
+                            measurable
+                            performance gain.
+                            On older NVIDIA architectures (e.g. Turing), half-precision could offer up to 2x the
+                            FLOPs
+                            compared
+                            to full-precision,
+                            but on <strong>Ampere and beyond</strong> (which is what I'm running on), FP16 and
+                            FP32 CUDA
+                            core
+                            throughput
+                            is equivalent. So, using <code>__half</code> didn't help—and added complexity
+                            instead.
+                        </p>
+                    </div>
+                </div>
             </section>
+
 
             <section class="section-header" id="optimization-10">
-                <h2>Optimization #10 — Memory Alignment for Efficient Global Loads</h2>
-                <p>
-                    This optimization stems from the SoA (Structure of Arrays) layout, but digs deeper into memory
-                    alignment and
-                    the inefficiencies of loading 12-byte values (like <code>glm::vec3</code>) from global memory on the
-                    GPU.
-                </p>
-
-                <p>
-                    Consider an <code>AABB</code> represented by two <code>Vec3</code>s. Even when using
-                    <code>using Vec3 = glm::vec&lt;3, float, glm::aligned_mediump&gt;;</code>, CUDA does not align the
-                    struct to 16 bytes.
-                    As a result, memory accesses to these unaligned <code>vec3</code>s lead to inefficient load
-                    instructions at the PTX level.
-                </p>
-
-                <p>
-                    In PTX, there's no such thing as a 12-byte <code>LDG.E.96</code>. Instead, the compiler
-                    emits:
-                </p>
-
-                <pre><code>ld.global.v2.f32 %r1, [%addr];      // loads x and y
-ld.global.f32    %r2, [%addr+8];    // loads z</code></pre>
-
-                <p>
-                    This means:
-                <ul>
-                    <li>Two separate memory instructions per <code>vec3</code></li>
-                    <li>Increased register usage</li>
-                    <li>Higher chance of cacheline splits (especially across 128B boundaries)</li>
-                    <li>Uncoalesced memory access patterns across warps</li>
-                </ul>
-                </p>
-
-                <p>
-                    On the other hand, if the data is aligned to 16 bytes (e.g., using <code>vec4</code> or manual
-                    padding),
-                    the compiler emits a single <code>ld.global.v4.f32</code> instruction:
-                </p>
-
-                <pre><code>ld.global.v4.f32 %r1, [%addr];</code></pre>
-
-                <p>
-                    This load is:
-                <ul>
-                    <li>Coalesced across threads</li>
-                    <li>Aligned with cacheline boundaries</li>
-                    <li>Issued as a single instruction</li>
-                    <li>Less likely to cause redundant memory traffic</li>
-                </ul>
-                </p>
-
-                <p>
-                    To fix the alignment, I modified my layout so that the <code>AABB</code> used properly aligned
-                    members:
-                </p>
-
-                <pre><code>struct alignas(16) AlignedVec3 {
-    float x, y, z, pad;
-};
-
-struct AABB {
-    AlignedVec3 min;
-    AlignedVec3 max;
-};</code></pre>
-
-                <p>
-                    This change alone reduced frame time from <strong>10ms to 8ms</strong> and cut global memory
-                    requests from
-                    <code>~490 million</code> to <code>~260 million</code> — a <strong>~84.58%</strong> reduction —
-                    simply because
-                    the compiler emitted half the number of <code>LDG</code> instructions.
-                </p>
-
-                <p>
-                    This issue also highlights a limitation in GLM's CUDA support. While I used
-                    <code>glm::vec&lt;3, float, glm::aligned_mediump&gt;</code>, GLM does not currently enforce 16-byte
-                    alignment in CUDA
-                    kernels because its support for CUDA is still <strong>experimental</strong>.
-                </p>
-
-                <p>
-                    I experimented with writing a minimal custom math library to address this, even testing
-                    half-precision floats (<code>__half</code>),
-                    but saw no performance improvement. On modern hardware like Ampere (which I'm running on),
-                    <strong>half and full floats
-                        have the same throughput</strong>. Only older architectures offered double the FLOPs for
-                    <code>__half</code>.
-                </p>
-
-                <p>
-                    In short, aligning critical structs like AABBs ensures that memory loads are coalesced and avoid
-                    split cacheline accesses.
-                    Even with an ideal SoA layout, unaligned <code>vec3</code>s force the compiler to emit multiple load
-                    instructions,
-                    effectively doubling the number of global memory ops.
-                </p>
-            </section>
-
-            <section class="section-header" id="optimization-11">
-                <h2>Optimization #11 — Using Constant Memory Instead of Global Memory</h2>
+                <h2>Optimization #10 — Using Constant Memory Instead of Global Memory</h2>
 
                 <p>
                     One of the most effective register-saving optimizations in CUDA is proper use of the
@@ -1300,7 +1374,7 @@ __global__ void InternalRender();</code></pre>
 
                 <p>
                     After moving the relevant data to <code>__constant__</code> memory, I observed a noticeable drop in
-                    register usage (especially in occupancy-limited kernels) and better caching behavior. Since the
+                    register usage and better caching behavior. Since the
                     compiler knows these values are read-only and shared across all threads, it can aggressively
                     optimize access.
                 </p>
@@ -1400,8 +1474,8 @@ __global__ void InternalRender();</code></pre>
                 </p>
             </section>
 
-            <section class="section-header" id="optimization-12">
-                <h2>Optimization #12 — Prefer <code>&lt;cmath&gt;</code> Intrinsics Over <code>&lt;algorithm&gt;</code>
+            <section class="section-header" id="optimization-11">
+                <h2>Optimization #11 — Prefer <code>&lt;cmath&gt;</code> Intrinsics Over <code>&lt;algorithm&gt;</code>
                     in CUDA</h2>
 
                 <p>
@@ -1522,8 +1596,8 @@ bool hit = (tEnter <= tExit);</code></pre>
                 </p>
             </section>
 
-            <section class="section-header" id="optimization-13">
-                <h2>Optimization #13 — Roll Your Own RNG (LCG + Hash) Instead of <code>curand</code></h2>
+            <section class="section-header" id="optimization-12">
+                <h2>Optimization #12 — Roll Your Own RNG (LCG + Hash) Instead of <code>curand</code></h2>
 
                 <p>
                     When working with real-time GPU workloads like path tracing, CUDA's
@@ -1640,7 +1714,7 @@ bool hit = (tEnter <= tExit);</code></pre>
 
 
             <section class="section-header" id="optimization-13">
-                <h2>Optimization #14 — Branchless Material Sampling &amp; Evaluation</h2>
+                <h2>Optimization #13 — Branchless Material Sampling &amp; Evaluation</h2>
 
                 <p>
                     My old implementation uses a <code>switch</code> over material types (Lambert, Metal,
@@ -1739,7 +1813,7 @@ bool hit = (tEnter <= tExit);</code></pre>
             </section>
 
             <section class="section-header" id="optimization-14">
-                <h2>Optimization #15 — Bypass CPU Staging with CUDA↔OpenGL Interop</h2>
+                <h2>Optimization #14 — Bypass CPU Staging with CUDA↔OpenGL Interop</h2>
 
                 <p>
                     Early on, I rendered each frame by copying the CUDA output into an <code>sf::Image</code> (CPU
@@ -1898,9 +1972,8 @@ else [[likely]]
                     </p>
 
                     <p class="perf-note">
-                        * Verdict: <em>Safe to use on CPU in hot paths with known branch probabilities. No effect in
-                            CUDA.
-                            Only use when you're confident about the branch behavior.</em>
+                        ✱ Verdict: <em>Safe to use on CPU in hot paths with known branch probabilities. Currently no
+                            effect in CUDA. Only use when you're confident about the branch behavior.</em>
                     </p>
                 </section>
 
@@ -2197,16 +2270,34 @@ else [[likely]]
                         code</li>
                 </ul>
 
+                <h3>Nsight Compute Results</h3>
                 <p>
-                    You can also <a href="Reports/Latest.ncu-rep" download>download the Nsight Compute report
-                        (.ncu-rep)</a>
-                    from my RTX 3080 run if you’d like to explore the kernel analysis yourself.
+                    These are from my RTX 3080 run if you'd like to explore the kernel analysis yourself.
                 </p>
+                <table class="perf-table">
+                    <thead>
+                        <tr>
+                            <th>Nsight Compute Report</th>
+                            <th>Download Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Old/Slow 2380ms</td>
+                            <td><a href="Reports/Old.ncu-rep" download>Download Old Report (.ncu-rep)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Latest/Improved 9ms</td>
+                            <td><a href="Reports/Latest.ncu-rep" download>Download Latest Report (.ncu-rep)</a></td>
+                        </tr>
+                    </tbody>
+                </table>
 
+
+                <h3>benchmark Results</h3>
                 <p>
                     Below are the measured frame times in milliseconds. Lower is better:
                 </p>
-
                 <table class="perf-table">
                     <thead>
                         <tr>
@@ -2394,7 +2485,7 @@ else [[likely]]
                     </li>
                     <li>
                         <a href="https://www.nvidia.com/content/PDF/nvidia-ampere-ga-102-gpu-architecture-whitepaper-v2.pdf"
-                            target="_blank">
+                            target="_blank" download>
                             NVIDIA Ampere GA102 GPU Architecture Whitepaper (PDF)
                         </a>
                         <br>
@@ -2527,8 +2618,8 @@ else [[likely]]
             const viewportWidth = window.innerWidth;
 
             // Calculate available space (accounting for padding, gaps, and close button)
-            const availableHeight = viewportHeight * 0.80; // 95vh
-            const availableWidth = viewportWidth * 0.90;   // 90vw
+            const availableHeight = viewportHeight * 0.87; // 87vh
+            const availableWidth = viewportWidth * 1.0;   // 100vw
 
             // Get comments height (it's fixed content)
             const commentsHeight = comments.offsetHeight;

@@ -101,6 +101,7 @@ h4 {
 
   /* This removes any extra margin that might affect centering */
   margin: 0;
+  margin-bottom: 0.5rem;
 
 }
 
@@ -119,6 +120,7 @@ li {
   font-weight: 400;
   font-style: normal;
 
+  margin-bottom: 0.5rem;
 }
 
 .img-thumbnail {
@@ -594,14 +596,16 @@ code {
 }
 
 .section-header h2 {
-  margin: 0;
   color: var(--accent-100);
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   font-size: 1.8rem;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .gotcha-marker {
-  width: 12px;
+  width: 1rem;
   background-color: var(--primary-100);
   flex-shrink: 0;
 }
@@ -611,7 +615,7 @@ code {
 }
 
 .gotcha-content {
-  padding: 1.5rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   flex-grow: 1;
 }
 
@@ -994,7 +998,6 @@ code {
 .image-preview-modal .gotcha-card {
   display: flex;
   width: 100%;
-  max-width: min(90vw, var(--image-width, 600px));
 }
 
 /* JavaScript will set this custom property based on the actual image width */
@@ -1016,7 +1019,7 @@ code {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 /* Preview image styling */
@@ -1079,7 +1082,7 @@ code {
 .image-comments {
   background-color: var(--bg-300);
   border-radius: 15px;
-  padding: 1.5rem;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   /* margin-top: 1rem; */
   /* margin-bottom: 1rem; */
 
@@ -1089,7 +1092,7 @@ code {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .image-preview-content {
-    gap: 1rem;
+    gap: 0.5rem;
   }
 
   .preview-modal-image {}
