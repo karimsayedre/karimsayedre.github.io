@@ -60,9 +60,9 @@ function navbar() {
                     aria-expanded="false">
 
                 <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="resumes/KarimSayedResumeGraphics.pdf" target="_blank">Graphics
+                    <li><a class="dropdown-item" href="resumes/Karim Sayed - Graphics Resume.pdf" target="_blank">Graphics
                             Programmer Resume</a></li>
-                    <li><a class="dropdown-item" href="resumes/KarimSayedResumeCPP.pdf" target="_blank">C++
+                    <li><a class="dropdown-item" href="resumes/Karim Sayed - CPP Resume.pdf" target="_blank">C++
                             Programmer
                             Resume</a></li>
                 </ul>
@@ -106,9 +106,9 @@ function footer() {
                 <img src="icons/resume.png" class="navbar-icons dropdown-toggle" alt="Resume" data-bs-toggle="dropdown"
                     aria-expanded="false">
                 <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="resumes/KarimSayedResumeGraphics.pdf" target="_blank">Graphics
+                    <li><a class="dropdown-item" href="resumes/Karim Sayed - Graphics Resume.pdf" target="_blank">Graphics
                             Programmer Resume</a></li>
-                    <li><a class="dropdown-item" href="resumes/KarimSayedResumeCPP.pdf" target="_blank">C++ Programmer
+                    <li><a class="dropdown-item" href="resumes/Karim Sayed - CPP Resume.pdf" target="_blank">C++ Programmer
                             Resume</a></li>
                 </ul>
             </div>
