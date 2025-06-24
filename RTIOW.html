@@ -99,322 +99,417 @@
                     enthusiast, or just curious about real-world GPU optimization, I hope you'll find something useful
                     here.
                 </p>
+                <div class="perf-table-container">
+                    <div class="perf-table-container">
+                        <table class="perf-table">
+                            <thead>
+                                <tr>
+                                    <th>Renderer</th>
+                                    <th>Graphics API</th>
+                                    <th>Hardware Acceleration</th>
+                                    <th>Geometry Types</th>
+                                    <th>Performance (FPS)</th>
+                                    <th>GPU Time</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="spec-value"><a href="https://github.com/GPSnoopy/RayTracingInVulkan"
+                                            target="_blank">RayTracingInVulkan</a> (GPSnoopy)</td>
+                                    <td class="spec-value">Vulkan</td>
+                                    <td class="spec-value">RTX acceleration</td>
+                                    <td class="spec-value">Procedural sphere tracing + triangle modes</td>
+                                    <td class="spec-value fps-highlight">~33 ms</td>
+                                    <td class="spec-value fps-highlight">~30 FPS</td>
+                                    <td class="spec-value">
+                                        <ul>
+                                            <li>No acceleration structure compaction</li>
+                                            <li>Using procedural AABBs per sphere</li>
+                                            <li>Using ray tracing pipeline (no inline ray tracing)</li>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Renderer</th>
-                            <th>Graphics API</th>
-                            <th>Hardware Acceleration</th>
-                            <th>Geometry Types</th>
-                            <th>Performance (FPS)</th>
-                            <th>GPU Time</th>
-                            <th>Notes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="spec-value"><a href="https://github.com/GPSnoopy/RayTracingInVulkan"
-                                    target="_blank">RayTracingInVulkan</a></td>
-                            <td class="spec-value">Vulkan</td>
-                            <td class="spec-value">RTX acceleration</td>
-                            <td class="spec-value">Procedural sphere tracing + triangle modes</td>
-                            <td class="spec-value fps-highlight">~33 ms</td>
-                            <td class="spec-value fps-highlight">~30 FPS</td>
-                            <td class="spec-value">
-                                <ul>
-                                    <li>No acceleration structure compaction</li>
-                                    <li>Using procedural AABBs per sphere</li>
-                                    <li>Using ray tracing pipeline (no inline ray tracing)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="spec-value"><a
+                                            href="https://github.com/karimsayedre/CUDA-Ray-Tracing-In-One-Weekend"
+                                            target="_blank">CUDA-Ray-Tracing-In-One-Weekend</a>(Mine)</td>
+                                    <td class="spec-value">CUDA</td>
+                                    <td class="spec-value">No hardware RT cores</td>
+                                    <td class="spec-value">Procedural spheres only</td>
+                                    <td class="spec-value fps-highlight">~8 ms</td>
+                                    <td class="spec-value fps-highlight">105 FPS</td>
+                                    <td class="spec-value">
+                                        <ul>
+                                            <li>Same resolution and settings</li>
+                                            <li>Different sphere locations and materials</li>
+                                            <li>Implements what we call "inline ray tracing" (without hardware RT
+                                                pipeline,
+                                                though)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        Why is the Vulkan/RTX version slower? While there are many contributing factors, one likely
+                        explanation—pointed out by <strong>Tanguy Fautré (GPSnoopy)</strong>—the author of <a
+                            href="https://github.com/GPSnoopy/RayTracingInVulkan" target="_blank"
+                            rel="noopener noreferrer">RayTracingInVulkan</a>, shared his insights on why
+                        procedural ray tracing may underperform on NVIDIA RTX GPUs:
+                    </p>
+                    <blockquote class="quote">
+                        “My suspicion is that procedural spheres are relatively cheap to compute (both the ray
+                        intersection and shading), leaving the compute units mostly idling while the RT units are fully
+                        utilized doing BVH traversal. Thus the performance in this case is entirely limited by the RT
+                        units.
+                        <br>
+                        <br>
+                        Interestingly, this article (and the Radeon RX 6900 XT results in RayTracingInVulkan procedural
+                        benchmarks, a GPU where the BVH traversal is handled by the compute units rather than its RT
+                        units) tend to support the idea that doing the entire BVH traversal using only the compute units
+                        is faster than delegating to the RT units. At least on the GeForce 3000 series and the Radeon RX
+                        6000 series, that is.
+                        <br>
+                        <br>
 
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="spec-value"><a
-                                    href="https://github.com/karimsayedre/CUDA-Ray-Tracing-In-One-Weekend"
-                                    target="_blank">CUDA-Ray-Tracing-In-One-Weekend</a>(Mine)</td>
-                            <td class="spec-value">CUDA</td>
-                            <td class="spec-value">No hardware RT cores</td>
-                            <td class="spec-value">Procedural spheres only</td>
-                            <td class="spec-value fps-highlight">~8 ms</td>
-                            <td class="spec-value fps-highlight">105 FPS</td>
-                            <td class="spec-value">
-                                <ul>
-                                    <li>Same resolution and settings</li>
-                                    <li>Different sphere locations and materials</li>
-                                    <li>Implements what we call "inline ray tracing" (without hardware RT pipeline,
-                                        though)</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <p>
-                    Why is the Vulkan/RTX version slower? While there are many contributing factors, one probable
-                    reason—pointed out to me by GPSnoopy—is that procedural geometry in hardware-accelerated ray tracing
-                    is typically slower on NVIDIA GPUs. Unlike triangle meshes, procedural primitives (like spheres or
-                    AABBs) rely on intersection shaders that must run in software on the SMs, rather than using the
-                    fixed-function RT core pipeline optimized for triangle traversal and intersection. This introduces
-                    extra scheduling overhead and limits how much the GPU can offload to dedicated hardware.
-                </p>
-
-                <p>
-                    Supporting this theory, <strong>RayTracingInVulkan</strong> consistently benchmarks better on AMD
-                    cards, which
-                    treat triangle and procedural geometry more uniformly in their ray tracing pipeline. The disparity
-                    suggests that
-                    procedural shader performance is a weaker point for NVIDIA's RT core architecture—at least in the
-                    current
-                    generation.
-                </p>
-
-                <p>
-                    Another reason might be the ray tracing pipeline itself. While powerful and flexible, the hardware
-                    RT
-                    pipeline often
-                    incurs more overhead than inline ray tracing (Ray query). It tends to make heavy use of VRAM
-                    bandwidth by moving
-                    payload
-                    data around between shader stages. On the other hand, inline ray tracing can keep most of the data
-                    in registers, which is exactly what's happening in my implementation. So you can consider my
-                    approach as <strong>inline ray tracing</strong>
-                    This register-centric design drastically cuts down memory traffic and boosts performance.
-                </p>
-
-                <p>
-                    So yes, it may sound like clickbait—but it's <em>technically</em> accurate, and when you dig into
-                    sample rates, shader complexity, geometry types, and hardware, the numbers hold up. In this article,
-                    I'll peel back the layers of how I squeezed 3.6x performance out through CUDA-level optimizations,
-                    giving you an exciting taste of what's possible when you really dig deep into cache behavior,
-                    register pressure, and GPU optimization.
-                </p>
-
-                <p>
-                    As a graphics programmer, I'm constantly pushing the limits of what the GPU can do. But I realized
-                    that knowing just high-level shading languages or APIs like Vulkan or DirectX wasn't enough—I needed
-                    to understand the machine itself. CUDA gave me the lowest-level, most explicit way to explore how
-                    GPUs schedule threads, manage memory, and hit (or miss) performance targets. And with the help of
-                    <strong>Nsight Compute</strong>, I wasn't just reading theory—I was hands-on, exploring real
-                    bottlenecks, discovering how latency hiding works, learning about warp scheduling, cache behavior,
-                    and so much more. It introduced me to performance concepts I hadn't encountered before, and grounded
-                    them in actual numbers and experimentation.
-                </p>
-
-                <p>And I didn't want to "just learn a language." I wanted to <strong>learn CUDA as a suite of
-                        tools</strong>, to
-                    really get under the hood of how GPU code runs, stalls, and gets optimized. So I asked myself:
-                    what's the best way to do that for a graphics programmer?
-                </p>
-
-                <p><strong>Answer:</strong> write a ray tracer from scratch in CUDA… and then squeeze it until it
-                    screams.</p>
-
-                <p>This article walks you through how I implemented a naive CUDA port of <em>Ray Tracing in One
-                        Weekend</em>
-                    that
-                    ran at <strong>2.5 seconds per frame</strong>, and optimized it down to <strong>9
-                        milliseconds</strong>. Along the way, I hit every wall I could—scoreboard stalls, branching
-                    hell,
-                    memory layout issues—and learned how to knock each one down.</p>
-
-                <p>This isn't a language learning blog. It's an <strong>optimization story</strong>. A journey into how
-                    GPUs
-                    really work, and what it takes to make them fly.</p>
-
-                <p>And if you're into ray tracing, performance hacking, or just enjoy watching frame times drop—you're
-                    in
-                    the right place.</p>
-
-                <p> You can check out the source code along with it's commit history <a
-                        href="https://github.com/karimsayedre/CUDA-Ray-Tracing-In-One-Weekend" target="_blank">HERE</a>.
-                </p>
-
-                <h3>Specifications:</h3>
-                <p>
-                    To give proper context to the performance numbers and optimizations discussed in this article, it's
-                    important to understand the hardware I tested on. These specs shaped not only what was possible, but
-                    also where the real bottlenecks and wins emerged during tuning.
-                </p>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Component</th>
-                            <th>Specification</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CPU</td>
-                            <td class="spec-value">i5 13600KF</td>
-                        </tr>
-                        <tr>
-                            <td>GPU</td>
-                            <td class="spec-value">RTX 3080 10GB Desktop</td>
-                        </tr>
-                        <tr>
-                            <td>CUDA Version</td>
-                            <td class="spec-value">12.9</td>
-                        </tr>
-                        <tr>
-                            <td>Resolution</td>
-                            <td class="spec-value">720x1280</td>
-                        </tr>
-                        <tr>
-                            <td>Samples</td>
-                            <td class="spec-value">30</td>
-                        </tr>
-                        <tr>
-                            <td>Max Ray Depth</td>
-                            <td class="spec-value">50</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        In practice, the test scene is an unlikely scenario in gaming. In a modern AAA game, the compute
+                        cores will be actively used for shading and rendering the game, leaving little room on those
+                        units for doing the BVH traversal, while most (all?) of the ray intersections will be done
+                        against triangles (a task at which RT units excel, especially on later generation GPUs).”
+                        <br>
+                        <span class="quote-author">
+                            – Tanguy Fautré (GPSnoopy)
+                        </span>
+                    </blockquote>
 
 
-                <h3>The Starting Point: A Naive CUDA Ray Tracer</h3>
 
-                <p>Before any optimizations, I started with a direct CUDA port of <em>Ray Tracing in One Weekend</em>.
-                    No
-                    fancy tricks — just threads launching per pixel, tracing rays recursively <strong> plus traversing a
-                        BVH, so yes, we're already not even as slow as big O of N here.</strong></p>
 
-                <p>And it worked. Technically. But it was slow — <strong>2.5 seconds per frame</strong> kind of slow,
-                    slower
-                    than my old CPU version which was 1.5 seconds. Each
-                    thread handled one pixel, there was no memory layout optimization, and no thought given
-                    to how branching or recursion would behave on the GPU.</p>
+                    <p>
+                        Supporting this theory, <strong>RayTracingInVulkan</strong> consistently benchmarks better on
+                        AMD
+                        cards, such as the Radeon RX 6900 XT, which perform BVH traversal using compute units rather
+                        than
+                        dedicated RT hardware. This suggests that—at least on NVIDIA's 3000 series and AMD's 6000
+                        series—doing everything in compute can outperform using fixed-function RT cores when the
+                        workload
+                        involves minimal shading and simple procedural intersections.
+                    </p>
+                    <p>
+                        This also ties directly into NVIDIA's own guidance, which emphasizes that RT cores are
+                        architected to
+                        be most efficient
+                        with triangle geometry—not procedural primitives like spheres or AABBs:
+                    </p>
+                    <blockquote class="quote">
+                        “Use triangles over AABBs. RTX GPUs excel in accelerating traversal of AS created from triangle
+                        geometry.”
+                        <br>
+                        <span class="quote-author">
+                            – <a href="https://developer.nvidia.com/blog/best-practices-for-using-nvidia-rtx-ray-tracing-updated/"
+                                target="_blank" rel="noopener noreferrer">NVIDIA Developer Blog</a>
+                        </span>
+                    </blockquote>
+                    <p>
+                        Of course, this is a synthetic scenario. In a typical AAA game, compute cores are heavily loaded
+                        with shading and post-processing tasks, and most ray intersections are against triangles—a case
+                        where RT cores excel, especially on newer generations of GPUs.
+                    </p>
 
-                <p>This was intentional. I wanted to <strong>start <i>almost</i> from zero</strong>, actually, from
-                    where I
-                    thought was fast last time I tried to optimize it :)</p>
+                    <p>
+                        Another reason might be the ray tracing pipeline itself. While powerful and flexible, the
+                        hardware
+                        RT pipeline often incurs more overhead than inline ray tracing (Ray query). It tends to make
+                        heavy use of VRAM bandwidth by moving payload
+                        data around between shader stages. On the other hand, inline ray tracing can keep most of the
+                        data
+                        in registers, which is exactly what's happening in my implementation. So you can consider my
+                        approach as <strong>inline ray tracing</strong>
+                        This register-centric design drastically cuts down memory traffic and boosts performance.
+                    </p>
 
-                <p>So with a chunky frame time and profiler in hand, I started breaking it down. Where was the time
-                    going?
-                    What was stalling? Why did a GPU that could chew through teraflops look like it was running on a
-                    potato?
-                </p>
+                    <p>
+                        So yes, it may sound like clickbait—but it's <em>technically</em> accurate, and when you dig
+                        into
+                        sample rates, shader complexity, geometry types, and hardware, the numbers hold up. In this
+                        article,
+                        I'll peel back the layers of how I squeezed 3.6x performance out through CUDA-level
+                        optimizations,
+                        giving you an exciting taste of what's possible when you really dig deep into cache behavior,
+                        register pressure, and GPU optimization.
+                    </p>
 
-                <p>Time to find out ... But first...</p>
+                    <h3> Why CUDA?</h3>
+                    <p>
+                        As a graphics programmer, I'm constantly pushing the limits of what the GPU can do. But I
+                        realized
+                        that knowing just high-level shading languages or APIs like Vulkan or DirectX wasn't enough—I
+                        needed
+                        to understand the machine itself. CUDA gave me the lowest-level, most explicit way to explore
+                        how
+                        GPUs schedule threads, manage memory, and hit (or miss) performance targets. And with the help
+                        of
+                        <strong>Nsight Compute</strong>, I wasn't just reading theory—I was hands-on, exploring real
+                        bottlenecks, discovering how latency hiding works, learning about warp scheduling, cache
+                        behavior,
+                        and so much more. It introduced me to performance concepts I hadn't encountered before, and
+                        grounded
+                        them in actual numbers and experimentation.
+                    </p>
 
-                <h3>What CUDA Gives You (and What It Punishes You For)</h3>
+                    <p>And I didn't want to "just learn a language." I wanted to <strong>learn CUDA as a suite of
+                            tools</strong>, to
+                        really get under the hood of how GPU code runs, stalls, and gets optimized. So I asked myself:
+                        what's the best way to do that for a graphics programmer?
+                    </p>
 
-                <p>CUDA is amazing because it gives you <strong>bare-metal control</strong> over how your code runs on
-                    the
-                    GPU. You're not writing shader code inside an engine or hoping a compiler figures things out —
-                    you're
-                    the compiler. You're the scheduler. You're the reason your app runs fast... or doesn't.</p>
+                    <p><strong>Answer:</strong> write a ray tracer from scratch in CUDA… and then squeeze it until it
+                        screams.</p>
 
-                <p>But with that power comes the traps. And the first trap I stepped into was
-                    <strong>recursion</strong>.
-                </p>
+                    <p>This article walks you through how I implemented a naive CUDA port of <em>Ray Tracing in One
+                            Weekend</em>
+                        that
+                        ran at <strong>2.5 seconds per frame</strong>, and optimized it down to <strong>9
+                            milliseconds</strong>. Along the way, I hit every wall I could—scoreboard stalls, branching
+                        hell,
+                        memory layout issues—and learned how to knock each one down.</p>
 
-                <p>Recursion on the GPU sounds elegant — until you realize it's <strong>kryptonite for
-                        performance</strong>.
-                    Why?</p>
-                <ul>
-                    <li><strong>Register pressure:</strong> every level of recursion eats more registers, and once
+                    <p>This isn't a language learning blog. It's an <strong>optimization story</strong>. A journey into
+                        how
+                        GPUs
+                        really work, and what it takes to make them fly.</p>
+
+                    <p>And if you're into ray tracing, performance hacking, or just enjoy watching frame times
+                        drop—you're
+                        in
+                        the right place.</p>
+
+                    <p> You can check out the source code along with it's commit history <a
+                            href="https://github.com/karimsayedre/CUDA-Ray-Tracing-In-One-Weekend"
+                            target="_blank">HERE</a>.
+                    </p>
+
+                    <h3>Specifications:</h3>
+                    <p>
+                        To give proper context to the performance numbers and optimizations discussed in this article,
+                        it's
+                        important to understand the hardware I tested on. These specs shaped not only what was possible,
+                        but
+                        also where the real bottlenecks and wins emerged during tuning.
+                    </p>
+                    <div class="perf-table-container">
+                        <table class="perf-table">
+                            <thead>
+                                <tr>
+                                    <th>Component</th>
+                                    <th>Specification</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CPU</td>
+                                    <td class="spec-value">i5 13600KF</td>
+                                </tr>
+                                <tr>
+                                    <td>GPU</td>
+                                    <td class="spec-value">RTX 3080 10GB Desktop</td>
+                                </tr>
+                                <tr>
+                                    <td>CUDA Version</td>
+                                    <td class="spec-value">12.9</td>
+                                </tr>
+                                <tr>
+                                    <td>Resolution</td>
+                                    <td class="spec-value">720x1280</td>
+                                </tr>
+                                <tr>
+                                    <td>Samples</td>
+                                    <td class="spec-value">30</td>
+                                </tr>
+                                <tr>
+                                    <td>Max Ray Depth</td>
+                                    <td class="spec-value">50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>The Starting Point: A Naive CUDA Ray Tracer</h3>
+
+                    <p>Before any optimizations, I started with a direct CUDA port of <em>Ray Tracing in One
+                            Weekend</em>.
+                        No
+                        fancy tricks — just threads launching per pixel, tracing rays recursively <strong> plus
+                            traversing a
+                            BVH, so yes, we're already not even as slow as big O of N here.</strong></p>
+
+                    <p>And it worked. Technically. But it was slow — <strong>2.5 seconds per frame</strong> kind of
+                        slow,
+                        slower
+                        than my old CPU version which was 1.5 seconds. Each
+                        thread handled one pixel, there was no memory layout optimization, and no thought given
+                        to how branching or recursion would behave on the GPU.</p>
+
+                    <p>This was intentional. I wanted to <strong>start <i>almost</i> from zero</strong>, actually,
+                        from
+                        where I
+                        thought was fast last time I tried to optimize it :)</p>
+
+                    <p>So with a chunky frame time and profiler in hand, I started breaking it down. Where was the
+                        time
+                        going?
+                        What was stalling? Why did a GPU that could chew through teraflops look like it was running
+                        on a
+                        potato?
+                    </p>
+
+                    <p>Time to find out ... But first...</p>
+
+                    <h3>What CUDA Gives You (and What It Punishes You For)</h3>
+
+                    <p>CUDA is amazing because it gives you <strong>bare-metal control</strong> over how your code
+                        runs on
+                        the
+                        GPU. You're not writing shader code inside an engine or hoping a compiler figures things out
+                        —
                         you're
-                        out, you're spilling to memory.</li>
-                    <li><strong>Local memory access:</strong> spilled data goes to local memory, which is slow, and you
-                        don't get to control the layout.</li>
-                    <li><strong>Stack usage:</strong> recursive calls build a big stack, and that stack sits in memory,
-                        not
-                        registers.</li>
-                    <li><strong>Warp divergence:</strong> recursion usually means branching, and branching destroys SIMT
-                        efficiency.</li>
-                </ul>
+                        the compiler. You're the scheduler. You're the reason your app runs fast... or doesn't.</p>
 
-                <p>Next mistake? I thought about trying inheritance for materials and objects. Turns out <strong>virtual
-                        calls and dynamic polymorphism</strong> are not CUDA's friends. Even if it compiles, the cost is
-                    brutal. You could go for <strong>static polymorphism</strong> (templates or CRTP), but that starts
-                    to
-                    bloat code size fast — and I honestly didn't push it far enough to know if the tradeoff was worth
-                    it.
-                </p>
+                    <p>But with that power comes the traps. And the first trap I stepped into was
+                        <strong>recursion</strong>.
+                    </p>
 
-                <p>On a brighter note, if you're coming from C++ graphics work, you'll be happy to know that <strong>GLM
-                        works with CUDA</strong>. I used it throughout the project, and the performance hit was
-                    negligible —
-                    way better than writing custom vector/matrix types from scratch.</p>
+                    <p>Recursion on the GPU sounds elegant — until you realize it's <strong>kryptonite for
+                            performance</strong>.
+                        Why?</p>
+                    <ul>
+                        <li><strong>Register pressure:</strong> every level of recursion eats more registers, and
+                            once
+                            you're
+                            out, you're spilling to memory.</li>
+                        <li><strong>Local memory access:</strong> spilled data goes to local memory, which is slow,
+                            and you
+                            don't get to control the layout.</li>
+                        <li><strong>Stack usage:</strong> recursive calls build a big stack, and that stack sits in
+                            memory,
+                            not
+                            registers.</li>
+                        <li><strong>Warp divergence:</strong> recursion usually means branching, and branching
+                            destroys SIMT
+                            efficiency.</li>
+                    </ul>
 
-                <p>Bottom line: CUDA gives you tools to go fast, but it doesn't forgive bad habits from CPU land. You
-                    have
-                    to think like the GPU... SIMT, parallel, latency hiding — or suffer.</p>
+                    <p>Next mistake? I thought about trying inheritance for materials and objects. Turns out
+                        <strong>virtual
+                            calls and dynamic polymorphism</strong> are not CUDA's friends. Even if it compiles, the
+                        cost is
+                        brutal. You could go for <strong>static polymorphism</strong> (templates or CRTP), but that
+                        starts
+                        to
+                        bloat code size fast — and I honestly didn't push it far enough to know if the tradeoff was
+                        worth
+                        it.
+                    </p>
 
+                    <p>On a brighter note, if you're coming from C++ graphics work, you'll be happy to know that
+                        <strong>GLM
+                            works with CUDA</strong>. I used it throughout the project, and the performance hit was
+                        negligible —
+                        way better than writing custom vector/matrix types from scratch.
+                    </p>
 
-                <h3>Register Pressure: The Silent Killer of GPU Performance</h3>
-
-                <p>One of the first things I had to come to terms with in CUDA is that <strong>registers are
-                        everything</strong>. They're the fastest memory the GPU has, and CUDA tries to keep as much data
-                    in
-                    them as possible. But once you run out, you're in trouble.</p>
-
-                <p><strong>Register pressure</strong> happens when your kernel uses too many registers per thread.
-                    Sounds
-                    innocent, but it can kill performance in more than one way:</p>
-
-                <ul>
-                    <li><strong>Lower occupancy:</strong> Each Streaming Multiprocessor (SM) has a limited number of
-                        registers. If your kernel uses too many per thread, fewer threads can run at once, lowering
-                        occupancy and throughput.</li>
-                    <li><strong>Spilling to local memory:</strong> When the compiler can't fit everything in registers,
-                        it
-                        spills to local memory — which lives in global memory space. That's a huge latency hit.</li>
-                    <li><strong>Instruction stalls:</strong> Excessive register usage can increase instruction
-                        dependencies
-                        and limit ILP (instruction-level parallelism), causing more stalls even within a warp.</li>
-                </ul>
-
-                <p>So, how do you know if register pressure is too high?</p>
-
-                <ul>
-                    <li><strong>Profiler tells you:</strong> Nsight Compute and Nsight Systems will show register count,
-                        occupancy, and spill stores/loads. If you're seeing spill activity, you're over budget.</li>
-                    <li><strong>Occupancy below expected levels:</strong> If you're running a small kernel but seeing
-                        25-50%
-                        occupancy, it's a red flag. Check the register usage per thread.</li>
-                    <li><strong>Nsight Compute: </strong> it actually tells you! </li>
-                </ul>
+                    <p>Bottom line: CUDA gives you tools to go fast, but it doesn't forgive bad habits from CPU
+                        land. You
+                        have
+                        to think like the GPU... SIMT, parallel, latency hiding — or suffer.</p>
 
 
-                <div class="image-container section-header" data-preview="true">
-                    <h3>Pro Tip</h3>
+                    <h3>Register Pressure: The Silent Killer of GPU Performance</h3>
 
-                    <img src="images/RTIOW/Screenshot 2025-06-13 193124.png" class="preview-image"
-                        alt="CUDA Scheduler Performance">
+                    <p>One of the first things I had to come to terms with in CUDA is that <strong>registers are
+                            everything</strong>. They're the fastest memory the GPU has, and CUDA tries to keep as
+                        much data
+                        in
+                        them as possible. But once you run out, you're in trouble.</p>
 
-                    <div class="gotcha-card">
-                        <div class="gotcha-marker pro-tip-marker"></div>
+                    <p><strong>Register pressure</strong> happens when your kernel uses too many registers per
+                        thread.
+                        Sounds
+                        innocent, but it can kill performance in more than one way:</p>
 
-                        <div class="image-comments">
-                            <h4>Always compile with <code>-Xptxas=-v</code></h4>
-                            <p>This will show information about each compiled function-how many register? how many bytes
-                                spilled
-                                to memory, how big is the stack frame?
-                            </p>
-                            <h5>Use Nsight Compute's built-in occupancy calculator!</h5>
-                            <p>This is <strong> really</strong> useful, you give information about your kernel, it tells
-                                you
-                                what's actually limiting your occupancy, neat!</p>
+                    <ul>
+                        <li><strong>Lower occupancy:</strong> Each Streaming Multiprocessor (SM) has a limited
+                            number of
+                            registers. If your kernel uses too many per thread, fewer threads can run at once,
+                            lowering
+                            occupancy and throughput.</li>
+                        <li><strong>Spilling to local memory:</strong> When the compiler can't fit everything in
+                            registers,
+                            it
+                            spills to local memory — which lives in global memory space. That's a huge latency hit.
+                        </li>
+                        <li><strong>Instruction stalls:</strong> Excessive register usage can increase instruction
+                            dependencies
+                            and limit ILP (instruction-level parallelism), causing more stalls even within a warp.
+                        </li>
+                    </ul>
+
+                    <p>So, how do you know if register pressure is too high?</p>
+
+                    <ul>
+                        <li><strong>Profiler tells you:</strong> Nsight Compute and Nsight Systems will show
+                            register count,
+                            occupancy, and spill stores/loads. If you're seeing spill activity, you're over budget.
+                        </li>
+                        <li><strong>Occupancy below expected levels:</strong> If you're running a small kernel but
+                            seeing
+                            25-50%
+                            occupancy, it's a red flag. Check the register usage per thread.</li>
+                        <li><strong>Nsight Compute: </strong> it actually tells you! </li>
+                    </ul>
+
+
+                    <div class="image-container section-header" data-preview="true">
+                        <h3>Pro Tip</h3>
+
+                        <img src="images/RTIOW/Screenshot 2025-06-13 193124.png" class="preview-image"
+                            alt="CUDA Scheduler Performance">
+
+                        <div class="gotcha-card">
+                            <div class="gotcha-marker pro-tip-marker"></div>
+
+                            <div class="image-comments">
+                                <h4>Always compile with <code>-Xptxas=-v</code></h4>
+                                <p>This will show information about each compiled function-how many register? how
+                                    many bytes
+                                    spilled
+                                    to memory, how big is the stack frame?
+                                </p>
+                                <h5>Use Nsight Compute's built-in occupancy calculator!</h5>
+                                <p>This is <strong> really</strong> useful, you give information about your kernel,
+                                    it tells
+                                    you
+                                    what's actually limiting your occupancy, neat!</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
 
-                <p>In my case, recursion was the big offender — each level of recursion held ray state,
-                    intersection
-                    info,
-                    and more. Once I removed recursion and moved to an explicit stack in registers, I gained
-                    control. I
-                    could reuse memory, limit stack depth, and avoid unnecessary spills.</p>
+                    <p>In my case, recursion was the big offender — each level of recursion held ray state,
+                        intersection
+                        info,
+                        and more. Once I removed recursion and moved to an explicit stack in registers, I gained
+                        control. I
+                        could reuse memory, limit stack depth, and avoid unnecessary spills.</p>
 
-                <p>If you want your GPU code to fly, managing register pressure is a must. You're always
-                    balancing
-                    performance against code clarity and flexibility — and in CUDA, it's better to stay lean.
-                </p>
+                    <p>If you want your GPU code to fly, managing register pressure is a must. You're always
+                        balancing
+                        performance against code clarity and flexibility — and in CUDA, it's better to stay lean.
+                    </p>
             </section>
 
             <section class="section-header">
@@ -477,36 +572,39 @@
 
                 <h3>Before vs After</h3>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Design</th>
-                            <th>Inlining</th>
-                            <th>Register Spills</th>
-                            <th>Compile Time</th>
-                            <th>Runtime Performance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>.cu</code> per class</td>
-                            <td>Poor</td>
-                            <td>High</td>
-                            <td>Fast</td>
-                            <td class="bad">Slow</td>
-                        </tr>
-                        <tr>
-                            <td><code>.cuh</code> header-only</td>
-                            <td>Excellent</td>
-                            <td>Minimal</td>
-                            <td>Longer</td>
-                            <td class="good">Fast</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Design</th>
+                                <th>Inlining</th>
+                                <th>Register Spills</th>
+                                <th>Compile Time</th>
+                                <th>Runtime Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>.cu</code> per class</td>
+                                <td>Poor</td>
+                                <td>High</td>
+                                <td>Fast</td>
+                                <td class="bad">Slow</td>
+                            </tr>
+                            <tr>
+                                <td><code>.cuh</code> header-only</td>
+                                <td>Excellent</td>
+                                <td>Minimal</td>
+                                <td>Longer</td>
+                                <td class="good">Fast</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p class="perf-note">
-                    ✱ Verdict: <em>Go header-only for all device code unless you absolutely need RDC. Let the compiler
+                    ✱ Verdict: <em>Go header-only for all device code unless you absolutely need RDC. Let the
+                        compiler
                         see
                         everything. Let it inline everything.</em>
                 </p>
@@ -584,54 +682,56 @@
 </code></pre>
 
                 <h3>Comparison</h3>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>2.5s</td>
-                            <td>300ms</td>
-                            <td class="improvement">-2.2s (-88%)</td>
-                        </tr>
-                        <tr>
-                            <td>Stack Memory/Thread</td>
-                            <td>High (recursive, unbounded)</td>
-                            <td>Low (fixed-size array)</td>
-                            <td class="improvement">Predictable, no dynamic stack size needed</td>
-                        </tr>
-                        <tr>
-                            <td>Register Pressure</td>
-                            <td>High (per recursion level)</td>
-                            <td>Lower (single loop, reused variables)</td>
-                            <td class="improvement">Fewer spills, higher occupancy</td>
-                        </tr>
-                        <tr>
-                            <td>Control Flow</td>
-                            <td>Deep recursion, many branches</td>
-                            <td>Flat loop, fewer branches</td>
-                            <td class="improvement">Less warp divergence</td>
-                        </tr>
-                        <tr>
-                            <td>Debuggability</td>
-                            <td>Hard (stack overflows, deep call stacks)</td>
-                            <td>Easy (explicit stack, easier to trace)</td>
-                            <td class="improvement">Simpler to debug and profile</td>
-                        </tr>
-                        <tr>
-                            <td>Occupancy</td>
-                            <td>Lower (due to stack/register usage)</td>
-                            <td>Higher (more threads per SM)</td>
-                            <td class="improvement">Better GPU utilization</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Improvement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frame Time</td>
+                                <td>2.5s</td>
+                                <td>300ms</td>
+                                <td class="improvement">-2.2s (-88%)</td>
+                            </tr>
+                            <tr>
+                                <td>Stack Memory/Thread</td>
+                                <td>High (recursive, unbounded)</td>
+                                <td>Low (fixed-size array)</td>
+                                <td class="improvement">Predictable, no dynamic stack size needed</td>
+                            </tr>
+                            <tr>
+                                <td>Register Pressure</td>
+                                <td>High (per recursion level)</td>
+                                <td>Lower (single loop, reused variables)</td>
+                                <td class="improvement">Fewer spills, higher occupancy</td>
+                            </tr>
+                            <tr>
+                                <td>Control Flow</td>
+                                <td>Deep recursion, many branches</td>
+                                <td>Flat loop, fewer branches</td>
+                                <td class="improvement">Less warp divergence</td>
+                            </tr>
+                            <tr>
+                                <td>Debuggability</td>
+                                <td>Hard (stack overflows, deep call stacks)</td>
+                                <td>Easy (explicit stack, easier to trace)</td>
+                                <td class="improvement">Simpler to debug and profile</td>
+                            </tr>
+                            <tr>
+                                <td>Occupancy</td>
+                                <td>Lower (due to stack/register usage)</td>
+                                <td>Higher (more threads per SM)</td>
+                                <td class="improvement">Better GPU utilization</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
 
 
@@ -644,13 +744,15 @@
                 <p>The key improvements:</p>
 
                 <ul>
-                    <li><strong>No recursion:</strong> No stack growth, no call overhead, no nested register use.</li>
+                    <li><strong>No recursion:</strong> No stack growth, no call overhead, no nested register use.
+                    </li>
                     <li><strong>Warp-coherent traversal:</strong> Front-to-back traversal increases chances of early
                         exit,
                         which avoids extra intersection tests.</li>
                 </ul>
 
-                <p>This one change gave me a big win in performance and stability — no more surprise stack overflows or
+                <p>This one change gave me a big win in performance and stability — no more surprise stack overflows
+                    or
                     slowdowns due to spills.</p>
             </section>
 
@@ -694,49 +796,52 @@
                     same every time. So instead, cache it in the BVH construction stage.
                 </p>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>300ms</td>
-                            <td>200ms</td>
-                            <td class="improvement">-100ms (-33.3%)</td>
-                        </tr>
-                        <tr>
-                            <td>Bounding Box Computations</td>
-                            <td>Per ray traversal</td>
-                            <td>Once at BVH build</td>
-                            <td class="improvement">Eliminated redundant calculations</td>
-                        </tr>
-                        <tr>
-                            <td>Global Memory Accesses</td>
-                            <td>Higher</td>
-                            <td>Lower</td>
-                            <td class="improvement">Fewer loads per ray</td>
-                        </tr>
-                        <tr>
-                            <td>Code Simplicity</td>
-                            <td>More complex (repeated logic)</td>
-                            <td>Simpler (cached value)</td>
-                            <td class="improvement">Cleaner, easier to maintain</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Improvement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frame Time</td>
+                                <td>300ms</td>
+                                <td>200ms</td>
+                                <td class="improvement">-100ms (-33.3%)</td>
+                            </tr>
+                            <tr>
+                                <td>Bounding Box Computations</td>
+                                <td>Per ray traversal</td>
+                                <td>Once at BVH build</td>
+                                <td class="improvement">Eliminated redundant calculations</td>
+                            </tr>
+                            <tr>
+                                <td>Global Memory Accesses</td>
+                                <td>Higher</td>
+                                <td>Lower</td>
+                                <td class="improvement">Fewer loads per ray</td>
+                            </tr>
+                            <tr>
+                                <td>Code Simplicity</td>
+                                <td>More complex (repeated logic)</td>
+                                <td>Simpler (cached value)</td>
+                                <td class="improvement">Cleaner, easier to maintain</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p>
                     Cleaner, faster, and more GPU-friendly.
                 </p>
 
                 <p>
-                    Little changes like this can mean a lot when you're tracing millions of rays per frame. Always ask
+                    Little changes like this can mean a lot when you're tracing millions of rays per frame. Always
+                    ask
                     yourself: "Can I compute this once and store it?" If yes — do it.
                 </p>
 
@@ -745,19 +850,25 @@
                     <div class="gotcha-content">
                         <h4>Gotcha: Moving Spheres and Dynamic AABBs</h4>
                         <p>
-                            The above optimization—caching bounding boxes—works perfectly for static geometry. However,
+                            The above optimization—caching bounding boxes—works perfectly for static geometry.
+                            However,
                             if your scene contains <strong>moving spheres</strong> (as in the <em>Ray Tracing in One
-                                Weekend</em> book), their AABBs depend on time and <strong>cannot be cached</strong> at
-                            BVH build time. In that case, you must recompute the bounding box for each ray's time value.
+                                Weekend</em> book), their AABBs depend on time and <strong>cannot be cached</strong>
+                            at
+                            BVH build time. In that case, you must recompute the bounding box for each ray's time
+                            value.
                             The example here uses static spheres intentionally to enable this optimization.
                         </p>
 
                         <p>
-                            <strong>For dynamic AABB: </strong> Maybe you can use linear interpolation (lerp) to blend
+                            <strong>For dynamic AABB: </strong> Maybe you can use linear interpolation (lerp) to
+                            blend
                             between two bounding boxes if you
                             want to
-                            visualize or animate the transition between them. For example, to interpolate between two
-                            AABBs (axis-aligned bounding boxes) `boxA` and `boxB` at time `t` (where `t` is in [0,1]):
+                            visualize or animate the transition between them. For example, to interpolate between
+                            two
+                            AABBs (axis-aligned bounding boxes) `boxA` and `boxB` at time `t` (where `t` is in
+                            [0,1]):
 
                         </p>
                     </div>
@@ -777,36 +888,39 @@ if (fmaxf(cur_attenuation.x, fmaxf(cur_attenuation.y, cur_attenuation.z)) &lt; 0
     break;
 </code></pre>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>200ms</td>
-                            <td>160ms</td>
-                            <td class="improvement">Less time per frame</td>
-                        </tr>
-                        <tr>
-                            <td>Average Ray Depth</td>
-                            <td>more</td>
-                            <td>less</td>
-                            <td class="improvement">Less depth per ray</td>
-                        </tr>
-                        <tr>
-                            <td>Noise</td>
-                            <td>Low</td>
-                            <td>Slightly higher</td>
-                            <td class="improvement">More noise (acceptable)</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Improvement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frame Time</td>
+                                <td>200ms</td>
+                                <td>160ms</td>
+                                <td class="improvement">Less time per frame</td>
+                            </tr>
+                            <tr>
+                                <td>Average Ray Depth</td>
+                                <td>more</td>
+                                <td>less</td>
+                                <td class="improvement">Less depth per ray</td>
+                            </tr>
+                            <tr>
+                                <td>Noise</td>
+                                <td>Low</td>
+                                <td>Slightly higher</td>
+                                <td class="improvement">More noise (acceptable)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </section>
 
             <section class="section-header">
@@ -827,50 +941,54 @@ if (i > 3) {
 }
 </code></pre>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>160ms</td>
-                            <td>140ms</td>
-                            <td class="improvement">-20ms (-12.5%)</td>
-                        </tr>
-                        <tr>
-                            <td>Ray Bounces</td>
-                            <td>More</td>
-                            <td>Less</td>
-                            <td class="improvement">Fewer unnecessary rays traced</td>
-                        </tr>
-                        <tr>
-                            <td>Noise</td>
-                            <td>Less</td>
-                            <td>More</td>
-                            <td class="improvement">Slightly increased noise due to early termination</td>
-                        </tr>
-                        <tr>
-                            <td>GPU Work</td>
-                            <td>More</td>
-                            <td>Less</td>
-                            <td class="improvement">Reduced computation per frame</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Improvement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frame Time</td>
+                                <td>160ms</td>
+                                <td>140ms</td>
+                                <td class="improvement">-20ms (-12.5%)</td>
+                            </tr>
+                            <tr>
+                                <td>Ray Bounces</td>
+                                <td>More</td>
+                                <td>Less</td>
+                                <td class="improvement">Fewer unnecessary rays traced</td>
+                            </tr>
+                            <tr>
+                                <td>Noise</td>
+                                <td>Less</td>
+                                <td>More</td>
+                                <td class="improvement">Slightly increased noise due to early termination</td>
+                            </tr>
+                            <tr>
+                                <td>GPU Work</td>
+                                <td>More</td>
+                                <td>Less</td>
+                                <td class="improvement">Reduced computation per frame</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="perf-note">
                     Marginal here due to other bottlenecks, but still worth it.
                 </div>
 
                 <p>
-                    For an extra boost, you can drop the <code>if (i &gt; 3)</code> condition and apply Russian Roulette
-                    unconditionally. That took us down to <strong>120ms</strong> — though you might see more noise in
+                    For an extra boost, you can drop the <code>if (i &gt; 3)</code> condition and apply Russian
+                    Roulette
+                    unconditionally. That took us down to <strong>120ms</strong> — though you might see more noise
+                    in
                     the image as a result.
                 </p>
             </section>
@@ -937,72 +1055,74 @@ struct BVHSoA {
                     drastically reducing cache misses and bandwidth waste.
                 </p>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Before</th>
-                            <th>After</th>
-                            <th>Improvement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Frame Time</td>
-                            <td>140 ms</td>
-                            <td>65 ms</td>
-                            <td class="improvement">-75 ms (-53.6%)</td>
-                        </tr>
-                        <tr>
-                            <td>L1 Cache hit rates</td>
-                            <td>81%</td>
-                            <td>99%</td>
-                            <td class="improvement">+18%</td>
-                        </tr>
-                        <tr>
-                            <td>L2 Cache hit rates</td>
-                            <td>82%</td>
-                            <td>100%</td>
-                            <td class="improvement">+17%</td>
-                        </tr>
-                        <tr>
-                            <td>Register Pressure</td>
-                            <td>High</td>
-                            <td>Low</td>
-                            <td class="improvement">Reduced</td>
-                        </tr>
-                        <tr>
-                            <td>Warp Divergence</td>
-                            <td>High</td>
-                            <td>Lower</td>
-                            <td class="improvement">Improved coherence</td>
-                        </tr>
-                        <tr>
-                            <td>Inheritance Overhead</td>
-                            <td>Virtual function calls per hit</td>
-                            <td>No virtual calls</td>
-                            <td class="improvement">Eliminated indirection</td>
-                        </tr>
-                        <tr>
-                            <td>VTable Access</td>
-                            <td>Pointer chasing for vtable</td>
-                            <td>Direct function calls / flat data</td>
-                            <td class="improvement">No vtable lookups</td>
-                        </tr>
-                        <tr>
-                            <td>Branching from RTTI</td>
-                            <td>Dynamic type checks</td>
-                            <td>Static index/flag checks</td>
-                            <td class="improvement">Predictable, branchless</td>
-                        </tr>
-                        <tr>
-                            <td>Data Locality</td>
-                            <td>Scattered (heap allocations)</td>
-                            <td>Contiguous (flat arrays)</td>
-                            <td class="improvement">Improved spatial locality</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Improvement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Frame Time</td>
+                                <td>140 ms</td>
+                                <td>65 ms</td>
+                                <td class="improvement">-75 ms (-53.6%)</td>
+                            </tr>
+                            <tr>
+                                <td>L1 Cache hit rates</td>
+                                <td>81%</td>
+                                <td>99%</td>
+                                <td class="improvement">+18%</td>
+                            </tr>
+                            <tr>
+                                <td>L2 Cache hit rates</td>
+                                <td>82%</td>
+                                <td>100%</td>
+                                <td class="improvement">+17%</td>
+                            </tr>
+                            <tr>
+                                <td>Register Pressure</td>
+                                <td>High</td>
+                                <td>Low</td>
+                                <td class="improvement">Reduced</td>
+                            </tr>
+                            <tr>
+                                <td>Warp Divergence</td>
+                                <td>High</td>
+                                <td>Lower</td>
+                                <td class="improvement">Improved coherence</td>
+                            </tr>
+                            <tr>
+                                <td>Inheritance Overhead</td>
+                                <td>Virtual function calls per hit</td>
+                                <td>No virtual calls</td>
+                                <td class="improvement">Eliminated indirection</td>
+                            </tr>
+                            <tr>
+                                <td>VTable Access</td>
+                                <td>Pointer chasing for vtable</td>
+                                <td>Direct function calls / flat data</td>
+                                <td class="improvement">No vtable lookups</td>
+                            </tr>
+                            <tr>
+                                <td>Branching from RTTI</td>
+                                <td>Dynamic type checks</td>
+                                <td>Static index/flag checks</td>
+                                <td class="improvement">Predictable, branchless</td>
+                            </tr>
+                            <tr>
+                                <td>Data Locality</td>
+                                <td>Scattered (heap allocations)</td>
+                                <td>Contiguous (flat arrays)</td>
+                                <td class="improvement">Improved spatial locality</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p>
                     You might wonder: <em>how do we distinguish leaves (spheres) from internal BVH nodes?</em> Leaf
@@ -1019,11 +1139,14 @@ if (node.Right == UINT32_MAX)
 }
 </code></pre>
                 <p>
-                    Yes, there's a branch here—but it's predictable, and dwarfed by the savings from coalesced memory
+                    Yes, there's a branch here—but it's predictable, and dwarfed by the savings from coalesced
+                    memory
                     access.
-                    If you need to eliminate branches entirely, consider <strong>wavefront path tracing</strong>, where
+                    If you need to eliminate branches entirely, consider <strong>wavefront path tracing</strong>,
+                    where
                     you
-                    process rays in large cohorts by bounce depth, grouping similar workloads to avoid divergent code
+                    process rays in large cohorts by bounce depth, grouping similar workloads to avoid divergent
+                    code
                     paths.
                     Or explore <strong>ray packet traversal</strong>, <strong>persistent threads</strong>, and other
                     advanced GPU
@@ -1260,30 +1383,32 @@ ld.global.f32    %r2, [%addr+8];    // loads z</code></pre>
                             </p>
 
                             <h3>Global Memory Performance</h3>
-                            <table class="perf-table">
-                                <thead>
-                                    <tr>
-                                        <th>Metric</th>
-                                        <th>Before</th>
-                                        <th>After</th>
-                                        <th>Improvement</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Global Memory Requests</td>
-                                        <td>~459.68M requests</td>
-                                        <td>~233.62M requests</td>
-                                        <td class="improvement">-226.06M (-50.08%)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Frame Time</td>
-                                        <td>~10 ms</td>
-                                        <td>~8 ms</td>
-                                        <td class="improvement">~ -2 ms ~(-20%)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="perf-table-container">
+                                <table class="perf-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>Before</th>
+                                            <th>After</th>
+                                            <th>Improvement</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Global Memory Requests</td>
+                                            <td>~459.68M requests</td>
+                                            <td>~233.62M requests</td>
+                                            <td class="improvement">-226.06M (-50.08%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Frame Time</td>
+                                            <td>~10 ms</td>
+                                            <td>~8 ms</td>
+                                            <td class="improvement">~ -2 ms ~(-20%)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
                         </div>
                     </div>
@@ -1298,7 +1423,8 @@ ld.global.f32    %r2, [%addr+8];    // loads z</code></pre>
                 </p>
                 <p>
                     CUDA's memory subsystem heavily favors aligned and coalesced reads. Without alignment, even
-                    perfect data layouts can suffer from doubled memory traffic. With alignment, you get fewer loads and
+                    perfect data layouts can suffer from doubled memory traffic. With alignment, you get fewer loads
+                    and
                     fewer cacheline splits.
                 </p>
 
@@ -1457,53 +1583,57 @@ __global__ void InternalRender();</code></pre>
                     To clarify where constant memory fits in CUDA's memory hierarchy, here's a high-level comparison:
                 </p>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Memory Type</th>
-                            <th>Scope</th>
-                            <th>Access Pattern</th>
-                            <th>Speed</th>
-                            <th>Capacity</th>
-                            <th>Use Case</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Constant</strong></td>
-                            <td>Global (but read-only)</td>
-                            <td>Broadcast</td>
-                            <td>Very Fast (cached)</td>
-                            <td>64 KB total</td>
-                            <td>Uniform read-only data (e.g. parameters, transforms)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Shared</strong></td>
-                            <td>Per-Block</td>
-                            <td>Cooperative (explicit)</td>
-                            <td>Very Fast (SRAM)</td>
-                            <td>Up to 100 KB per block (depending on architecture)</td>
-                            <td>Thread collaboration, caching, small local working sets</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Global</strong></td>
-                            <td>Global</td>
-                            <td>Scattered</td>
-                            <td>Slow (DRAM)</td>
-                            <td>Many GBs</td>
-                            <td>Large datasets, outputs, scene data, textures</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Memory Type</th>
+                                <th>Scope</th>
+                                <th>Access Pattern</th>
+                                <th>Speed</th>
+                                <th>Capacity</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Constant</strong></td>
+                                <td>Global (but read-only)</td>
+                                <td>Broadcast</td>
+                                <td>Very Fast (cached)</td>
+                                <td>64 KB total</td>
+                                <td>Uniform read-only data (e.g. parameters, transforms)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Shared</strong></td>
+                                <td>Per-Block</td>
+                                <td>Cooperative (explicit)</td>
+                                <td>Very Fast (SRAM)</td>
+                                <td>Up to 100 KB per block (depending on architecture)</td>
+                                <td>Thread collaboration, caching, small local working sets</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Global</strong></td>
+                                <td>Global</td>
+                                <td>Scattered</td>
+                                <td>Slow (DRAM)</td>
+                                <td>Many GBs</td>
+                                <td>Large datasets, outputs, scene data, textures</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p>
                     In simple terms:
                 <ul>
-                    <li>Use <strong>constant memory</strong> for small, uniform, read-only data that is shared across
+                    <li>Use <strong>constant memory</strong> for small, uniform, read-only data that is shared
+                        across
                         all threads.</li>
                     <li>Use <strong>shared memory</strong> for fast, temporary per-block data, ideally when threads
                         cooperate.</li>
-                    <li>Use <strong>global memory</strong> for everything else — especially large and frequently updated
+                    <li>Use <strong>global memory</strong> for everything else — especially large and frequently
+                        updated
                         data.</li>
                 </ul>
                 </p>
@@ -1562,42 +1692,44 @@ float tExit = std::fminf(
 bool hit = (tEnter <= tExit);</code></pre>
 
                 <h3>Performance Breakdown</h3>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Function</th>
-                            <th><code>std::fmaxf</code> / <code>std::fmaf</code></th>
-                            <th><code>std::max</code> / <code>std::fma</code></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CUDA Compatibility</td>
-                            <td>✅ Built-in device intrinsics</td>
-                            <td>⚠️ May fail to compile or introduce overhead</td>
-                        </tr>
-                        <tr>
-                            <td>PTX Output</td>
-                            <td>✅ Maps directly to FMNMX, FFMA, FMUL</td>
-                            <td>❌ Emits FSETP, FSEL, conditional branches</td>
-                        </tr>
-                        <tr>
-                            <td>Register Pressure</td>
-                            <td>✅ Minimal</td>
-                            <td>❌ Higher due to control flow</td>
-                        </tr>
-                        <tr>
-                            <td>NaN Behavior</td>
-                            <td>✅ IEEE 754 compliant</td>
-                            <td>❌ Inconsistent or undefined</td>
-                        </tr>
-                        <tr>
-                            <td>Performance (in hot path)</td>
-                            <td><strong>9 ms</strong> total frame time</td>
-                            <td><strong>12 ms</strong> total frame time</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Function</th>
+                                <th><code>std::fmaxf</code> / <code>std::fmaf</code></th>
+                                <th><code>std::max</code> / <code>std::fma</code></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CUDA Compatibility</td>
+                                <td>✅ Built-in device intrinsics</td>
+                                <td>⚠️ May fail to compile or introduce overhead</td>
+                            </tr>
+                            <tr>
+                                <td>PTX Output</td>
+                                <td>✅ Maps directly to FMNMX, FFMA, FMUL</td>
+                                <td>❌ Emits FSETP, FSEL, conditional branches</td>
+                            </tr>
+                            <tr>
+                                <td>Register Pressure</td>
+                                <td>✅ Minimal</td>
+                                <td>❌ Higher due to control flow</td>
+                            </tr>
+                            <tr>
+                                <td>NaN Behavior</td>
+                                <td>✅ IEEE 754 compliant</td>
+                                <td>❌ Inconsistent or undefined</td>
+                            </tr>
+                            <tr>
+                                <td>Performance (in hot path)</td>
+                                <td><strong>9 ms</strong> total frame time</td>
+                                <td><strong>12 ms</strong> total frame time</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h3>PTX-Level Insight</h3>
                 <ul>
@@ -1607,9 +1739,11 @@ bool hit = (tEnter <= tExit);</code></pre>
                         <code>FMNMX</code>, <code>FFMA</code>, or <code>FMUL</code> operations.
                     </li>
                     <li>
-                        <code>std::max</code> or <code>glm::max</code> (when not specialized) emit <code>FSETP</code>
+                        <code>std::max</code> or <code>glm::max</code> (when not specialized) emit
+                        <code>FSETP</code>
                         predicate
-                        logic followed by <code>FSEL</code> conditionals, increasing instruction count and divergence
+                        logic followed by <code>FSEL</code> conditionals, increasing instruction count and
+                        divergence
                         risks.
                     </li>
                     <li>
@@ -1621,19 +1755,22 @@ bool hit = (tEnter <= tExit);</code></pre>
 
                 <h3>Best Practices</h3>
                 <ul>
-                    <li>Always prefer <code>std::fmaxf</code>, <code>std::fminf</code>, and <code>std::fmaf</code> when
+                    <li>Always prefer <code>std::fmaxf</code>, <code>std::fminf</code>, and <code>std::fmaf</code>
+                        when
                         working with <code>float</code> in CUDA.</li>
                     <li>Use <code>std::fmax</code>, <code>std::fmin</code>, and <code>std::fma</code> only for
                         <code>double</code>.
                     </li>
-                    <li>Avoid <code>std::max</code> and <code>std::min</code> entirely in <code>__device__</code> code.
+                    <li>Avoid <code>std::max</code> and <code>std::min</code> entirely in <code>__device__</code>
+                        code.
                     </li>
                 </ul>
 
                 <p>
                     Replacing generic <code>&lt;algorithm&gt;</code> utilities with <code>&lt;cmath&gt;</code>
                     intrinsics is
-                    not a micro-optimization—it's a major win in performance-critical kernels. In our case, it shaved
+                    not a micro-optimization—it's a major win in performance-critical kernels. In our case, it
+                    shaved
                     off
                     <strong>3 ms per frame</strong> and greatly simplified the PTX output.
                 </p>
@@ -1695,42 +1832,44 @@ bool hit = (tEnter <= tExit);</code></pre>
 }</code></pre>
 
                 <h3>Performance Comparison</h3>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>curand</th>
-                            <th>Custom RNG</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Register Usage</td>
-                            <td>❌ High (12-16 registers per thread)</td>
-                            <td>✅ Low (2-4 registers)</td>
-                        </tr>
-                        <tr>
-                            <td>PTX Complexity</td>
-                            <td>❌ Dozens of ops per sample</td>
-                            <td>✅ ~4-5 ALU ops per generated float</td>
-                        </tr>
-                        <tr>
-                            <td>Global Memory</td>
-                            <td>❌ Requires setup + state buffers</td>
-                            <td>✅ Stateless, local only</td>
-                        </tr>
-                        <tr>
-                            <td>Speed</td>
-                            <td>❌ Slower in hot paths</td>
-                            <td>✅ Fast even in tight loops</td>
-                        </tr>
-                        <tr>
-                            <td>Randomness Quality</td>
-                            <td>✅ High (suitable for MC methods)</td>
-                            <td>⚠️ Lower (good enough for visual noise)</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>curand</th>
+                                <th>Custom RNG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Register Usage</td>
+                                <td>❌ High (12-16 registers per thread)</td>
+                                <td>✅ Low (2-4 registers)</td>
+                            </tr>
+                            <tr>
+                                <td>PTX Complexity</td>
+                                <td>❌ Dozens of ops per sample</td>
+                                <td>✅ ~4-5 ALU ops per generated float</td>
+                            </tr>
+                            <tr>
+                                <td>Global Memory</td>
+                                <td>❌ Requires setup + state buffers</td>
+                                <td>✅ Stateless, local only</td>
+                            </tr>
+                            <tr>
+                                <td>Speed</td>
+                                <td>❌ Slower in hot paths</td>
+                                <td>✅ Fast even in tight loops</td>
+                            </tr>
+                            <tr>
+                                <td>Randomness Quality</td>
+                                <td>✅ High (suitable for MC methods)</td>
+                                <td>⚠️ Lower (good enough for visual noise)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <h3>When to Use</h3>
                 <ul>
@@ -1743,7 +1882,8 @@ bool hit = (tEnter <= tExit);</code></pre>
                 <p>
                     In our renderer, replacing <code>curand_uniform</code> with this custom generator cut per-frame
                     execution time
-                    by a noticeable margin. Combined with register pressure savings, it enabled tighter occupancy and
+                    by a noticeable margin. Combined with register pressure savings, it enabled tighter occupancy
+                    and
                     better warp execution
                     in sampling-heavy shaders.
                 </p>
@@ -2242,27 +2382,29 @@ else [[likely]]
                         <strong>dramatically faster</strong>:
                     </p>
 
-                    <table class="perf-table">
-                        <thead>
-                            <tr>
-                                <th>Implementation</th>
-                                <th>BVH Construction Time</th>
-                                <th>Threads</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GPU (single-threaded, recursive)</td>
-                                <td>58.694 ms</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>CPU (single-threaded, recursive)</td>
-                                <td>0.829 ms</td>
-                                <td>1</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="perf-table-container">
+                        <table class="perf-table">
+                            <thead>
+                                <tr>
+                                    <th>Implementation</th>
+                                    <th>BVH Construction Time</th>
+                                    <th>Threads</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>GPU (single-threaded, recursive)</td>
+                                    <td>58.694 ms</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>CPU (single-threaded, recursive)</td>
+                                    <td>0.829 ms</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <p>
                         This result shocked me — CPUs have advanced scalar cores with sophisticated branch
@@ -2317,27 +2459,29 @@ else [[likely]]
                     These are from my RTX 3080 run if you'd like to explore the kernel analysis yourself.
                 </p>
 
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>Nsight Compute Report</th>
-                            <th>Frame Time</th>
-                            <th>Download Link</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Old/Slow</td>
-                            <td>2380 ms</td>
-                            <td><a href="Reports/Old.ncu-rep" download>Download Old Report (.ncu-rep)</a></td>
-                        </tr>
-                        <tr>
-                            <td>Latest/Improved</td>
-                            <td>8 ms</td>
-                            <td><a href="Reports/Latest.ncu-rep" download>Download Latest Report (.ncu-rep)</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>Nsight Compute Report</th>
+                                <th>Frame Time</th>
+                                <th>Download Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Old/Slow</td>
+                                <td>2380 ms</td>
+                                <td><a href="Reports/Old.ncu-rep" download>Download Old Report (.ncu-rep)</a></td>
+                            </tr>
+                            <tr>
+                                <td>Latest/Improved</td>
+                                <td>8 ms</td>
+                                <td><a href="Reports/Latest.ncu-rep" download>Download Latest Report (.ncu-rep)</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
 
                 <h3>benchmark Results</h3>
@@ -2354,11 +2498,14 @@ else [[likely]]
 
                         <div class="image-comments">
                             <p>
-                                The SASS instructions in the image are mostly FFMA, FMUL, and FMNMX—fast math operations
+                                The SASS instructions in the image are mostly FFMA, FMUL, and FMNMX—fast math
+                                operations
                                 ideal for compute-bound CUDA kernels. This shows the ray tracing inner loops are
-                                efficiently mapped to hardware, with minimal branching or memory stalls. Most stalls are
+                                efficiently mapped to hardware, with minimal branching or memory stalls. Most stalls
+                                are
                                 not memory-related but due to scheduler choices or instruction dependencies. This
-                                efficient math mapping is a direct result of the described optimizations and explains
+                                efficient math mapping is a direct result of the described optimizations and
+                                explains
                                 the significant speedup in the final benchmarks.
                             </p>
                         </div>
@@ -2368,71 +2515,76 @@ else [[likely]]
                 <p>
                     Below are the measured frame times in milliseconds. Lower is better:
                 </p>
-                <table class="perf-table">
-                    <thead>
-                        <tr>
-                            <th>GPU / CPU</th>
-                            <th>1280x720</th>
-                            <th>1920x1080</th>
-                            <th>2560x1440</th>
-                            <th>3840x2160</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>RTX 3080</td>
-                            <td>9.12 ms</td>
-                            <td>19.5 ms</td>
-                            <td>35 ms</td>
-                            <td>76 ms</td>
-                        </tr>
-                        <tr>
-                            <td>i5-13600KF</td>
-                            <td>450 ms</td>
-                            <td>980 ms</td>
-                            <td>1770 ms</td>
-                            <td>3845 ms</td>
-                        </tr>
-                        <tr>
-                            <td>RTX 3050 Laptop</td>
-                            <td>27 ms</td>
-                            <td>53 ms</td>
-                            <td>115 ms</td>
-                            <td>256 ms</td>
-                        </tr>
-                        <tr>
-                            <td>i5-13450HX</td>
-                            <td>1000 ms</td>
-                            <td>2250 ms</td>
-                            <td>4565 ms</td>
-                            <td>10350 ms</td>
-                        </tr>
-                        <tr>
-                            <td>RTX 4050 Laptop</td>
-                            <td>20 ms</td>
-                            <td>40 ms</td>
-                            <td>75 ms</td>
-                            <td>165 ms</td>
-                        </tr>
-                        <tr>
-                            <td>i7-13700H</td>
-                            <td>725 ms</td>
-                            <td>1450 ms</td>
-                            <td>2675 ms</td>
-                            <td>8284 ms</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="perf-table-container">
+                    <table class="perf-table">
+                        <thead>
+                            <tr>
+                                <th>GPU / CPU</th>
+                                <th>1280x720</th>
+                                <th>1920x1080</th>
+                                <th>2560x1440</th>
+                                <th>3840x2160</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>RTX 3080</td>
+                                <td>9.12 ms</td>
+                                <td>19.5 ms</td>
+                                <td>35 ms</td>
+                                <td>76 ms</td>
+                            </tr>
+                            <tr>
+                                <td>i5-13600KF</td>
+                                <td>450 ms</td>
+                                <td>980 ms</td>
+                                <td>1770 ms</td>
+                                <td>3845 ms</td>
+                            </tr>
+                            <tr>
+                                <td>RTX 3050 Laptop</td>
+                                <td>27 ms</td>
+                                <td>53 ms</td>
+                                <td>115 ms</td>
+                                <td>256 ms</td>
+                            </tr>
+                            <tr>
+                                <td>i5-13450HX</td>
+                                <td>1000 ms</td>
+                                <td>2250 ms</td>
+                                <td>4565 ms</td>
+                                <td>10350 ms</td>
+                            </tr>
+                            <tr>
+                                <td>RTX 4050 Laptop</td>
+                                <td>20 ms</td>
+                                <td>40 ms</td>
+                                <td>75 ms</td>
+                                <td>165 ms</td>
+                            </tr>
+                            <tr>
+                                <td>i7-13700H</td>
+                                <td>725 ms</td>
+                                <td>1450 ms</td>
+                                <td>2675 ms</td>
+                                <td>8284 ms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <p>
-                    As expected, GPU acceleration dominates here—especially on higher-end GPUs like the RTX 3080, where
+                    As expected, GPU acceleration dominates here—especially on higher-end GPUs like the RTX
+                    3080, where
                     even 4K renders finish
-                    in under 80ms. The gap between CUDA and CPU-only performance is dramatic, often exceeding 50x at
+                    in under 80ms. The gap between CUDA and CPU-only performance is dramatic, often exceeding
+                    50x at
                     higher resolutions.
                 </p>
 
                 <p>
-                    Laptops with mid-range GPUs like the RTX 3050 and 4050 also deliver playable performance in 1080p,
+                    Laptops with mid-range GPUs like the RTX 3050 and 4050 also deliver playable performance in
+                    1080p,
                     while CPUs struggle even at lower resolutions.
                 </p>
 
@@ -2521,8 +2673,15 @@ else [[likely]]
                         freely at:
                     </li>
                     <li>
+                        <a href="https://github.com/GPSnoopy/RayTracingInVulkan" target="_blank">GPSnoopy's
+                            RayTracingInVulkan</a>
+                        <br>
+                        A well-structured real-time ray tracing renderer in Vulkan with RTX support.
+                    </li>
+                    <li>
                         <a href="https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html"
-                            target="_blank">NVIDIA CUDA Programming Guide</a>
+                            target="_blank">NVIDIA CUDA
+                            Programming Guide</a>
                         <br>
                         The definitive guide for CUDA architecture, performance tips, and memory behavior.
                         Especially
@@ -2537,21 +2696,23 @@ else [[likely]]
                         memory
                         coalescing.</code>.
                     </li>
-
+                    <li></li>
+                    <a href="https://developer.nvidia.com/blog/rtx-best-practices/" target="_blank">
+                        RTX Best Practices — NVIDIA Developer Blog
+                    </a>
+                    <br>
+                    NVIDIA's official guide to best practices for real-time ray tracing with RTX, including performance
+                    tips and architectural insights.
+                    </li>
                     <li>
                         <a href="https://developer.nvidia.com/blog/accelerated-ray-tracing-cuda/"
-                            target="_blank">Accelerated Ray
+                            target="_blank">Accelerated
+                            Ray
                             Tracing in CUDA — NVIDIA Developer Blog</a>
                         <br>
                         A practical overview on implementing ray tracing using CUDA, including memory layout, BVH
                         traversal,
                         and shading strategies.
-                    </li>
-                    <li>
-                        <a href="https://github.com/GPSnoopy/RayTracingInVulkan" target="_blank">GPSnoopy's
-                            RayTracingInVulkan</a>
-                        <br>
-                        A well-structured real-time ray tracing renderer in Vulkan with RTX support.
                     </li>
                     <li>
                         <a href="https://www.nvidia.com/content/PDF/nvidia-ampere-ga-102-gpu-architecture-whitepaper-v2.pdf"

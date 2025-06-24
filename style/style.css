@@ -31,14 +31,14 @@ body {
 /* Small devices (phones) */
 @media (max-width: 767px) {
   .container {
-    max-width: 95%;
+    max-width: 100%;
   }
 }
 
 /* Medium devices (tablets) */
 @media (min-width: 768px) and (max-width: 991px) {
   .container {
-    max-width: 80%;
+    max-width: 100%;
   }
 }
 
@@ -663,22 +663,25 @@ code {
   font-size: 1rem;
 }
 
+.perf-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
 .perf-table {
   border-collapse: collapse;
   width: 100%;
-  max-width: 100%;
-  table-layout: auto;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 600px;
+  /* ensures table isn't too squished */
   background-color: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(4px);
   border-radius: 6px;
-  overflow: hidden;
   box-shadow: 0 0 8px rgba(255, 0, 0, 0.15);
   animation: glow-pulse 5s ease-in-out infinite;
   font-size: 1rem;
-  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @keyframes glow-pulse {
@@ -693,24 +696,19 @@ code {
 
 .perf-table thead th {
   background-color: rgba(255, 0, 0, 0.644);
-  color: #ffffff;
+  color: #fff;
   padding: 0.75em 1em;
   text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   font-weight: 600;
   font-size: 0.9rem;
-  word-wrap: break-word;
-  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .perf-table tbody td {
   padding: 0.75em 1em;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   vertical-align: top;
-  text-align: left;
   color: #e0e0e0;
-  word-wrap: break-word;
-  overflow: hidden;
 }
 
 .perf-table tbody tr:nth-child(odd) {
@@ -721,182 +719,69 @@ code {
   background-color: #303030;
 }
 
-.perf-table td:first-child,
-.perf-table th:first-child {
-  white-space: nowrap;
-}
+/* ↓↓↓ Responsive adjustments ↓↓↓ */
 
-
-/* Responsive breakpoints */
-
-/* Large tablets and small desktops */
 @media (max-width: 1024px) {
   .perf-table {
     font-size: 0.95rem;
   }
 
-  .perf-table thead th,
-  .perf-table tbody td {
+  .perf-table th, .perf-table td {
     padding: 0.65em 0.8em;
   }
 }
 
-/* Tablets */
 @media (max-width: 768px) {
   .perf-table {
     font-size: 0.85rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
   }
 
-  .perf-table thead th,
-  .perf-table tbody td {
+  .perf-table th, .perf-table td {
     padding: 0.5em 0.6em;
   }
 
-  .perf-table thead th {
-    font-size: 0.8rem;
-  }
-
-  /* Reduce glow effect on smaller screens for better performance */
   @keyframes glow-pulse {
-    0% {
+    0%, 100% {
       box-shadow: 0 0 0px rgba(255, 0, 0, 0.1);
     }
 
     50% {
       box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
     }
-
-    100% {
-      box-shadow: 0 0 0px rgba(255, 0, 0, 0.1);
-    }
   }
 }
 
-/* Large phones */
 @media (max-width: 480px) {
   .perf-table {
     font-size: 0.8rem;
     border-radius: 4px;
   }
 
-  .perf-table thead th,
-  .perf-table tbody td {
+  .perf-table th, .perf-table td {
     padding: 0.4em 0.5em;
   }
 
-  .perf-table thead th {
+  .perf-table th {
     font-size: 0.75rem;
-  }
-
-  /* For very narrow screens, consider horizontal scroll */
-  .perf-table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
 }
 
-/* Small phones */
 @media (max-width: 320px) {
   .perf-table {
     font-size: 0.75rem;
-  }
-
-  .perf-table thead th,
-  .perf-table tbody td {
-    padding: 0.3em 0.4em;
-  }
-
-  .perf-table thead th {
-    font-size: 0.7rem;
-  }
-
-  /* Disable animation on very small screens for performance */
-  .perf-table {
     animation: none;
     box-shadow: 0 0 4px rgba(255, 0, 0, 0.3);
   }
-}
 
-/* Alternative: Card layout for very small screens */
-@media (max-width: 480px) {
-
-  .perf-table-mobile-cards .perf-table,
-  .perf-table-mobile-cards .perf-table thead,
-  .perf-table-mobile-cards .perf-table tbody,
-  .perf-table-mobile-cards .perf-table th,
-  .perf-table-mobile-cards .perf-table td,
-  .perf-table-mobile-cards .perf-table tr {
-    display: block;
+  .perf-table th, .perf-table td {
+    padding: 0.3em 0.4em;
   }
 
-  .perf-table-mobile-cards .perf-table thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
-  .perf-table-mobile-cards .perf-table tr {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-  }
-
-  .perf-table-mobile-cards .perf-table td {
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    padding: 0.25rem 0.5rem 0.25rem 30%;
-    white-space: normal;
-  }
-
-  .perf-table-mobile-cards .perf-table td:before {
-    content: attr(data-label) ": ";
-    position: absolute;
-    left: 0.5rem;
-    width: 25%;
-    padding-right: 0.5rem;
-    white-space: nowrap;
-    font-weight: 600;
-    color: rgba(255, 0, 0, 0.8);
-  }
-
-  .perf-table-mobile-cards .perf-table td:last-child {
-    border-bottom: 0;
+  .perf-table th {
+    font-size: 0.7rem;
   }
 }
 
-/* Container class for horizontal scrolling */
-.perf-table-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 0, 0, 0.5) rgba(255, 255, 255, 0.1);
-  box-sizing: border-box;
-}
-
-.perf-table-container::-webkit-scrollbar {
-  height: 6px;
-}
-
-.perf-table-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.perf-table-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 0, 0, 0.5);
-  border-radius: 3px;
-}
-
-.perf-table-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 0, 0, 0.7);
-}
 
 /* Navigation buttons */
 .scroll-up {
@@ -1131,4 +1016,23 @@ code {
   .image-comments h4 {
     font-size: 1rem;
   }
+}
+
+.quote {
+  margin: 1.5em 1em;
+  padding: 1em 1.5em;
+  background-color: #1a1a1a;
+  border-left: 4px solid var(--accent-100);
+  color: #ccc;
+  font-style: italic;
+  font-size: 1.05em;
+  border-radius: 4px;
+}
+
+.quote-author {
+  display: block;
+  margin-top: 0.5em;
+  color: #888;
+  font-style: normal;
+  font-size: 0.95em;
 }
