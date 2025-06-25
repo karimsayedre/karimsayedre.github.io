@@ -69,10 +69,9 @@
 
         <article>
             <div class="collapsible">
-                <h1>CUDA Ray Tracing 3.6x Faster Than RTX: My CUDA Ray Tracing Journey</h1>
+                <h1>CUDA Ray Tracing 2x Faster Than RTX: My CUDA Ray Tracing Journey</h1>
                 <!-- <p><em>Note: This is a draft version. Final edits are still in progress. Feedback is welcome while final
                         edits are underway.</em></p> -->
-
             </div>
 
             <img class="photo" src="images/RTIOW/2560x1440_50depth_3000samples_3400ms.png">
@@ -99,6 +98,23 @@
                     enthusiast, or just curious about real-world GPU optimization, I hope you'll find something useful
                     here.
                 </p>
+
+                <div class="gotcha-card pro-tip">
+                    <div class="gotcha-marker pro-tip-marker"></div>
+                    <div class="gotcha-content">
+                        <h4>Note</h4>
+                        <p>
+                            The original title claimed a 3.6x speedup, which was true at the time of writing —
+                            but after
+                            realizing
+                            I forgot to add Russian Roulette to RayTracingInVulkan, the performance difference shrunk to
+                            2x.
+                            Still very significant, and it's more fair now.
+                        </p>
+                    </div>
+                </div>
+
+
                 <div class="perf-table-container">
                     <div class="perf-table-container">
                         <table class="perf-table">
@@ -120,10 +136,20 @@
                                     <td class="spec-value">Vulkan</td>
                                     <td class="spec-value">RTX acceleration</td>
                                     <td class="spec-value">Procedural sphere tracing + triangle modes</td>
-                                    <td class="spec-value fps-highlight">~33 ms</td>
-                                    <td class="spec-value fps-highlight">~30 FPS</td>
+                                    <td class="spec-value fps-highlight"><s>~30 ms</s>
+                                        <br>
+                                        ~20 ms
+
+                                    </td>
+
+                                    <td class="spec-value fps-highlight">
+                                        <s>~30 FPS</s>
+                                        <br>
+                                        ~50 FPS
+                                    </td>
                                     <td class="spec-value">
                                         <ul>
+                                            <li>Added russian roulette for a fair comparison</li>
                                             <li>No acceleration structure compaction</li>
                                             <li>Using procedural AABBs per sphere</li>
                                             <li>Using ray tracing pipeline (no inline ray tracing)</li>
@@ -162,20 +188,26 @@
                     </p>
                     <blockquote class="quote">
                         “My suspicion is that procedural spheres are relatively cheap to compute (both the ray
-                        intersection and shading), leaving the compute units mostly idling while the RT units are fully
-                        utilized doing BVH traversal. Thus the performance in this case is entirely limited by the RT
+                        intersection and shading), leaving the compute units mostly idling while the RT units are
+                        fully
+                        utilized doing BVH traversal. Thus the performance in this case is entirely limited by the
+                        RT
                         units.
                         <br>
                         <br>
-                        Interestingly, this article (and the Radeon RX 6900 XT results in RayTracingInVulkan procedural
+                        Interestingly, this article (and the Radeon RX 6900 XT results in RayTracingInVulkan
+                        procedural
                         benchmarks, a GPU where the BVH traversal is handled by the compute units rather than its RT
-                        units) tend to support the idea that doing the entire BVH traversal using only the compute units
-                        is faster than delegating to the RT units. At least on the GeForce 3000 series and the Radeon RX
+                        units) tend to support the idea that doing the entire BVH traversal using only the compute
+                        units
+                        is faster than delegating to the RT units. At least on the GeForce 3000 series and the
+                        Radeon RX
                         6000 series, that is.
                         <br>
                         <br>
 
-                        In practice, the test scene is an unlikely scenario in gaming. In a modern AAA game, the compute
+                        In practice, the test scene is an unlikely scenario in gaming. In a modern AAA game, the
+                        compute
                         cores will be actively used for shading and rendering the game, leaving little room on those
                         units for doing the BVH traversal, while most (all?) of the ray intersections will be done
                         against triangles (a task at which RT units excel, especially on later generation GPUs).”
@@ -189,7 +221,8 @@
 
 
                     <p>
-                        Supporting this theory, <strong>RayTracingInVulkan</strong> consistently benchmarks better on
+                        Supporting this theory, <strong>RayTracingInVulkan</strong> consistently benchmarks better
+                        on
                         AMD
                         cards, such as the Radeon RX 6900 XT, which perform BVH traversal using compute units rather
                         than
@@ -205,7 +238,8 @@
                         with triangle geometry—not procedural primitives like spheres or AABBs:
                     </p>
                     <blockquote class="quote">
-                        “Use triangles over AABBs. RTX GPUs excel in accelerating traversal of AS created from triangle
+                        “Use triangles over AABBs. RTX GPUs excel in accelerating traversal of AS created from
+                        triangle
                         geometry.”
                         <br>
                         <span class="quote-author">
@@ -214,8 +248,10 @@
                         </span>
                     </blockquote>
                     <p>
-                        Of course, this is a synthetic scenario. In a typical AAA game, compute cores are heavily loaded
-                        with shading and post-processing tasks, and most ray intersections are against triangles—a case
+                        Of course, this is a synthetic scenario. In a typical AAA game, compute cores are heavily
+                        loaded
+                        with shading and post-processing tasks, and most ray intersections are against triangles—a
+                        case
                         where RT cores excel, especially on newer generations of GPUs.
                     </p>
 
@@ -224,7 +260,8 @@
                         hardware
                         RT pipeline often incurs more overhead than inline ray tracing (Ray query). It tends to make
                         heavy use of VRAM bandwidth by moving payload
-                        data around between shader stages. On the other hand, inline ray tracing can keep most of the
+                        data around between shader stages. On the other hand, inline ray tracing can keep most of
+                        the
                         data
                         in registers, which is exactly what's happening in my implementation. So you can consider my
                         approach as <strong>inline ray tracing</strong>
@@ -236,9 +273,10 @@
                         into
                         sample rates, shader complexity, geometry types, and hardware, the numbers hold up. In this
                         article,
-                        I'll peel back the layers of how I squeezed 3.6x performance out through CUDA-level
+                        I'll peel back the layers of how I squeezed 2x performance out through CUDA-level
                         optimizations,
-                        giving you an exciting taste of what's possible when you really dig deep into cache behavior,
+                        giving you an exciting taste of what's possible when you really dig deep into cache
+                        behavior,
                         register pressure, and GPU optimization.
                     </p>
 
@@ -246,11 +284,14 @@
                     <p>
                         As a graphics programmer, I'm constantly pushing the limits of what the GPU can do. But I
                         realized
-                        that knowing just high-level shading languages or APIs like Vulkan or DirectX wasn't enough—I
+                        that knowing just high-level shading languages or APIs like Vulkan or DirectX wasn't
+                        enough—I
                         needed
-                        to understand the machine itself. CUDA gave me the lowest-level, most explicit way to explore
+                        to understand the machine itself. CUDA gave me the lowest-level, most explicit way to
+                        explore
                         how
-                        GPUs schedule threads, manage memory, and hit (or miss) performance targets. And with the help
+                        GPUs schedule threads, manage memory, and hit (or miss) performance targets. And with the
+                        help
                         of
                         <strong>Nsight Compute</strong>, I wasn't just reading theory—I was hands-on, exploring real
                         bottlenecks, discovering how latency hiding works, learning about warp scheduling, cache
@@ -262,22 +303,26 @@
 
                     <p>And I didn't want to "just learn a language." I wanted to <strong>learn CUDA as a suite of
                             tools</strong>, to
-                        really get under the hood of how GPU code runs, stalls, and gets optimized. So I asked myself:
+                        really get under the hood of how GPU code runs, stalls, and gets optimized. So I asked
+                        myself:
                         what's the best way to do that for a graphics programmer?
                     </p>
 
-                    <p><strong>Answer:</strong> write a ray tracer from scratch in CUDA… and then squeeze it until it
+                    <p><strong>Answer:</strong> write a ray tracer from scratch in CUDA… and then squeeze it until
+                        it
                         screams.</p>
 
                     <p>This article walks you through how I implemented a naive CUDA port of <em>Ray Tracing in One
                             Weekend</em>
                         that
                         ran at <strong>2.5 seconds per frame</strong>, and optimized it down to <strong>9
-                            milliseconds</strong>. Along the way, I hit every wall I could—scoreboard stalls, branching
+                            milliseconds</strong>. Along the way, I hit every wall I could—scoreboard stalls,
+                        branching
                         hell,
                         memory layout issues—and learned how to knock each one down.</p>
 
-                    <p>This isn't a language learning blog. It's an <strong>optimization story</strong>. A journey into
+                    <p>This isn't a language learning blog. It's an <strong>optimization story</strong>. A journey
+                        into
                         how
                         GPUs
                         really work, and what it takes to make them fly.</p>
@@ -294,9 +339,11 @@
 
                     <h3>Specifications:</h3>
                     <p>
-                        To give proper context to the performance numbers and optimizations discussed in this article,
+                        To give proper context to the performance numbers and optimizations discussed in this
+                        article,
                         it's
-                        important to understand the hardware I tested on. These specs shaped not only what was possible,
+                        important to understand the hardware I tested on. These specs shaped not only what was
+                        possible,
                         but
                         also where the real bottlenecks and wins emerged during tuning.
                     </p>
@@ -588,14 +635,14 @@
                                 <td><code>.cu</code> per class</td>
                                 <td>Poor</td>
                                 <td>High</td>
-                                <td>Fast</td>
+                                <td>short</td>
                                 <td class="bad">Slow</td>
                             </tr>
                             <tr>
                                 <td><code>.cuh</code> header-only</td>
                                 <td>Excellent</td>
                                 <td>Minimal</td>
-                                <td>Longer</td>
+                                <td>Long</td>
                                 <td class="good">Fast</td>
                             </tr>
                         </tbody>
@@ -2696,13 +2743,14 @@ else [[likely]]
                         memory
                         coalescing.</code>.
                     </li>
-                    <li></li>
-                    <a href="https://developer.nvidia.com/blog/rtx-best-practices/" target="_blank">
-                        RTX Best Practices — NVIDIA Developer Blog
-                    </a>
-                    <br>
-                    NVIDIA's official guide to best practices for real-time ray tracing with RTX, including performance
-                    tips and architectural insights.
+                    <li>
+                        <a href="https://developer.nvidia.com/blog/rtx-best-practices/" target="_blank">
+                            RTX Best Practices — NVIDIA Developer Blog
+                        </a>
+                        <br>
+                        NVIDIA's official guide to best practices for real-time ray tracing with RTX, including
+                        performance
+                        tips and architectural insights.
                     </li>
                     <li>
                         <a href="https://developer.nvidia.com/blog/accelerated-ray-tracing-cuda/"
