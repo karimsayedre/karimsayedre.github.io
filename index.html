@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Karim Sayed - Rendering Engineer</title>
+	<meta charset="UTF-8">
+
+	<!-- General Meta -->
+	<meta name="description" content="A showcase of my projects and portfolio.">
+	<link rel="icon" href="icons/Beyond.png">
+
+	<!-- Open Graph Meta (for Facebook, LinkedIn, etc.) -->
+	<meta property="og:title" content="Karim Sayed - Rendering Engineer">
+	<meta property="og:description" content="A showcase of my projects and portfolio.">
+	<meta property="og:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+	<meta property="og:url" content="https://karimsayedre.github.io/">
+	<meta property="og:type" content="website">
+
+	<!-- Twitter Card Meta -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Karim Sayed - Rendering Engineer">
+	<meta name="twitter:description" content="A showcase of my projects and portfolio.">
+	<meta name="twitter:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="style/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+		crossorigin="anonymous"></script>
+
+	<script src="scripts/images.js"></script>
+	<script src="scripts/behaviour.js"></script>
+	<script src="scripts/bars.js"></script>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+		rel="stylesheet">
+</head>
+
+<body>
+	<script>
+		navbar();
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const years = calculateYearsSince(8, 1999);
+			document.getElementById('age').innerText = years;
+		});
+	</script>
+
+	<div class="container">
+		<!-- About me section -->
+		<div class="row">
+			<div class="row">
+				<div class="col">
+					<h2>About me</h2>
+
+					<br />
+					<img src="images/Karim.jpg" alt="Karim Sayed"
+						class="img-fluid float-end col-sm-12 col-lg-3 col-md-6 my-photo">
+					<p>
+						I am a passionate <span id="age"></span> years old rendering engineer hailing from Egypt, with a
+						deep-seated love
+						for <strong>realistic and physically based graphics</strong>.
+					</p>
+					<p>
+						My love for realistic computer graphics led me to learn 3D modeling and sculpting before
+						university.
+						However, my interest took a turn towards programming when my journey in the field of computer
+						science began at Multimedia University in Malaysia, where I earned my bachelor's degree in
+						computer science in 2021. Since then, I have been relentlessly exploring new techniques and
+						technologies that push the boundaries of visual quality and performance.
+					</p>
+					<p>
+						The thrill of working on challenging rendering techniques and the satisfaction of seeing them
+						come to life is what drives me. I am always on the lookout for opportunities to learn new skills
+						and enhance my existing ones. My passion lies in creating graphics that are not just visually
+						appealing, but also grounded in realism, offering a truly immersive experience. Also, I love
+						Cornell boxes!
+						<br>
+					</p>
+
+					<p>
+						If you want to know more about me or my work, please feel free to contact me on <a
+							href="mailto:karimsayedre@gmail.com">my email</a>.
+						<br>
+						I have two tailored resumes for you to download:
+
+						<a class="btn btn-primary" href="resumes/Karim Sayed - Graphics Resume.pdf" target="_blank">
+							Download Resume
+						</a>
+
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<h2>Experience</h2>
+
+		<button class="collapsible btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Expand/Collapse"></div>
+			<h4>DevSH (Graphics Programmer, Remote) – November 2025 to Present</h4>
+		</button>
+		<div class="content">
+			<p>
+				At <a href="https://devsh.eu/" target="_blank" rel="noopener noreferrer">DevSH</a>, I work on
+				<a href="https://github.com/Devsh-Graphics-Programming/Nabla" target="_blank"
+					rel="noopener noreferrer">Nabla</a>,
+				focusing on advanced rendering and sampling research.
+				This role allows me to deepen my expertise in physically based rendering, GPU optimization,
+				and low-level graphics architecture while contributing to cutting-edge real-time rendering technology.
+				<br>
+				Here are some of my ongoing contributions to DevSH:
+			<ul>
+				<li>
+					Work on Nabla's path tracer, improving accuracy and stability of the light transport pipeline.
+				</li>
+				<li>
+					Implement rejection sampling techniques for more robust and efficient BRDF sampling.
+				</li>
+				<li>
+					Develop sampling strategies that improve convergence and reduce variance in complex ray-traced
+					scenes.
+				</li>
+				<li>
+					Optimize GPU kernels, memory access patterns, and data flow for real-time path tracing workloads.
+				</li>
+			</ul>
+			</p>
+		</div>
+
+		<button class="collapsible  btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Expand/Collapse"></div>
+			<h4>Beyond Engine - October 2023 to November 2025</h4>
+		</button>
+		<div class="content">
+			<p>
+				After completing my military service, I continued to apply and expand my skills in graphics programming
+				focusing on real-time ray tracing
+				by
+				working on a forked version of the Hazel Engine. In this independent project, I have:
+			<ul>
+				<li>
+					Integrated NVIDIA DLSS 3.5, enabling higher performance and visual quality through AI upscaling
+					techniques.
+				</li>
+				<li>
+					Optimized CPU code using multiple techniques, including shader metadata caching and reading,
+					yielding significant performance improvements.
+				</li>
+				<li>
+					Engineered a custom ray tracer using Vulkan's hardware-accelerated ray tracing pipeline.
+				</li>
+				<li>
+					Integrated NVIDIA RTX Global Illumination (RTXGI) to enable real-time dynamic global illumination.
+				</li>
+				<li>
+					Designed a physically-based path tracer to improve rendering quality for cinematic scenes.
+				</li>
+				<li>
+					Optimized memory usage with Block Compression (BCn) formats and caching strategies using DDS to
+					store all LODs.
+				</li>
+				<li>
+					Optimized compilation times by reducing header parsing counts, cutting compilation time from 75s to
+					60s on an i5 13600KF.
+				</li>
+				<li>
+					Enhanced rendering performance and flexibility using bindless descriptors.
+				</li>
+				<li>
+					Optimized resource descriptor processing by implementing a bit-manipulated hashmap, reducing times
+					from 1ms to 0.02ms.
+				</li>
+			</ul>
+			These enhancements have further expanded the capabilities of the Beyond Engine, demonstrating my ability to
+			independently drive the development and improvement of complex graphics engines. You can find the source
+			code <a href="https://github.com/karimsayedre/Beyond" target="_blank" rel="noopener noreferrer">here</a>.
+			</p>
+		</div>
+
+		<button class="collapsible btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Expand/Collapse"></div>
+			<h4>The Forge (full-time Independent Contractor) - April 2024 to July 2024</h4>
+		</button>
+		<div class="content">
+			<p>
+				During my tenure at <a href="https://theforge.dev/" target="_blank" rel="noopener noreferrer">The Forge
+					Interactive Inc.</a>, I
+				had the
+				opportunity to work on several high-impact features.
+				This experience allowed me to enhance my troubleshooting and optimization skills, contributing
+				to the company's project and my professional growth.
+				<br>
+				Here are some of my contributions to The Forge:
+			<ul>
+				<li>
+					Maintained the cross-platform framework for PlayStation, Xbox, Switch and many other platforms.
+				</li>
+				<li>
+					Upgraded software ray-traced shadows to hardware-accelerated ray-traced shadows.
+				</li>
+				<li>
+					Worked with platform-specific graphics debuggers, learning troubleshooting and optimization
+					techniques.
+				</li>
+				<li>
+					Worked on the internal testing of the framework, improving testability and stability.
+				</li>
+			</ul>
+			</p>
+		</div>
+
+		<button class="collapsible btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Arrow icon"></div>
+			<h4>Tensor (part-time Independent Contractor) - May 2022 to April 2024</h4>
+		</button>
+		<div class="content">
+
+			<p>
+				This is Tensor, maintained by Senkii Inc. I was able to spend a
+				week (holiday from military service) every 2 weeks spent
+				at my militray unit. Despite the constraints, I was able to make substantial
+				contributions to Tensor:
+			<ul>
+				<li>
+					Transitioned numerous features from Hazel to the OpenGL-based Tensor.
+				</li>
+				<li>
+					Introduced Planar Reflections for enhanced reflection quality and performance.
+				</li>
+				<li>
+					Integrated Linearly Transformed Cosines (LTC) area lights for improved lighting effects.
+				</li>
+				<li>
+					Introduced Weighted Blended Order-Independent Transparency (WBOIT) to enhance transparency
+					rendering.
+				</li>
+				<li>
+					Utilized Atlas-Based Shadow Maps for efficient shadow mapping.
+				</li>
+			</ul>
+			These features not only improved the visual quality and realism of the Tensor engine but also demonstrated
+			my ability to work effectively under challenging conditions.
+			</p>
+		</div>
+
+		<button class="collapsible btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Expand/Collapse"></div>
+			<h4>Hazel Engine (Volunteer) - March 2021 to April 2022</h4>
+		</button>
+		<div class="content" id="intro">
+			<p>
+				As a volunteer rendering engineer for the <a href="https://hazelengine.com" target="_blank"
+					rel="noopener noreferrer"> Hazel
+					Engine </a>, I contributed to the development of a powerful
+				3D game engine. My primary responsibilities included:
+			<ul>
+				<li>
+					Implementing a forward+ renderer, allowing thousands of lights in real=time evaluation by culling
+					lights that are outside of the camera view.
+				</li>
+
+				<li>
+					Implementing advanced graphics techniques such as Ground Truth Ambient Occlusion (GTAO), Screen
+					Space Reflections (SSR), and Horizon-Based Ambient Occlusion (HBAO).
+				</li>
+				<li>
+					Enhancing the engine's lighting techniques to improve the realism and visual appeal of the rendered
+					scenes.
+				</li>
+			</ul>
+			</p>
+		</div>
+
+		<button class="collapsible btn btn-default">
+			<div class="arrow"><img src="icons/arrow.png" alt="Expand/Collapse"></div>
+			<h4>Beyond (Final year project) - 2020 TO 2021 </h4>
+		</button>
+		<div class="content" id="intro">
+			<p>
+				As a final year project student, I built my own rendering engine called <a
+					href="https://gitlab.com/karimsayed/Beyond" target="_blank" rel="noopener noreferrer">Beyond</a>.
+				My primary acheivements were simple and they included:
+			<ul>
+				<li> Developed a derferred lighting renderer to enhance performance.</li>
+				<li> Implemeted Screen-Space Ambient Occlusion (SSAO).</li>
+				<li> Implemented Point and spot lights with soft shadows.</li>
+				<li> Utilized OpenGL's tessellation shaders to allow for more detailed geometry with displacement maps.
+				</li>
+				<li> Implemented Screen-Space Reflections.</li>
+			</ul>
+			</p>
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-12">
+				<br>
+				<h2>Articles</h2>
+				<div class="row">
+					<!-- Path tracing feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='RTIOW.html';">
+							<!-- Thumbnail image -->
+							<img src="images/RTIOW/2560x1440_50depth_3000samples_3400ms.png" class="card-img-top"
+								alt="Ray tracing in one weekend in CUDA.">
+							<div class="card-body">
+								<h5 class="card-title">CUDA Ray Tracing 2x Faster Than RTX: My CUDA Ray Tracing
+									Journey</h5>
+								<div class="card-body text-center">
+									<a href="RTIOW.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<div class="row">
+
+			<div class="col-md-12">
+				<br>
+				<h2>Rendering Techniques</h2>
+				<div class="row">
+					<!-- Path tracing feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='PathTracing.html';">
+							<!-- Thumbnail image -->
+							<img src="images/Pathtracing/0.jpg" class="card-img-top" alt="Path Tracing">
+							<div class="card-body">
+								<h5 class="card-title">Path Tracing</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="PathTracing.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='DLSS.html';">
+							<!-- Thumbnail image -->
+							<img src="images/DLSS/0.gif" class="card-img-top" alt="DLSS">
+							<div class="card-body">
+								<h5 class="card-title">DLSS</h5>
+								<!-- <p>Integration of NVIDIA's DLSS</p> -->
+								<div class="card-body text-center">
+									<a href="DLSS.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='DDGI.html';">
+							<!-- Thumbnail image -->
+							<img src="images/DDGI/7.jpg" class="card-img-top" alt="RTXGI">
+							<div class="card-body">
+								<h5 class="card-title">RTXGI</h5>
+								<!-- <p>Integration of NVIDIA's RTXGI SDK</p> -->
+								<div class="card-body text-center">
+									<a href="DDGI.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='GTAO.html';">
+							<!-- Thumbnail image -->
+							<img src="images/GTAO/2.gif" class="card-img-top" alt="XeGTAO">
+							<div class="card-body">
+								<h5 class="card-title">XeGTAO</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="GTAO.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- BCn texture compression feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='Compression.html';">
+							<!-- Thumbnail image -->
+							<img src="images/BCn/Compression.png" class="card-img-top" alt="BCn Texture Compression">
+							<div class="card-body">
+								<h5 class="card-title">BCn Compression</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="Compression.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- SSR feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='SSR.html';">
+							<!-- Thumbnail image -->
+							<img src="images/SSR/3.gif" class="card-img-top" alt="SSR">
+							<div class="card-body">
+								<h5 class="card-title">SSR with Cone Tracing</h5>
+								<!-- <p>Integration of Path Tracing</p> -->
+								<div class="card-body text-center">
+									<a href="SSR.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- LTC Area Lights feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='AreaLights.html';">
+
+							<!-- Thumbnail image -->
+							<img src="images/Area Lights/1.gif" class="card-img-top" alt="Area Lights">
+							<div class="card-body">
+								<h5 class="card-title">LTC Area Lights</h5>
+								<div class="card-body text-center">
+									<a href="AreaLights.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Weighted Blended OIT feature -->
+					<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+						<!-- Card component -->
+						<div class="card" onclick="location.href='OIT.html';">
+
+							<!-- Thumbnail image -->
+							<img src="images/OIT/2.jpg" class="card-img-top" alt="OIT">
+							<div class="card-body">
+								<h5 class="card-title">Weighted Blended OIT</h5>
+								<div class="card-body text-center">
+									<a href="OIT.html" class="btn btn-primary">Learn More</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+
+						<!-- Planar Reflections feature -->
+						<div class="col-sm-12 col-md-6 col-lg col-xl-3">
+							<!-- Card component -->
+							<div class="card" onclick="location.href='PlanarReflections.html';">
+								<!-- Thumbnail image -->
+								<img src="images/Planar Reflections/1.gif" class="card-img-top"
+									alt="Planar Reflections">
+								<div class="card-body">
+									<h5 class="card-title">Planar Reflections</h5>
+									<div class="card-body text-center">
+										<a href="PlanarReflections.html" class="btn btn-primary">Learn More</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- About me section -->
+		<div class="row">
+			<div class="row">
+				<div class="col">
+					<h2>Education</h2>
+					<h5><a href="https://www.mmu.edu.my/" target="_blank" rel="noopener noreferrer">Multimedia
+							University, Malaysia</a></h5>
+					<p>Bachelor of Computer Science (Hons.) - Software Engineering Specialisation - 2021</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		footer();
+	</script>
+	<div class="text-center">
+		<div>Visitor Count: <span id="visits">Loading...</span></div>
+		<script>
+			fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/index.html')
+				.then(response => response.json())
+				.then(data => {
+					document.getElementById('visits').innerText = data.value;
+				});
+		</script>
+	</div>
+</body>
+<script>
+	var coll = document.getElementsByClassName("collapsible");
+	var i;
+
+	for (i = 0; i < coll.length; i++) {
+		coll[i].addEventListener("click", function () {
+			this.classList.toggle("active");
+			let content = this.nextElementSibling;
+			if (content.style.maxHeight) {
+				content.style.maxHeight = null;
+			} else {
+				content.style.maxHeight = content.scrollHeight + "px";
+			}
+		});
+	}
+</script>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Screen-Space Reflection</title>
+    <meta charset="UTF-8">
+
+    <!-- General Meta -->
+    <meta name="description" content="A showcase of my projects and portfolio.">
+    <link rel="icon" href="icons/Beyond.png">
+
+    <!-- Open Graph Meta (for Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Karim Sayed - Rendering Engineer">
+    <meta property="og:description" content="A showcase of my projects and portfolio.">
+    <meta property="og:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+    <meta property="og:url" content="https://karimsayedre.github.io/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Karim Sayed - Rendering Engineer">
+    <meta name="twitter:description" content="A showcase of my projects and portfolio.">
+    <meta name="twitter:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+
+<body>
+    <script>
+        navbar();
+    </script>
+    <div class="container">
+
+        <h2>Integration into Hazel Engine</h2>
+        <p>The journey to integrate AMD's Stochastic Screen-Space Reflections (SSSR) into the Hazel engine was both
+            challenging and rewarding. Initially, Hazel did not support HLSL shaders, which are crucial for AMD's SSSR.
+            Recognizing the potential of HLSL, I integrated it into Hazel, even though Hazel primarily supports Vulkan.
+            This was a significant step that required a deep understanding of both the Hazel engine and the Vulkan API.
+            The integration of SSSR was further facilitated by the prior implementation of Screen Space Reflections
+            (SSR), as both require a Hierarchical Depth Buffer. Thus, the path was paved for SSSR, making its
+            integration much smoother and more efficient.</p>
+
+        <h2>Technical Overview</h2>
+        <p>
+            SSSR, also known as Stochastic Screen-Space Reflections, is a state-of-the-art screen space algorithm. To
+            optimize the rendering process, I decided to remove the stochastic part of SSSR due
+            to its excessive noise and less-than-ideal results in the AMD demo. Instead, I opted for cone tracing which
+            was recommended by Cherno to allow for rough reflections. The color buffer is preconvoluted into mips, the
+            mip to sample is decided based on the distance and
+            roughness of the surface being shaded, utilizing the cone tracing algorithm, providing a more realistic and
+            visually pleasing result. You can
+            learn more about SSSR and its implementation from the <a href="https://gpuopen.com/fidelityfx-sssr/"
+                target="_blank" rel="noopener">official repository</a>.
+        </p>
+
+        <h2>Results and Impact</h2>
+        <p>The integration of SSSR into the Hazel engine had a significant impact. It outperformed other algorithms that
+            I had implemeted before, including SSR without a Hierarchical Z-Buffer, which
+            I had incorporated in my early work in Beyond (my university final year project). The performance
+            optimization from the Hierarchical Z-Buffer (HZB) was particularly impressive,
+            especially considering the limitations of the previous implementations. Also, compared to AMD's stochastic
+            algorithm was again, too noisy and not temporally stable. The cone tracing algorithm I implemented was more
+            stable and visually pleasing.</p>
+        </p>
+
+        <h2>Future Work</h2>
+        <p>
+            Temporal Anti-Aliasing (TAA) works well with SSSR, and it's an area where performance can be improved
+            without sacrificing too much quality. I also plan to implement ray traced reflections, and
+            perhaps even a hybrid of both ray traced reflections and SSSR. You can learn more about hybrid reflections
+            from <a href="https://gpuopen.com/fidelityfx-hybrid-reflections/" target="_blank" rel="noopener">here</a>.
+        </p>
+
+        <h2>Conclusion</h2>
+        <p>
+            In conclusion, the integration of SSSR into the Hazel engine has been a resounding success. It has not only
+            improved the realism and flexibility of the engine but has also paved the way for future enhancements. The
+            experience and knowledge gained from this project have been invaluable and will undoubtedly be beneficial in
+            my future endeavors. As I continue to explore and implement new features.
+        </p>
+
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my SSR implementation.<br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                let container = document.querySelector('.row');
+
+                let path = 'images/SSR/';
+
+                // Create an array of image file names
+                let images = ['9.webp', '1.gif', '2.gif', '3.gif', '4.gif', '5.gif', '6.gif', '7.jpg', '8.jpg',];
+                // Define the number of images per row
+                let imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+            </script>
+        </div>
+        <section class="section-header">
+            <h2>Disscussions</h2>
+
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                var disqus_config = function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = window.location.pathname;
+                };
+
+                (function () { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://https-karimsayedre-github-io.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments
+                    powered
+                    by
+                    Disqus.</a></noscript>
+        </section>
+    </div>
+    <!-- Add more images here -->
+    <script>
+        footer();
+        addBehaviour();
+    </script>
+    <div class="text-center">
+        <div>Visitor Count: <span id="visits">Loading...</span></div>
+        <script>
+            fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/SSR.html')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visits').innerText = data.value;
+                });
+        </script>
+    </div>
+</body>
+
+</html>

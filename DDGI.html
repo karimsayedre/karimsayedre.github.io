@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>NVIDIA RTXGI-DDGI</title>
+    <meta charset="UTF-8">
+
+    <!-- General Meta -->
+    <meta name="description" content="A showcase of my projects and portfolio.">
+    <link rel="icon" href="icons/Beyond.png">
+
+    <!-- Open Graph Meta (for Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Karim Sayed - Rendering Engineer">
+    <meta property="og:description" content="A showcase of my projects and portfolio.">
+    <meta property="og:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+    <meta property="og:url" content="https://karimsayedre.github.io/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Karim Sayed - Rendering Engineer">
+    <meta name="twitter:description" content="A showcase of my projects and portfolio.">
+    <meta name="twitter:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <script>
+        navbar();
+    </script>
+    <div class="container">
+        <h2>Integration of NVIDIA's RTXGI-DDGI into Beyond Engine</h2>
+        <p>
+            As a graphics programmer, the allure of dynamic global illumination (GI) and its potential to bring
+            unparalleled realism to games has always captivated me. When NVIDIA unveiled their <a
+                href="https://github.com/NVIDIAGameWorks/RTXGI-DDGI"> Dynamic Diffuse Global
+                Illumination (DDGI)</a> technology, I recognized an opportunity to augment the Beyond Engine with this
+            state-of-the-art feature.
+        </p>
+
+        <h2>Deciphering DDGI</h2>
+        <p>
+            Before embarking on the integration journey, I dedicated a significant amount of time to comprehend the
+            underlying principles of DDGI, though, it's always gonna be a mix of wraping my head around concepts, (ahead
+            of the actual implementation), and a whole lot of gotcha's during the actual work. So, NVIDIA's DDGI, a
+            real-time ray-traced global illumination solution, approximates indirect diffuse lighting. It harnesses the
+            power of contemporary GPUs to dynamically calculate
+            lighting conditions, by shooting a limited amount of ray's each frame from probes to their surroundings, and
+            accumulting them temporally, all cached into these irradiance probes. Thinking about this, the first thing
+            that comes to mind is "How's that
+            even dynamic?", the thing is, GI can be consdered a low frequncy signal, meaning it doesn't have be pixel to
+            pixel kind of detail like specular reflections. So instead, DDGI allows some accumulation over frames and
+            allows the fine
+            tuning how fast the lighting can change in a volume. The DDGI documentation provided by NVIDIA was an
+            invaluable resource during this learning process, offering a comprehensive guide to understanding and
+            integrating DDGI.
+        </p>
+
+        <h2>The Integration Process</h2>
+        <p>
+            The first step was to prepare the Beyond Engine for DDGI. This involved adjusting the engine to support
+            Vulkan Ray Tracing features. Then, I integrated the DDGI shaders into
+            Beyond's rendering pipeline. It wasn't easy to get the DDGI calculations to work well with Beyond's existing
+            lighting model. It required a deep understanding of both Beyond's rendering pipeline and the DDGI shader.
+        </p>
+
+        <h2>Results and Optimization</h2>
+        <p>
+            After integrating DDGI, the difference was clear. Scenes rendered in Beyond now had a new depth and realism,
+            thanks to the dynamic global illumination from DDGI. But, the initial implementation was quite
+            performance-intensive. So, I spent time profiling and optimizing the DDGI integration. This involved
+            improving the ray-tracing pipeline. DDGI is already highly optimized, so the goal was to make sure
+            that my implementation didn't slow it down.
+        </p>
+
+        <h2>Future Work</h2>
+        <p>
+            In the future, I plan to implement light baking for hardware without accelerated ray tracing capabilities.
+            Light baking is a
+            technique where you pre-calculate the lighting in a scene and store it in textures, which can then be used
+            during rendering. This can be a good alternative for hardware that doesn't support real-time ray tracing.
+        </p>
+
+        <h2>Conclusion</h2>
+        <p>
+            Integrating NVIDIA's DDGI into the Beyond Engine was a challenging but rewarding experience. It, not only
+            improved the visual quality of the engine, but also gave me a better understanding of modern real-time
+            rendering techniques, and it's so much faster than path tracing. One important lesson from this experience
+            is the importance of planning ahead. As the saying goes,
+            “Failing to plan is planning to fail.” This was particularly true in this case, where a good understanding
+            of the technique and a well-planned strategy were crucial for a successful and feasible integration.
+        </p>
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my RTXGI implementation.<br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                var container = document.querySelector('.row');
+
+                let path = 'images/DDGI/';
+
+                // Create an array of image file names
+                var images = ['5.gif', '1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg',];
+                // Define the number of images per row
+                var imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+
+            </script>
+        </div>
+        <section class="section-header">
+            <h2>Disscussions</h2>
+
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                var disqus_config = function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = window.location.pathname;
+                };
+
+                (function () { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://https-karimsayedre-github-io.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments
+                    powered
+                    by
+                    Disqus.</a></noscript>
+        </section>
+    </div>
+    <script>
+        footer();
+        addBehaviour();
+    </script>
+    <div class="text-center">
+        <div>Visitor Count: <span id="visits">Loading...</span></div>
+        <script>
+            fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/DDGI.html')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visits').innerText = data.value;
+                });
+        </script>
+    </div>
+</body>
+
+</html>

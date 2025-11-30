@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Order-Independent Transparency</title>
+    <meta charset="UTF-8">
+
+    <!-- General Meta -->
+    <meta name="description" content="A showcase of my projects and portfolio.">
+    <link rel="icon" href="icons/Beyond.png">
+
+    <!-- Open Graph Meta (for Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Karim Sayed - Rendering Engineer">
+    <meta property="og:description" content="A showcase of my projects and portfolio.">
+    <meta property="og:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+    <meta property="og:url" content="https://karimsayedre.github.io/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Karim Sayed - Rendering Engineer">
+    <meta name="twitter:description" content="A showcase of my projects and portfolio.">
+    <meta name="twitter:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <script>
+        navbar();
+    </script>
+
+    <div class="container">
+
+        <h2>Integration into Tensor</h2>
+        <p>
+            The integration of Weighted Blended Order Independent Transparency (WBOIT) into the Tensor engine, an
+            OpenGL-based proprietary engine, was a
+            journey of exploration and learning. The primary challenge was deciphering the intricacies of the algorithm.
+            However, with diligent study and perseverance, this obstacle was soon overcome.
+        </p>
+
+        <h2>Technical Details</h2>
+        <p>After evaluating various methods such as depth peeling, A-buffer approximations, and
+            stochastic transparency, the choice was made to implement Weighted Blended OIT. This method stands
+            out due to its ability to render non-refractive, monochrome transmission through surfaces that themselves
+            have color, without requiring sorting or new hardware features. It computes the coverage of the
+            background by transparent surfaces exactly, but only approximates the light scattered towards the camera by
+            the transparent surfaces themselves.</p>
+
+        <h2>Results and Impact</h2>
+        <p>
+            The implementation of Weighted Blended OIT resulted in fast transparency rendering without the need for
+            sorting. However, it's worth noting that while this method is efficient, it is not physically
+            based. This means that while it can produce visually pleasing results, it may not accurately
+            represent certain physical phenomena.
+        </p>
+
+        <h2>Future Work</h2>
+        <p>
+            Looking ahead, there are several potential improvements and features to consider. Given that the current
+            implementation supports reflections, the logical next step would be to incorporate refractions. This would
+            further enhance the realism and visual complexity of the rendered scenes.
+        </p>
+
+        <h2>Conclusion</h2>
+        <p>
+            In conclusion, the integration of Weighted Blended OIT into the Tensor engine was a worthwhile endeavor.
+            Despite the challenges encountered. The journey, though not without its difficulties, was a
+            valuable learning experience and has paved the way for future enhancements.</p>
+
+
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my OIT implementation.<br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                var container = document.querySelector('.row');
+
+                let path = 'images/OIT/';
+
+                // Create an array of image file names
+                var images = ['1.jpg', '2.jpg', '3.jpg', '4.png', '5.png', '6.png', '7.png'];
+                // Define the number of images per row
+                var imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+            </script>
+        </div>
+        <section class="section-header">
+            <h2>Disscussions</h2>
+
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                var disqus_config = function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = window.location.pathname;
+                };
+
+                (function () { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://https-karimsayedre-github-io.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments
+                    powered
+                    by
+                    Disqus.</a></noscript>
+        </section>
+    </div>
+    <script>
+        footer();
+        addBehaviour();
+    </script>
+    <div class="text-center">
+        <div>Visitor Count: <span id="visits">Loading...</span></div>
+        <script>
+            fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/OIT.html')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visits').innerText = data.value;
+                });
+        </script>
+    </div>
+</body>
+
+</html>

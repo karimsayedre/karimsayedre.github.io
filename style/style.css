@@ -1,0 +1,1049 @@
+:root {
+  --primary-100: #ff1717;
+  --primary-200: #ff616f;
+  --primary-300: #ffaaaa;
+  --accent-100: #FF5252;
+  --accent-200: #fff0e0;
+  --text-100: #FFFFFF;
+  --text-200: #e0e0e0;
+  --bg-100: #1A1A1A;
+  --bg-200: #292929;
+  --bg-300: #404040;
+  --bg-400: #303030;
+}
+
+body {
+  background-color: var(--bg-100);
+  color: var(--text-100);
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.container {
+  background-color: var(--bg-200);
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 60%;
+}
+
+/* Small devices (phones) */
+@media (max-width: 767px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 992px) {
+  .container {
+    max-width: 60%;
+  }
+}
+
+.card {
+  margin-bottom: 2rem;
+  margin-right: 1rem;
+
+  background-color: var(--bg-300);
+  border-radius: 20px;
+  align-items: center;
+  transition: transform .2s;
+  cursor: pointer;
+
+}
+
+.card-img-top {
+  min-height: 15rem;
+  border-radius: 5%;
+
+}
+
+.card:hover {
+  transform: scale(1.07);
+}
+
+.card-title {
+  text-align: center;
+  color: var(--accent-200);
+}
+
+h1,
+h2 {
+  color: var(--primary-100);
+  text-transform: uppercase;
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+:is(h1, h2, h3, h4, h5, h6) code {
+  text-transform: none;
+}
+
+h3,
+h4 {
+  color: var(--primary-200);
+  /* text-transform: uppercase; */
+
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-style: normal;
+
+  /* This removes any extra margin that might affect centering */
+  margin: 0;
+  margin-bottom: 0.5rem;
+
+}
+
+strong {
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  color: var(--primary-300);
+}
+
+p,
+li {
+  color: var(--text-100);
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+  margin-bottom: 0.5rem;
+}
+
+.img-thumbnail {
+  /* Animation */
+  transition: transform .2s;
+  min-height: 15rem;
+  margin-bottom: 2rem;
+  border-radius: 5%;
+
+}
+
+.img-thumbnail:hover {
+  transform: scale(1.1);
+}
+
+.btn-primary {
+  background-color: var(--primary-100);
+  border-color: var(--primary-100);
+  padding: 10px 20px;
+}
+
+.btn-primary:active,
+.btn-primary:hover,
+.btn-primary.show {
+  background-color: var(--primary-200) !important;
+  border-color: var(--primary-200) !important;
+}
+
+/* Anchor-based buttons */
+a.btn-primary:active,
+a.btn-primary.hover {
+  background-color: var(--primary-200) !important;
+  border-color: var(--primary-200) !important;
+}
+
+/* Remove existing .toast styles and replace with: */
+.copy-toast {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  background-color: var(--primary-200);
+  color: white;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  white-space: nowrap;
+  /* max-width: calc(100vw - 4rem); */
+  text-align: center;
+  /* pointer-events: none; */
+  /* Initial position (will be overridden by JS) */
+
+}
+
+.copy-toast.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.copy-toast.top {
+  top: 2rem !important;
+  /* Position 2rem from the top for navbar buttons */
+}
+
+.copy-toast.bottom {
+  bottom: 2rem !important;
+  /* Position 2rem from the bottom for footer buttons */
+}
+
+
+
+.my-photo {
+  /* aspect-ratio: 1/1; */
+  object-fit: cover;
+  margin-left: 2rem;
+  border-radius: 1rem;
+  /* border: 5px solid #fff; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+
+.container img {
+  object-fit: cover;
+}
+
+.container img.arrow {
+  width: 50px;
+  /* or set a specific width */
+  height: 50px;
+  /* or set a specific height */
+}
+
+.photo {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Optional: Add some margin for better spacing */
+.photo {
+  margin: 1rem 0;
+}
+
+/* If you want the image to maintain aspect ratio within a specific height */
+.photo-container {
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.photo-container .photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  /* Remove border-radius from img since container handles it */
+  margin: 0;
+}
+
+
+.collapsible {
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  background-color: var(--bg-300);
+
+  border-radius: 10px;
+  display: flex;
+  margin-bottom: 1rem;
+
+  /* This centers the content vertically */
+  align-items: center;
+
+  /*justify-content: flex;*/
+  /*align-items: left;*/
+}
+
+.collapsible:active,
+.collapsible:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.active,
+.collapsible:hover {
+  background-color: var(--bg-300);
+}
+
+.content {
+  padding: 0 18px;
+  /* display: none; */
+  max-height: 0;
+
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  /* background-color: #f1f1f1; */
+}
+
+.arrow img {
+  height: 20px;
+  width: 20px;
+  top: 10px;
+  left: 10px;
+  right: 20px;
+  transition: transform .3s ease;
+  transform: rotate(90deg);
+  margin-right: 20px;
+
+}
+
+.collapsible.active .arrow img {
+  transform: rotate(180deg);
+
+}
+
+#my-name {
+  color: var(--primary-100);
+  font-size: 2rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+#my-name:hover {
+  color: var(--primary-200);
+  text-decoration: none;
+}
+
+.homepage-link {
+  margin-left: 2rem;
+}
+
+.navbar .dropdown {
+  position: relative;
+}
+
+.navbar .dropdown-menu {
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.Beyond-logo {
+  height: 2.5rem;
+  margin: 0.4rem;
+}
+
+.navbar-icons-div {
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* This replaces the margin on individual images */
+}
+
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* This replaces the margin on individual images */
+}
+
+/* Update the image styles to remove the margin */
+.navbar-icons-div img {
+  height: 2.5rem;
+  /* remove the margin: 0.4rem; since we're using gap */
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-icons img {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  height: 2.5rem;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  cursor: pointer;
+}
+
+.left-div {
+  left: 1em;
+}
+
+.right-div {
+  right: 1em;
+}
+
+.left-div:hover .left-arrow {
+  transform: rotate(-90deg) scale(1.3);
+}
+
+.right-div:hover .right-arrow {
+  transform: rotate(90deg) scale(1.3);
+
+}
+
+.left-arrow {
+  transition: transform 0.3s ease;
+  position: relative !important;
+  -webkit-user-select: none;
+  user-select: none;
+
+  /* left: 500% !important;  */
+
+  top: 50%;
+  bottom: 50%;
+  border-radius: 0% !important;
+
+  left: 2rem !important;
+
+  transform: rotate(-90deg);
+
+}
+
+.right-arrow {
+  transition: transform 0.3s ease;
+  /* Optional: smooth transition */
+  -webkit-user-select: none;
+  user-select: none;
+
+  position: relative;
+  border-radius: 0% !important;
+
+  top: 50%;
+  bottom: 50%;
+  /* Prevents the image from being selectable */
+  left: calc(100% - 4rem) !important;
+
+  transform: rotate(90deg);
+}
+
+.modal {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+/* Center the modal */
+.modal-content {
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  width: auto;
+}
+
+.modal-body img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 5rem;
+}
+
+.big-image {
+  min-width: 100%;
+  min-height: 85vh;
+}
+
+.faded {
+  opacity: 0.25;
+  transition: opacity .3s linear;
+}
+
+.faded.show {
+  opacity: 1;
+}
+
+
+/* Improve general code block readability */
+pre code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 1em;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: #dcdcdc;
+  display: block;
+  overflow-x: auto;
+}
+
+/* Optional: color tweak for comments (override theme) */
+.hljs-comment {
+  color: #6a9955;
+  /* soft green like VSCode */
+  font-style: italic;
+}
+
+/* Optional: color tweak for keywords */
+.hljs-keyword {
+  color: #569cd6;
+}
+
+/* Make sure copy button floats right nicely */
+.copy-button {
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 0.3em 0.6em;
+  font-size: 0.8em;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.copy-button:hover {
+  background: #555;
+}
+
+pre {
+  position: relative;
+  margin: 1.5em 0;
+}
+
+
+/* Tweak line number column width and spacing */
+.hljs-ln {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.hljs-ln-numbers {
+  width: 3em;
+  text-align: right;
+  padding-right: 1em;
+  color: #666;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hljs-ln-code {
+  padding-left: 0.5em;
+}
+
+
+.hljs-ln td {
+  line-height: 1.5em;
+  padding: 0 0.75em;
+  /* Add horizontal space */
+  vertical-align: top;
+}
+
+pre code.hljs {
+  display: block;
+}
+
+td.hljs-ln-numbers {
+  width: 2.5em !important;
+  text-align: right;
+  padding-right: 1em !important;
+  color: #888;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+
+
+/* Enhanced Gotcha/Big Advice Styling */
+code {
+  background-color: var(--bg-200);
+  color: var(--primary-200);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 1em;
+  border: 1px solid var(--bg-300);
+}
+
+.gotcha-section {
+  margin: 3rem 0;
+  padding: 0.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.section-header {
+  background-color: var(--bg-400);
+  color: var(--text-100);
+  padding: 1rem;
+  border-radius: 15px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  /* text-align: center; */
+  box-shadow: -3px -3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.section-header h2 {
+  color: var(--accent-100);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  font-size: 2.5rem;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gotcha-marker {
+  width: 1rem;
+  background-color: var(--primary-100);
+  flex-shrink: 0;
+}
+
+.pro-tip-marker {
+  background-color: var(--accent-100);
+}
+
+.gotcha-content {
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  flex-grow: 1;
+}
+
+.gotcha-content h3 {
+  margin-top: 0;
+  color: var(--primary-200);
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.gotcha-content p, .gotcha-content li {
+  color: var(--text-100);
+  line-height: 1.6;
+}
+
+.gotcha-content ul {
+  padding-left: 1.5rem;
+}
+
+/* Pro tip variation */
+.pro-tip {
+  background-color: var(--bg-200);
+}
+
+.pro-tip h3 {
+  color: var(--accent-100);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+
+.perf-note {
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--text-300);
+  font-size: 1rem;
+}
+
+.perf-table-container {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.perf-table {
+  border-collapse: collapse;
+  /* Ensure table cells collapse borders */
+  width: 100%;
+  min-width: 600px;
+  /* ensures table isn't too squished */
+  background-color: rgba(255, 255, 255, 0.03);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-radius: 0.5rem;
+  /* Apply rounded corners to the table itself */
+  overflow: hidden;
+  /* Ensures content and shadow respects rounded corners */
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.15);
+  animation: glow-pulse 5s ease-in-out infinite;
+  font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.514);
+  }
+
+  50% {
+    box-shadow: 0 0 12px rgb(255, 0, 0);
+  }
+}
+
+.perf-table thead th {
+  background-color: rgba(255, 0, 0, 0.644);
+  color: #fff;
+  padding: 0.75em 1em;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.perf-table tbody td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: top;
+  color: #e0e0e0;
+}
+
+.perf-table tbody tr:nth-child(odd) {
+  background-color: #252525;
+}
+
+.perf-table tbody tr:hover {
+  background-color: #303030;
+}
+
+/* ↓↓↓ Responsive adjustments ↓↓↓ */
+
+@media (max-width: 1024px) {
+  .perf-table {
+    font-size: 0.95rem;
+  }
+
+  .perf-table th, .perf-table td {
+    padding: 0.65em 0.8em;
+  }
+}
+
+@media (max-width: 768px) {
+  .perf-table {
+    font-size: 0.85rem;
+  }
+
+  .perf-table th, .perf-table td {
+    padding: 0.5em 0.6em;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0px rgba(255, 0, 0, 0.1);
+    }
+
+    50% {
+      box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .perf-table {
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+
+  .perf-table th, .perf-table td {
+    padding: 0.4em 0.5em;
+  }
+
+  .perf-table th {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .perf-table {
+    font-size: 0.75rem;
+    animation: none;
+    box-shadow: 0 0 4px rgba(255, 0, 0, 0.3);
+  }
+
+  .perf-table th, .perf-table td {
+    padding: 0.3em 0.4em;
+  }
+
+  .perf-table th {
+    font-size: 0.7rem;
+  }
+}
+
+
+/* Navigation buttons */
+.scroll-up {
+  position: fixed;
+  top: 3em;
+  z-index: 1000;
+}
+
+.scroll-down {
+  position: fixed;
+  bottom: 3em;
+  z-index: 1000;
+}
+
+.scroll-button {
+  width: 3em;
+  height: 3em;
+  right: 2rem;
+  border: none;
+  border-radius: 15%;
+  font-size: 2em;
+  cursor: pointer;
+  /* box-shadow: 0 4px 15px rgba(0,0,0,0.2); */
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-down img {
+  transform: rotate(180deg);
+}
+
+.scroll-button:hover {
+  transform: scale(1.3);
+  background: #00000000;
+}
+
+.scroll-button:active {
+  transform: scale(0.95);
+}
+
+/* Alternative: Hide on tablets and mobile */
+@media (max-width: 1024px) {
+
+  .scroll-up,
+  .scroll-down {
+    display: none !important;
+  }
+}
+
+.fps-highlight {
+  font-weight: bold;
+  color: var(--primary-200) !important;
+}
+
+
+
+
+
+
+/* Image Preview System - Compatible with existing styles */
+
+/* Clickable image styling */
+.preview-image {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  margin-top: 1rem;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 4px rgba(255, 0, 0, 0.3);
+  animation: glow-pulse 5s ease-in-out infinite;
+  object-fit: contain;
+}
+
+.preview-image:hover {
+  transform: translateY(-3px);
+}
+
+/* Image preview modal overlay */
+.image-preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Ensure gotcha-card displays properly in modal and matches image width */
+.image-preview-modal .gotcha-card {
+  display: flex;
+  width: 100%;
+}
+
+/* JavaScript will set this custom property based on the actual image width */
+.image-preview-content {
+  --image-width: 600px;
+  /* fallback */
+}
+
+.image-preview-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal content container */
+.image-preview-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Preview image styling */
+.preview-modal-image {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+/* Close button */
+.image-preview-close {
+  position: absolute;
+  top: -3rem;
+  right: 0;
+  background: var(--primary-100);
+  color: var(--text-100);
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 1051;
+}
+
+.image-preview-close:hover {
+  background: var(--primary-200);
+  transform: scale(1.1);
+}
+
+.image-preview-close:active {
+  transform: scale(0.95);
+}
+
+
+.gotcha-card {
+  display: flex;
+  background-color: var(--bg-300);
+  border-radius: 15px;
+  /* margin: 1.5rem; */
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.gotcha-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Comments section */
+.image-comments {
+  background-color: var(--bg-300);
+  border-radius: 15px;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  /* margin-top: 1rem; */
+  /* margin-bottom: 1rem; */
+
+  /* border-left: 4px solid var(--primary-100); */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .image-preview-content {
+    gap: 0.5rem;
+  }
+
+  .image-preview-close {
+    top: -2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+
+  .image-comments {
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 95vw;
+  }
+
+  .image-comments h4 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .preview-modal-image {
+    max-width: 98vw;
+    max-height: 65vh;
+  }
+
+  .image-comments {
+    padding: 0.8rem;
+    max-width: 98vw;
+  }
+
+  .image-comments h4 {
+    font-size: 1rem;
+  }
+}
+
+.quote {
+  margin: 1.5em 1em;
+  padding: 1em 1.5em;
+  background-color: #1a1a1a;
+  border-left: 4px solid var(--accent-100);
+  color: #ccc;
+  font-style: italic;
+  font-size: 1.05em;
+  border-radius: 4px;
+}
+
+.quote-author {
+  display: block;
+  margin-top: 0.5em;
+  color: #888;
+  font-style: normal;
+  font-size: 0.95em;
+}
+
+.text-center {
+  text-align: center;
+}

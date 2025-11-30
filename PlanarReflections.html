@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <title>Planar Reflection</title>
+    <meta charset="UTF-8">
+
+    <!-- General Meta -->
+    <meta name="description" content="A showcase of my projects and portfolio.">
+    <link rel="icon" href="icons/Beyond.png">
+
+    <!-- Open Graph Meta (for Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="Karim Sayed - Rendering Engineer">
+    <meta property="og:description" content="A showcase of my projects and portfolio.">
+    <meta property="og:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+    <meta property="og:url" content="https://karimsayedre.github.io/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Karim Sayed - Rendering Engineer">
+    <meta name="twitter:description" content="A showcase of my projects and portfolio.">
+    <meta name="twitter:image" content="https://karimsayedre.github.io/images/Pathtracing/0.jpg">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+
+    <script src="scripts/images.js"></script>
+    <script src="scripts/behaviour.js"></script>
+    <script src="scripts/bars.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <script>
+        navbar();
+    </script>
+    <div class="container">
+
+        <h2>Integration with Tensor</h2>
+
+        <p>Incorporating planar reflections into Tensor was a challenging task due to the limited resources available
+            online.
+            The simplicity of planar reflections belies the complexity of their implementation. The primary challenge
+            was the manipulation of the reflection matrix to render everything within the plane. Additionally, the use
+            of clipping planes to limit the rendering to the size of the reflection planes posed another hurdle. A
+            less significant aspect of the implementation was the convolution of the reflected color buffer and its
+            sampling
+            at varying levels of detail, contingent on the roughness of the reflecting surface.</p>
+
+        <h2>Technical Overview</h2>
+        <p>Planar reflections are a powerful tool in rendering, providing more accurate reflections than alternative
+            methods such as Screen Space Reflections (SSR). However, they come with a higher rendering cost due to the
+            need to render the level again from the direction of the reflection. Despite this, the results are often
+            more consistent and accurate, especially at the sides and edges of the reflecting surface.</p>
+
+        <h2>Results and Impact</h2>
+        <p>The integration of planar reflections significantly enhanced the visual realism of the Tensor project. By
+            accurately reflecting off-screen objects, planar reflections eliminated the 'leaking' commonly associated
+            with Screen Space Reflections (SSR). This resulted in more consistent and visually pleasing reflections,
+            particularly at the sides and edges of the reflecting surface.</p>
+
+        <h2>Future Work</h2>
+        <p>Despite the successful implementation of planar reflections, there is room for improvement. One issue is that
+            the color buffer lacks edge detection, leading to a naive blurring effect. Future work could focus on
+            incorporating edge detection into the color buffer to enhance the visual quality of the reflections.</p>
+
+        <h2>Conclusion</h2>
+        <p>The integration of planar reflections into the Tensor project was a challenging yet rewarding endeavor.
+            Despite the complexities and the high rendering cost, the resulting visual improvements significantly
+            enhanced the project's realism. The experience underscored the potential of planar reflections in rendering
+            and highlighted areas for future improvement, particularly in the implementation of edge detection in the
+            color buffer. As we continue to push the boundaries of rendering technology, planar reflections will
+            undoubtedly play a crucial role in shaping the future of realistic and immersive virtual environments.</p>
+
+
+        <h2>Images</h2>
+        <p>
+            Here are some images that demonstrate the results of my planar reflections implementation.<br>
+            Click on an image to view it in bigger size.
+        </p>
+        <div class="row">
+
+            <script>
+                // Get the container element where the images and modals will be appended
+                var container = document.querySelector('.row');
+
+                let path = 'images/Planar Reflections/';
+
+                // Create an array of image file names
+                var images = ['4.gif', '1.gif', '2.gif', '3.jpg', '5.png', '6.png', '9.png'];
+                // Define the number of images per row
+                var imagesPerRow = 4;
+
+                renderImages(path, images, container, imagesPerRow);
+            </script>
+        </div>
+        <section class="section-header">
+            <h2>Disscussions</h2>
+
+            <div id="disqus_thread"></div>
+            <script>
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+                var disqus_config = function () {
+                    this.page.url = window.location.href;
+                    this.page.identifier = window.location.pathname;
+                };
+
+                (function () { // DON'T EDIT BELOW THIS LINE
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://https-karimsayedre-github-io.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments
+                    powered
+                    by
+                    Disqus.</a></noscript>
+        </section>
+    </div>
+    <script>
+        footer();
+        addBehaviour();
+    </script>
+    <div class="text-center">
+        <div>Visitor Count: <span id="visits">Loading...</span></div>
+        <script>
+            fetch('https://abacus.jasoncameron.dev/hit/karimsayedre.github.io/PlanarReflections.html')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visits').innerText = data.value;
+                });
+        </script>
+    </div>
+</body>
+
+</html>
